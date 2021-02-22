@@ -17,9 +17,10 @@ const Logo = styled.img`
 width: 30px;
 height: 30px;
 `
+
 const Navigation = styled.nav`
 width: fit-content;
-display:flex;
+display:inline-flex;
 `
 
 const activeClassName = "ACTIVE"
@@ -35,11 +36,11 @@ const StyledNavLink = styled(NavLink).attrs({
   color: ${({ theme }) => theme.text1};
   font-size: 1rem;
   width: fit-content;
-  margin: 0 12px;
+  margin: 0 16px;
   font-weight: 500;
-
+padding: 4px 0;
   &.${activeClassName} {
-    padding-bottom: 4px;
+    
     border-bottom: 3px solid ${({ theme }) => theme.navActiveBorderColor};
     color: ${({ theme }) => theme.text1};
   }
@@ -49,7 +50,26 @@ const StyledNavLink = styled(NavLink).attrs({
   }
 `
 
+const ConnectWallet = styled.button`
+width: fit-content;
+padding: 12px 24px 8px;
+border-radius: 24px;
+background-color: ${({ theme }) => theme.blue1};
 
+font-weight: 600;
+font-size: 16px;
+border: none;
+color: ${({ theme }) => theme.white};
+
+margin-left: 16px;
+
+cursor: pointer;
+outline: none;
+`
+
+function connectWallet() {
+    alert('connect')
+}
 
 function Header() {
     return (
@@ -58,14 +78,16 @@ function Header() {
                 <Logo src={logo} />
             </div>
 
-            <div>
+            <div style={{ display: 'flex', alignItems: "center" }}>
                 <Navigation>
                     <StyledNavLink to={"/swap"}>Swap</StyledNavLink>
                     <StyledNavLink to={"/pools"}>Pools</StyledNavLink>
                     <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
                     <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
                 </Navigation>
+                <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
             </div>
+
         </HeaderFrame>
     );
 }
