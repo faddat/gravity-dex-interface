@@ -11,11 +11,17 @@ justify-content: space-between;
 align-items: center;
 width: 100%;
 padding: 1rem;
+
+${({ theme }) => theme.mediaWidth.upToExtraSmall`
+    font-size: 14px !important;
+  `};
+ 
 `
 
 const Logo = styled.img`
 width: 30px;
 height: 30px;
+vertical-align: middle;
 `
 
 const Navigation = styled.nav`
@@ -26,7 +32,7 @@ display:inline-flex;
 const activeClassName = "ACTIVE"
 
 const StyledNavLink = styled(NavLink).attrs({
-    activeClassName
+  activeClassName
 })`
   ${({ theme }) => theme.flexRowNoWrap}
   align-items: left;
@@ -34,11 +40,11 @@ const StyledNavLink = styled(NavLink).attrs({
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.text1};
-  font-size: 1rem;
+  font-size: inherit;
   width: fit-content;
   margin: 0 16px;
   font-weight: 500;
-padding: 4px 0;
+  padding: 4px 0;
   &.${activeClassName} {
     
     border-bottom: 3px solid ${({ theme }) => theme.navActiveBorderColor};
@@ -65,31 +71,35 @@ margin-left: 16px;
 
 cursor: pointer;
 outline: none;
+
+${({ theme }) => theme.mediaWidth.upToSmall`
+    display: none;
+  `};
 `
 
 function connectWallet() {
-    alert('connect')
+  alert('connect')
 }
 
 function Header() {
-    return (
-        <HeaderFrame>
-            <div>
-                <Logo src={logo} />
-            </div>
+  return (
+    <HeaderFrame>
+      <div>
+        <Logo src={logo} />
+      </div>
 
-            <div style={{ display: 'flex', alignItems: "center" }}>
-                <Navigation>
-                    <StyledNavLink to={"/swap"}>Swap</StyledNavLink>
-                    <StyledNavLink to={"/pools"}>Pools</StyledNavLink>
-                    <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
-                    <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
-                </Navigation>
-                <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
-            </div>
+      <div style={{ display: 'flex', alignItems: "center" }}>
+        <Navigation>
+          <StyledNavLink to={"/swap"}>Swap</StyledNavLink>
+          <StyledNavLink to={"/pools"}>Pools</StyledNavLink>
+          <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
+          <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
+        </Navigation>
+        <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
+      </div>
 
-        </HeaderFrame>
-    );
+    </HeaderFrame>
+  );
 }
 
 export default Header

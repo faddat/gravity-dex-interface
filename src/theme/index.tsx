@@ -98,7 +98,7 @@ export function colors(darkMode: boolean): Colors {
 
 const MEDIA_WIDTHS = {
   upToExtraSmall: 500,
-  upToSmall: 720,
+  upToSmall: 600,
   upToMedium: 960,
   upToLarge: 1280
 }
