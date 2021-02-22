@@ -19,9 +19,15 @@ ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 `
 
 const Logo = styled.img`
-width: 30px;
-height: 30px;
+width: 39px;
+height: 39px;
 vertical-align: middle;
+
+ transition: transform 0.3s ease;
+
+  :hover {
+    transform: scale(1.15);
+  }
 `
 
 const Navigation = styled.nav`
