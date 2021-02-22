@@ -1,7 +1,12 @@
-import * as React from 'react';
-import styled from "styled-components";
+import * as React from 'react'
+import styled from "styled-components"
+import { Route, Switch } from 'react-router-dom'
 
 import Header from "../components/Header"
+import Swap from "../pages/Swap"
+import Pools from "../pages/Pools"
+import Deposit from "../pages/Deposit"
+import Withdraw from "../pages/Withdraw"
 
 const AppWrapper = styled.div`
   display: flex;
@@ -24,21 +29,12 @@ function App() {
     <AppWrapper>
       <Header />
 
-      <div className="App">
-        <header className="App-header">
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-        </a>
-        </header>
-      </div>
+      <Switch>
+        <Route exact strict path="/swap" component={Swap} />
+        <Route exact strict path="/pools" component={Pools} />
+        <Route exact strict path="/deposit" component={Deposit} />
+        <Route exact strict path="/withdraw" component={Withdraw} />
+      </Switch>
     </AppWrapper>
   );
 }
