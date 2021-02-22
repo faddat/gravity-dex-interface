@@ -1,19 +1,19 @@
 import * as React from 'react';
 import styled from "styled-components";
 
+import Header from "../components/Header"
 
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
-  background-color:${({ theme }) => theme.bg2};
+  background-color:${({ theme }) => theme.bg1};
 `
 
 const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
-  justify-content: space-between;
 `
 
 
@@ -22,9 +22,8 @@ const HeaderWrapper = styled.div`
 function App() {
   return (
     <AppWrapper>
-      <HeaderWrapper>
-        test
-      </HeaderWrapper>
+      <Header />
+
       <div className="App">
         <header className="App-header">
           <p>
