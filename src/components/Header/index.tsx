@@ -4,7 +4,7 @@ import { lighten } from 'polished'
 
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
-
+import BasicModal from "../Modals/BasicModal"
 const HeaderFrame = styled.div`
 display:flex;
 justify-content: space-between;
@@ -103,6 +103,7 @@ function Header() {
         </Navigation>
         <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
       </div>
+      <BasicModal elementId="modal">test</BasicModal>
 
     </HeaderFrame>
   );
