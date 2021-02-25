@@ -5,6 +5,7 @@ import { lighten } from 'polished'
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
 import BasicModal from "../Modals/BasicModal"
+import ConnectWalletModal from "./ConnectWalletModal"
 
 import { useToggle } from "ahooks";
 const HeaderFrame = styled.div`
@@ -109,7 +110,9 @@ function Header() {
         </Navigation>
         <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
       </div>
-      <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>test</BasicModal>
+      <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
+        <ConnectWalletModal />
+      </BasicModal>
 
     </HeaderFrame>
   );
