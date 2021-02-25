@@ -109,7 +109,7 @@ function Header() {
         </Navigation>
         <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
       </div>
-      <BasicModal elementId="modal" isOpen={isOpen}>test</BasicModal>
+      <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>test</BasicModal>
 
     </HeaderFrame>
   );

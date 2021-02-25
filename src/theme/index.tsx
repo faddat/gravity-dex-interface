@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Colors } from './styled'
-import { transparentize } from 'polished'
+import { borderRadius, transparentize } from 'polished'
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
   createGlobalStyle,
@@ -32,6 +32,11 @@ export function theme(darkMode: boolean): DefaultTheme {
     flexRowNoWrap: css`
       display: flex;
       flex-flow: row nowrap;
+    `,
+
+    // border-radius
+    modalBorderRadius: css`
+    border-radius: 16px;
     `
   }
 }
