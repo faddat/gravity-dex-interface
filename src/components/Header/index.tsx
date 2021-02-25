@@ -5,6 +5,8 @@ import { lighten } from 'polished'
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
 import BasicModal from "../Modals/BasicModal"
+
+import { useToggle } from "ahooks";
 const HeaderFrame = styled.div`
 display:flex;
 justify-content: space-between;
@@ -83,11 +85,15 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
   `};
 `
 
-function connectWallet() {
-  alert('connect')
-}
+
 
 function Header() {
+  const [isOpen, { toggle }] = useToggle();
+
+  function connectWallet() {
+    alert('connect')
+    toggle()
+  }
   return (
     <HeaderFrame>
       <div>
@@ -103,7 +109,7 @@ function Header() {
         </Navigation>
         <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
       </div>
-      <BasicModal elementId="modal">test</BasicModal>
+      <BasicModal elementId="modal" isOpen={isOpen}>test</BasicModal>
 
     </HeaderFrame>
   );
