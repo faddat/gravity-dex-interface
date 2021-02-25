@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from "styled-components";
 
+import keplr from "../../assets/wallets/keplr.png"
+
 const Title = styled.div`
 width: 300px;
 
@@ -14,27 +16,76 @@ background-color: #fff;
 
 border-top-left-radius: 6px;
 border-top-right-radius: 6px;
-overflow:hidden;
-padding: 12px;
-`
+padding: 60px 12px 40px ;
 
-const WalletListWrapper = styled.div`
-    width: 300px;
-    overflow:hidden;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-.connect-wallet-button {
-    
+div {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    line-height: 1;
+    font-size: 24px;
+    transition: opacity 0.2s;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.6;
+    }
 }
 `
 
-function ConnectWalletModal() {
+const WalletListWrapper = styled.div`
+width: 300px;
+padding: 0 40px 40px 40px;
+border-bottom-left-radius: 6px;
+border-bottom-right-radius: 6px;
+
+button {
+    width: 220px;
+    height: 50px;
+
+    padding: 0 40px;
+
+    background-color: #fff;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+    outline: none;
+
+    transition: border 0.2s;
+
+    &:hover {
+        border: 1px solid #4397ff;
+    }
+
+    img {
+        width: 20px;
+        height: 20px;
+    }
+
+    div {
+        font-size: 15px;
+        font-weight: bold;
+    }
+}
+`
+
+function ConnectWalletModal({ close }: { close: any }) {
 
     return (
         <>
-            <Title>Connect your wallet <br /> to proceed</Title>
+            <Title>Connect your wallet <br /> to proceed
+            <div onClick={() => { close() }}>X</div>
+            </Title>
             <WalletListWrapper>
-                <button className="connect-wallet-button">Connect Keplr</button>
+                <button>
+                    <img src={keplr} alt="keplr" />
+                    <div>Connect Keplr</div>
+                </button>
             </WalletListWrapper>
         </>
     );
