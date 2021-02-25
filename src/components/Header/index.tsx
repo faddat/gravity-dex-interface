@@ -92,7 +92,6 @@ function Header() {
   const [isOpen, { toggle }] = useToggle();
 
   function connectWallet() {
-    alert('connect')
     toggle()
   }
   return (
