@@ -69,12 +69,13 @@ button {
 
     div {
         font-size: 15px;
+        height: 16px;
         font-weight: bold;
     }
 }
 `
 
-function ConnectWalletModal({ close }: { close: any }) {
+function ConnectWalletModal({ close, connect }: { close: any, connect: any }) {
 
     return (
         <>
@@ -82,7 +83,7 @@ function ConnectWalletModal({ close }: { close: any }) {
             <div onClick={() => { close() }}>X</div>
             </Title>
             <WalletListWrapper>
-                <button>
+                <button onClick={() => { connect() }}>
                     <img src={keplr} alt="keplr" />
                     <div>Connect Keplr</div>
                 </button>

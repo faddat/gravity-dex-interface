@@ -7,7 +7,11 @@ import logo from "../../assets/logo/logo.png"
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
 
+import { chainInfo } from "../../cosmos-amm/config"
+import { GaiaApi } from "@chainapsis/cosmosjs/gaia/api"
+
 import { useToggle } from "ahooks";
+
 const HeaderFrame = styled.div`
 display:flex;
 justify-content: space-between;
@@ -88,12 +92,45 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
 
 
 
-function Header() {
+function AppHeader() {
   const [isOpen, { toggle }] = useToggle();
 
-  function connectWallet() {
-    toggle()
-  }
+  async function connectWallet() {
+    alert('test')
+    // if (!window.cosmosJSWalletProvider) {
+    //   if (mobileCheck()) {
+    //     toastGenerator("info", "🙏  functions are available on the desktop");
+    //   } else {
+    //     toastGenerator("info", "🙏  Please install the Keplr extension");
+    //   }
+    //   return;
+    // }
+
+    // if (!window.keplr?.experimentalSuggestChain) {
+    //   toastGenerator("info", "🙏 Please use the latest version of Keplr extension");
+    //   return;
+    // }
+
+    await window.keplr.experimentalSuggestChain(chainInfo);
+
+    const cosmosJS = new GaiaApi({
+      chainId: chainInfo.chainId,
+      rpc: chainInfo.rpc,
+      rest: chainInfo.rest,
+      walletProvider: window.cosmosJSWalletProvider
+    });
+
+    await cosmosJS.enable();
+
+    const keys = await cosmosJS.getKeys();
+
+    if (keys.length === 0) {
+      throw new Error("there is no key");
+    }
+    const bech32Address = keys[0].bech32Address;
+    console.log(bech32Address)
+  };
+
   return (
     <HeaderFrame>
       <div>
@@ -107,14 +144,14 @@ function Header() {
           <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
           <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
         </Navigation>
-        <ConnectWallet onClick={connectWallet}>CONNECT WALLET</ConnectWallet>
+        <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet>
       </div>
       <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
-        <ConnectWalletModal close={toggle} />
+        <ConnectWalletModal close={toggle} connect={connectWallet} />
       </BasicModal>
 
     </HeaderFrame>
   );
 }
 
-export default Header
+export default AppHeader

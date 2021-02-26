@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from "styled-components"
 import { Route, Switch } from 'react-router-dom'
 
-import Header from "../components/Header"
+import AppHeader from "../components/Header"
 import Swap from "../pages/Swap"
 import Pools from "../pages/Pools"
 import Deposit from "../pages/Deposit"
@@ -27,7 +27,7 @@ const HeaderWrapper = styled.div`
 function App() {
   return (
     <AppWrapper>
-      <Header />
+      <AppHeader />
 
       <Switch>
         <Route exact strict path="/swap" component={Swap} />
