@@ -76,7 +76,7 @@ const StyledNavLink = styled(NavLink).attrs({
 const ConnectWallet = styled.button`
 width: fit-content;
 padding: 12px 24px 8px;
-border-radius: 24px;
+border-radius: 4px;
 background-color: ${({ theme }) => theme.blue1};
 
 font-weight: 600;
@@ -100,7 +100,6 @@ function AppHeader() {
   const [isOpen, { toggle }] = useToggle();
 
   async function connectWallet() {
-    alert('test')
     // if (!window.cosmosJSWalletProvider) {
     //   if (mobileCheck()) {
     //     toastGenerator("info", "🙏  functions are available on the desktop");
@@ -114,17 +113,24 @@ function AppHeader() {
     //   toastGenerator("info", "🙏 Please use the latest version of Keplr extension");
     //   return;
     // }
+    try {
+      await window.keplr.experimentalSuggestChain(chainInfo);
+    } catch {
 
-    await window.keplr.experimentalSuggestChain(chainInfo);
-
+      alert('suggest chain rejected!')
+      return
+    }
     const cosmosJS = new GaiaApi({
       chainId: chainInfo.chainId,
       rpc: chainInfo.rpc,
       rest: chainInfo.rest,
       walletProvider: window.cosmosJSWalletProvider
     });
-
-    await cosmosJS.enable();
+    try {
+      await cosmosJS.enable();
+    } catch {
+      console.log('enable rejected')
+    }
 
     const keys = await cosmosJS.getKeys();
 
@@ -132,7 +138,8 @@ function AppHeader() {
       throw new Error("there is no key");
     }
     const bech32Address = keys[0].bech32Address;
-    console.log(bech32Address)
+    if (bech32Address)
+      console.log(bech32Address)
   };
 
   return (
