@@ -26,8 +26,12 @@ ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 `
 
 const Logo = styled.img`
-width: 39px;
-height: 39px;
+width: 70px;
+height: 35px;
+${({ theme }) => theme.mediaWidth.upToExtraSmall`
+  width: 50px;
+  height: 30px;
+  `};
 vertical-align: middle;
 
  transition: transform 0.3s ease;
