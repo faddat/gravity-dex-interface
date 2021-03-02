@@ -15,6 +15,11 @@ const AppWrapper = styled.div`
   align-items: flex-start;
   overflow-x: hidden;
   background-color:${({ theme }) => theme.bg1};
+
+  min-height: 100vh;
+  background-position: 0px -30vh;
+  background-repeat: no-repeat;
+  background-image: radial-gradient(50% 50% at 50% 50%,rgb(3 34 255 / 14%) 0%,rgb(19 74 195 / 3%) 100%);
 `
 
 const HeaderWrapper = styled.div`

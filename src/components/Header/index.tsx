@@ -99,6 +99,7 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
 
 function AppHeader() {
   const [isOpen, { toggle }] = useToggle();
+  const [walletAddress, setWalletAddress] = React.useState('')
 
   async function connectWallet() {
 
@@ -144,6 +145,8 @@ function AppHeader() {
 
     const bech32Address = keys[0].bech32Address;
     if (bech32Address) {
+      setWalletAddress(bech32Address)
+      toggle()
       console.log(bech32Address)
     }
   };
@@ -161,7 +164,7 @@ function AppHeader() {
           <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
           <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
         </Navigation>
-        <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet>
+        {walletAddress === '' ? <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet> : <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>}
       </div>
       <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
         <ConnectWalletModal close={toggle} connect={connectWallet} />
