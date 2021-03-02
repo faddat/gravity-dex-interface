@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { Route, Switch } from 'react-router-dom'
+import { ToastContainer, Flip } from "react-toastify";
 
 import AppHeader from "../components/Header"
 import Swap from "../pages/Swap"
@@ -35,6 +36,7 @@ function App() {
         <Route exact strict path="/deposit" component={Deposit} />
         <Route exact strict path="/withdraw" component={Withdraw} />
       </Switch>
+      <ToastContainer limit={1} transition={Flip} position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </AppWrapper>
   );
 }

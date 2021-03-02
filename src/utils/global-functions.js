@@ -128,7 +128,7 @@ export const toastGenerator = (type = '', msg = '') => {
     switch (type) {
         case "error":
             toastFunc = toast.error(msg, {
-                position: "top-right",
+                position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -139,7 +139,7 @@ export const toastGenerator = (type = '', msg = '') => {
             break;
         case "success":
             toastFunc = toast.success(msg, {
-                position: "top-right",
+                position: "bottom-right",
                 autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -150,7 +150,7 @@ export const toastGenerator = (type = '', msg = '') => {
             break;
         case "warning":
             toastFunc = toast.warning(msg, {
-                position: "top-right",
+                position: "bottom-right",
                 autoClose: 6000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -161,7 +161,7 @@ export const toastGenerator = (type = '', msg = '') => {
             break;
         case "info":
             toastFunc = toast.info(msg, {
-                position: "top-right",
+                position: "bottom-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -172,7 +172,7 @@ export const toastGenerator = (type = '', msg = '') => {
             break;
         case "connect":
             toastFunc = toast.success('👛 Wallet Connected!', {
-                position: "top-right",
+                position: "bottom-right",
                 autoClose: 2500,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -183,7 +183,7 @@ export const toastGenerator = (type = '', msg = '') => {
             break;
         default:
             toastFunc = toast(msg, {
-                position: "top-right",
+                position: "bottom-right",
                 autoClose: 4300,
                 hideProgressBar: false,
                 closeOnClick: true,

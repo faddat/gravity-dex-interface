@@ -11,6 +11,7 @@ import { chainInfo } from "../../cosmos-amm/config"
 import { GaiaApi } from "@chainapsis/cosmosjs/gaia/api"
 
 import { useToggle } from "ahooks";
+import { toastGenerator, mobileCheck } from "../../utils/global-functions"
 
 const HeaderFrame = styled.div`
 display:flex;
@@ -100,32 +101,35 @@ function AppHeader() {
   const [isOpen, { toggle }] = useToggle();
 
   async function connectWallet() {
-    // if (!window.cosmosJSWalletProvider) {
-    //   if (mobileCheck()) {
-    //     toastGenerator("info", "🙏  functions are available on the desktop");
-    //   } else {
-    //     toastGenerator("info", "🙏  Please install the Keplr extension");
-    //   }
-    //   return;
-    // }
 
-    // if (!window.keplr?.experimentalSuggestChain) {
-    //   toastGenerator("info", "🙏 Please use the latest version of Keplr extension");
-    //   return;
-    // }
+    if (!window.cosmosJSWalletProvider) {
+      if (mobileCheck()) {
+        toastGenerator("info", "🙏  functions are available on the desktop");
+      } else {
+        toastGenerator("info", "🙏  Please install the Keplr extension");
+      }
+      return;
+    }
+
+    if (!window.keplr?.experimentalSuggestChain) {
+      toastGenerator("info", "🙏 Please use the latest version of Keplr extension");
+      return;
+    }
+
     try {
       await window.keplr.experimentalSuggestChain(chainInfo);
     } catch {
-
       alert('suggest chain rejected!')
       return
     }
+
     const cosmosJS = new GaiaApi({
       chainId: chainInfo.chainId,
       rpc: chainInfo.rpc,
       rest: chainInfo.rest,
       walletProvider: window.cosmosJSWalletProvider
     });
+
     try {
       await cosmosJS.enable();
     } catch {
@@ -137,9 +141,11 @@ function AppHeader() {
     if (keys.length === 0) {
       throw new Error("there is no key");
     }
+
     const bech32Address = keys[0].bech32Address;
-    if (bech32Address)
+    if (bech32Address) {
       console.log(bech32Address)
+    }
   };
 
   return (
