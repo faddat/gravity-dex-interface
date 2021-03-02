@@ -96,12 +96,25 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
 `
 
 const ConnectedWallet = styled.button`
-padding: 8px;
+padding: 0.5rem;
 border-radius: 12px;
 background-color: #4397ff;
+font-size: 16px;
+font-weight: 500;
+border: none;
+cursor: pointer;
 color:#fff;
 outline:none;
 text-align: center;
+letter-spacing: 1px;
+border: 2px solid #fff;
+div {
+  margin: 0 8px;
+}
+
+&:hover {
+  border: 2px solid #0037ff73;
+}
 `
 
 function AppHeader() {
@@ -172,7 +185,7 @@ function AppHeader() {
           <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
         </Navigation>
         {walletAddress === '' ? <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet>
-          : <ConnectedWallet>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</ConnectedWallet>}
+          : <ConnectedWallet><div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div></ConnectedWallet>}
       </div>
       <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
         <ConnectWalletModal close={toggle} connect={connectWallet} />
