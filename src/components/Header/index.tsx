@@ -77,7 +77,7 @@ const StyledNavLink = styled(NavLink).attrs({
 const ConnectWallet = styled.button`
 width: fit-content;
 padding: 12px 24px 8px;
-border-radius: 4px;
+border-radius: 12px;
 background-color: ${({ theme }) => theme.blue1};
 
 font-weight: 600;
@@ -95,8 +95,20 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
   `};
 `
 
+const TotalValueWidget = styled.div`
+display:flex;
+align-items: center;
+justify-content: space-between;
+margin-left: 12px;
+background-color: #114ab3b3;
+padding: 1px 1px 1px 12px;
+border-radius: 12px;
+color: #fff;
+`
+
 const ConnectedWallet = styled.button`
 padding: 0.5rem;
+margin-left: 8px;
 border-radius: 12px;
 background-color: #4397ff;
 font-size: 16px;
@@ -107,13 +119,13 @@ color:#fff;
 outline:none;
 text-align: center;
 letter-spacing: 1px;
-border: 2px solid #fff;
+border: 2px solid transparent;
 div {
   margin: 0 8px;
 }
 
 &:hover {
-  border: 2px solid #0037ff73;
+  border: 2px solid #fff;
 }
 `
 
@@ -185,7 +197,14 @@ function AppHeader() {
           <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
         </Navigation>
         {walletAddress === '' ? <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet>
-          : <ConnectedWallet><div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div></ConnectedWallet>}
+          :
+          <TotalValueWidget>
+            <div>$96133.71</div>
+            <ConnectedWallet>
+              <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>
+            </ConnectedWallet>
+          </TotalValueWidget>
+        }
       </div>
       <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
         <ConnectWalletModal close={toggle} connect={connectWallet} />
