@@ -95,7 +95,14 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
   `};
 `
 
-
+const ConnectedWallet = styled.button`
+padding: 8px;
+border-radius: 12px;
+background-color: #4397ff;
+color:#fff;
+outline:none;
+text-align: center;
+`
 
 function AppHeader() {
   const [isOpen, { toggle }] = useToggle();
@@ -164,7 +171,8 @@ function AppHeader() {
           <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
           <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
         </Navigation>
-        {walletAddress === '' ? <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet> : <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>}
+        {walletAddress === '' ? <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet>
+          : <ConnectedWallet>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</ConnectedWallet>}
       </div>
       <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
         <ConnectWalletModal close={toggle} connect={connectWallet} />

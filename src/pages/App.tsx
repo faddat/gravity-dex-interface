@@ -19,7 +19,7 @@ const AppWrapper = styled.div`
   min-height: 100vh;
   background-position: 0px -30vh;
   background-repeat: no-repeat;
-  background-image: radial-gradient(50% 50% at 50% 50%,rgb(3 34 255 / 14%) 0%,rgb(19 74 195 / 3%) 100%);
+  background-image: radial-gradient(50% 50% at 50% 50%,rgb(3 34 255 / 20%) 0%,rgb(19 74 195 / 0) 100%);
 `
 
 const HeaderWrapper = styled.div`
@@ -41,7 +41,16 @@ function App() {
         <Route exact strict path="/deposit" component={Deposit} />
         <Route exact strict path="/withdraw" component={Withdraw} />
       </Switch>
-      <ToastContainer limit={1} transition={Flip} position="bottom-left" autoClose={5000} hideProgressBar={false} newestOnTop closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+
+      <ToastContainer
+        limit={1}
+        transition={Flip}
+        position="bottom-left"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop closeOnClick
+        rtl={false} pauseOnFocusLoss
+        draggable pauseOnHover />
     </AppWrapper>
   );
 }
