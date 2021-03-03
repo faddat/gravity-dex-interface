@@ -211,7 +211,8 @@ function AppHeader() {
         {walletAddress === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
           :
           <WalletWidget>
-            {!true ? <div style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div> :
+            {/* determine pending status with local tx data */}
+            {true ? <div style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div> :
               <Spinner size="30" color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} />}
             <div>${TotalValue}</div>
 
