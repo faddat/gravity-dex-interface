@@ -133,7 +133,13 @@ function AppHeader() {
   const [isOpen, { toggle }] = useToggle();
   const [walletAddress, setWalletAddress] = React.useState('')
 
-  async function connectWallet() {
+  React.useEffect(() => {
+    window.onload = () => {
+      connectWallet(false)
+    }
+  }, [])
+
+  async function connectWallet(isToggle = true) {
 
     if (!window.cosmosJSWalletProvider) {
       if (mobileCheck()) {
@@ -178,7 +184,9 @@ function AppHeader() {
     const bech32Address = keys[0].bech32Address;
     if (bech32Address) {
       setWalletAddress(bech32Address)
-      toggle()
+      if (isToggle) {
+        toggle()
+      }
       console.log(bech32Address)
     }
   };
