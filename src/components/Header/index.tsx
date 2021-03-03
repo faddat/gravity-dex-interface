@@ -4,6 +4,7 @@ import { lighten } from 'polished'
 
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
+import Spinner from '@bit/joshk.react-spinners-css.circle';
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
 
@@ -95,7 +96,7 @@ ${({ theme }) => theme.mediaWidth.upToSmall`
   `};
 `
 
-const TotalValueWidget = styled.div`
+const WalletWidget = styled.div`
 display:flex;
 align-items: center;
 justify-content: space-between;
@@ -108,7 +109,7 @@ color: #fff;
 
 const ConnectedWallet = styled.button`
 padding: 0.5rem;
-margin-left: 8px;
+margin-left: 12px;
 border-radius: 12px;
 background-color: #4397ff;
 font-size: 16px;
@@ -132,10 +133,13 @@ div {
 function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
   const [walletAddress, setWalletAddress] = React.useState('')
+  const [TotalValue, setTotalValue] = React.useState(0)
 
   React.useEffect(() => {
     window.onload = () => {
       connectWallet(false)
+      //test
+      setTotalValue(96133.71)
     }
   }, [])
 
@@ -206,12 +210,15 @@ function AppHeader() {
         </Navigation>
         {walletAddress === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
           :
-          <TotalValueWidget>
-            <div>$96133.71</div>
+          <WalletWidget>
+            {!true ? <div style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div> :
+              <Spinner size="30" color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} />}
+            <div>${TotalValue}</div>
+
             <ConnectedWallet>
               <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>
             </ConnectedWallet>
-          </TotalValueWidget>
+          </WalletWidget>
         }
       </div>
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
