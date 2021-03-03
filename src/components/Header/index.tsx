@@ -130,7 +130,7 @@ div {
 `
 
 function AppHeader() {
-  const [isOpen, { toggle }] = useToggle();
+  const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
   const [walletAddress, setWalletAddress] = React.useState('')
 
   React.useEffect(() => {
@@ -185,7 +185,7 @@ function AppHeader() {
     if (bech32Address) {
       setWalletAddress(bech32Address)
       if (isToggle) {
-        toggle()
+        connectWalletModalToggle()
       }
       console.log(bech32Address)
     }
@@ -204,7 +204,7 @@ function AppHeader() {
           <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
           <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
         </Navigation>
-        {walletAddress === '' ? <ConnectWallet onClick={() => { toggle() }}>CONNECT WALLET</ConnectWallet>
+        {walletAddress === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
           :
           <TotalValueWidget>
             <div>$96133.71</div>
@@ -214,8 +214,8 @@ function AppHeader() {
           </TotalValueWidget>
         }
       </div>
-      <BasicModal elementId="modal" isOpen={isOpen} toggle={toggle}>
-        <ConnectWalletModal close={toggle} connect={connectWallet} />
+      <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
+        <ConnectWalletModal close={connectWalletModalToggle} connect={connectWallet} />
       </BasicModal>
 
     </HeaderFrame>
