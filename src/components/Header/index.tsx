@@ -132,6 +132,11 @@ div {
 }
 `
 
+const NavigationFrame = styled.div`
+display: flex;
+align-items: center;
+`
+
 function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
   const [isPending, setIsPending] = React.useState(false)
@@ -218,6 +223,7 @@ function AppHeader() {
   }
 
   function walletWidget(wa, ip) {
+
     function showStatusDetail() {
       setIsPending(!isPending)
     }
@@ -243,11 +249,11 @@ function AppHeader() {
     <HeaderFrame>
       {logoFrame(logo)}
 
-      <div style={{ display: 'flex', alignItems: "center" }}>
+      <NavigationFrame>
         {navigationLinks()}
         {walletWidget(walletAddress, isPending)}
         <GearButton />
-      </div>
+      </NavigationFrame>
 
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
         <ConnectWalletModal close={connectWalletModalToggle} connect={connectWallet} />
