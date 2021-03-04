@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import BaseCard from "../../components/Cards/BaseCard"
-import GearButton from "../../components/Buttons/Gear"
+
 
 const Swap = styled.div`
     .header {
@@ -29,9 +29,9 @@ function Deposit() {
                     <div className="title">
                         Swap
                     </div>
-                    <div className="setting">
-                        <GearButton />
-                    </div>
+                    <div />
+
+
                 </div>
             </Swap>
         </BaseCard>

@@ -5,8 +5,10 @@ import { lighten } from 'polished'
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
 import Spinner from '@bit/joshk.react-spinners-css.circle';
+import GearButton from "../../components/Buttons/Gear"
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
+
 
 import { chainInfo } from "../../cosmos-amm/config"
 import { GaiaApi } from "@chainapsis/cosmosjs/gaia/api"
@@ -239,6 +241,7 @@ function AppHeader() {
       <div style={{ display: 'flex', alignItems: "center" }}>
         {navigationLinks()}
         {walletWidget(walletAddress)}
+        <GearButton />
       </div>
 
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
