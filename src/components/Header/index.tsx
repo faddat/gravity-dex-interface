@@ -27,7 +27,7 @@ ${({ theme }) => theme.mediaWidth.upToExtraSmall`
  
 `
 
-const Logo = styled.img`
+const LogoImg = styled.img`
 width: 70px;
 height: 35px;
 ${({ theme }) => theme.mediaWidth.upToExtraSmall`
@@ -195,33 +195,52 @@ function AppHeader() {
     }
   };
 
+  function logoFrame(src) {
+    return (
+      <div>
+        <LogoImg src={src} />
+      </div>
+    )
+  }
+
+  function navigationLinks() {
+    return (
+      <Navigation>
+        <StyledNavLink to={"/swap"}>Swap</StyledNavLink>
+        <StyledNavLink to={"/pools"}>Pools</StyledNavLink>
+        <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
+        <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
+      </Navigation>
+    )
+  }
+
+  function walletWidget(wa) {
+    return (
+      wa === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
+        :
+        <WalletWidget>
+          {/* determine pending status with local tx data */}
+          {true ? <div style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div> :
+            <Spinner size="30" color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} />}
+          <div>${TotalValue}</div>
+
+          <ConnectedWallet>
+            <div>{wa.substr(0, 10)}...{wa.substr(-5)}</div>
+          </ConnectedWallet>
+        </WalletWidget>
+
+    )
+  }
+
   return (
     <HeaderFrame>
-      <div>
-        <Logo src={logo} />
-      </div>
+      {logoFrame(logo)}
 
       <div style={{ display: 'flex', alignItems: "center" }}>
-        <Navigation>
-          <StyledNavLink to={"/swap"}>Swap</StyledNavLink>
-          <StyledNavLink to={"/pools"}>Pools</StyledNavLink>
-          <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
-          <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
-        </Navigation>
-        {walletAddress === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
-          :
-          <WalletWidget>
-            {/* determine pending status with local tx data */}
-            {true ? <div style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div> :
-              <Spinner size="30" color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} />}
-            <div>${TotalValue}</div>
-
-            <ConnectedWallet>
-              <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>
-            </ConnectedWallet>
-          </WalletWidget>
-        }
+        {navigationLinks()}
+        {walletWidget(walletAddress)}
       </div>
+
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
         <ConnectWalletModal close={connectWalletModalToggle} connect={connectWallet} />
       </BasicModal>
