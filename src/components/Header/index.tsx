@@ -252,7 +252,7 @@ function AppHeader() {
       <NavigationFrame>
         {navigationLinks()}
         {walletWidget(walletAddress, isPending)}
-        <GearButton />
+        <GearButton onClick={() => { alert('test') }} />
       </NavigationFrame>
 
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
