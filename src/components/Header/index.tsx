@@ -226,23 +226,23 @@ function AppHeader() {
     )
   }
 
-  function walletWidget(wa, ip) {
+  function walletWidget() {
 
     function showStatusDetail() {
       setIsPending(!isPending)
     }
 
     return (
-      wa === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
+      walletAddress === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
         :
         <WalletWidget>
           {/* determine pending status with local tx data */}
-          {ip ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Spinner size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
+          {isPending ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Spinner size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
             : <div onClick={() => { showStatusDetail() }} style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div>}
           <div>${TotalValue}</div>
 
           <ConnectedWallet>
-            <div>{wa.substr(0, 10)}...{wa.substr(-5)}</div>
+            <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>
           </ConnectedWallet>
         </WalletWidget>
 
@@ -255,7 +255,7 @@ function AppHeader() {
 
       <NavigationFrame>
         {navigationLinks()}
-        {walletWidget(walletAddress, isPending)}
+        {walletWidget()}
         <GearButton onClick={() => { alert('test') }} />
       </NavigationFrame>
 

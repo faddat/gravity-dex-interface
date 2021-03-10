@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styled from "styled-components";
 import BaseCard from "../../components/Cards/BaseCard"
+import TokenInputController from "../../components/TokenInputController/index"
 
-
-const Swap = styled.div`
+const SwapWrapper = styled.div`
     .header {
         display: flex;
         align-items: center;
@@ -21,21 +21,21 @@ const Swap = styled.div`
 
 
 
-function Deposit() {
+function Swap() {
     return (
         <BaseCard>
-            <Swap>
+            <SwapWrapper>
                 <div className="header">
                     <div className="title">
                         Swap
                     </div>
                     <div />
-
-
                 </div>
-            </Swap>
+                <TokenInputController />
+                <TokenInputController />
+            </SwapWrapper>
         </BaseCard>
     )
 }
 
-export default Deposit
+export default Swap
