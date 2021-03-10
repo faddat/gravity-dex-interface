@@ -153,7 +153,7 @@ function AppHeader() {
 
   async function connectWallet(isToggle = true) {
 
-    if (!window.cosmosJSWalletProvider) {
+    if (!window.getOfflineSigner || !window.keplr) {
       if (mobileCheck()) {
         toastGenerator("info", "🙏  functions are available on the desktop");
       } else {
@@ -173,27 +173,31 @@ function AppHeader() {
       alert('suggest chain rejected!')
       return
     }
+    await window.keplr.enable(chainInfo.chainId);
+    const offlineSigner = window.getOfflineSigner(chainInfo.chainId);
+    const accounts = await offlineSigner.getAccounts()
+    const address = accounts[0].address
 
-    const cosmosJS = new GaiaApi({
-      chainId: chainInfo.chainId,
-      rpc: chainInfo.rpc,
-      rest: chainInfo.rest,
-      walletProvider: window.cosmosJSWalletProvider
-    });
+    // const cosmosJS = new GaiaApi({
+    //   chainId: chainInfo.chainId,
+    //   rpc: chainInfo.rpc,
+    //   rest: chainInfo.rest,
+    //   walletProvider: window.cosmosJSWalletProvider
+    // });
 
-    try {
-      await cosmosJS.enable();
-    } catch {
-      console.log('enable rejected')
-    }
+    // try {
+    //   await cosmosJS.enable();
+    // } catch {
+    //   console.log('enable rejected')
+    // }
 
-    const keys = await cosmosJS.getKeys();
+    // const keys = await cosmosJS.getKeys();
 
-    if (keys.length === 0) {
+    if (address.length === 0) {
       throw new Error("there is no key");
     }
 
-    const bech32Address = keys[0].bech32Address;
+    const bech32Address = address;
     if (bech32Address) {
       setWalletAddress(bech32Address)
       if (isToggle) {
@@ -233,7 +237,7 @@ function AppHeader() {
         :
         <WalletWidget>
           {/* determine pending status with local tx data */}
-          {ip ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Spinner size="30" color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
+          {ip ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Spinner size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
             : <div onClick={() => { showStatusDetail() }} style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div>}
           <div>${TotalValue}</div>
 
