@@ -66,7 +66,7 @@ function reducer(state, action) {
         case TYPES.AMOUNT_CHANGE:
             return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SET_AMOUNT_MAX:
-            alert('MAX')
+            alert(`${Target} MAX`)
             return { ...state };
         case TYPES.SELECT_COIN:
             return state;
