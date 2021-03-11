@@ -20,16 +20,18 @@ const SwapWrapper = styled.div`
         }
     }
 
-   .from-to-swap {
+   .from-to-change {
         display:flex;
         align-items:center;
         justify-content:center;
         padding: 16px 0;
         transition: opacity 0.2s;
-        cursor: pointer;
 
-        &:hover {
-            opacity: 0.6;
+        .arrow {
+            cursor: pointer;
+            &:hover {
+                opacity: 0.6;
+            }
         }
    }
 `
@@ -37,7 +39,8 @@ const SwapWrapper = styled.div`
 //reducer action types
 const TYPES = {
     AMOUNT_CHANGE: 'AMOUNT_CHANGE',
-    SELECT_COIN: 'SELECT_COIN'
+    SELECT_COIN: 'SELECT_COIN',
+    SET_AMOUNT_MAX: 'SET_AMOUNT_MAX'
 }
 
 //useReducer
@@ -46,7 +49,9 @@ function reducer(state, action) {
         case TYPES.AMOUNT_CHANGE:
             const Target = action.payload.target === 'From' ? 'from' : 'to'
             return { ...state, [`${Target}Amount`]: action.payload.amount }
-
+        case TYPES.SET_AMOUNT_MAX:
+            alert('MAX')
+            return state - 1;
         case TYPES.SELECT_COIN:
             return state - 1;
         default:
@@ -80,12 +85,16 @@ function Swap() {
                     coin={state.fromCoin}
                     amount={state.fromAmount}
                     dispatch={dispatch}
-                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN }}
+                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_AMOUNT_MAX }}
                 />
 
-                {/* From To change Arrow */}
-                <div className="from-to-swap">
-                    <SmallDownArrow />
+                {/* From <> To change arrow */}
+                <div className="from-to-change">
+                    <div className="arrow" onClick={() => {
+                        alert('from<>to change')
+                    }}>
+                        <SmallDownArrow />
+                    </div>
                 </div>
 
                 {/* To */}
@@ -94,7 +103,7 @@ function Swap() {
                     coin={state.toCoin}
                     amount={state.toAmount}
                     dispatch={dispatch}
-                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN }}
+                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_AMOUNT_MAX }}
                 />
             </SwapWrapper>
         </BaseCard>

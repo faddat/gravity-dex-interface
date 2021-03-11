@@ -26,7 +26,7 @@ const Wrapper = styled.div`
         -webkit-box-align: center;
         align-items: center;
 
-        input {
+        .left {
             flex: 1;
             color: rgb(0, 0, 0);
             width: 0px;
@@ -65,19 +65,44 @@ const Wrapper = styled.div`
 
         /* Firefox */
         input[type=number] {
-        -moz-appearance: textfield;
+            -moz-appearance: textfield;
         }
 
-        div {
-            width:fit-content;
+
+        .right {
+            display: flex;
+            align-items: center;
+
+            .max-button {
+                height: 30px;
+                width: 38px;
+                background-color: #114ab3b3;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                margin-right: 8px;
+                color:#fff;
+                transition: background-color 0.2s;
+
+                &:hover { 
+                    background-color: #4397ff;        
+                }
+            }
         }
     }
 `
 
 
 function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes }:
-    { subTitles: { left: string, right: any }, amount: string, coin: string, dispatch: any, dispatchTypes: { amount: string, coin: string } }) {
-    console.log(amount)
+    {
+        subTitles: { left: string, right: any },
+        amount: string,
+        coin: string,
+        dispatch: any,
+        dispatchTypes: { amount: string, coin: string, max: string }
+    }) {
     return (
         <Wrapper>
             <div className="sub-titles">
@@ -85,14 +110,21 @@ function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes
                 <div className="right">{subTitles.right}</div>
             </div>
             <div className="input-controllers">
-                <input
+
+                <input className="left"
                     value={amount}
                     onChange={(e) => {
                         dispatch({ type: dispatchTypes.amount, payload: { target: subTitles.left, amount: e.target.value } })
                     }}
                     placeholder="0.0"
                     type="number" />
-                <div>{coin}{dispatchTypes.coin}</div>
+
+                <div className="right">
+                    <button className="max-button">Max</button>
+                    <div onClick={() => {
+                        dispatch({ type: dispatchTypes.coin, payload: { target: subTitles.left } })
+                    }}>{coin}</div>
+                </div>
             </div>
         </Wrapper>
     )
