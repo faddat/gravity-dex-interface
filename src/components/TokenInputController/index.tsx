@@ -75,8 +75,8 @@ const Wrapper = styled.div`
 `
 
 
-function TokenInputController({ subTitles, amount, coin, dispatch }:
-    { subTitles: { left: string, right: any }, amount: string, coin: string, dispatch: any }) {
+function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes }:
+    { subTitles: { left: string, right: any }, amount: string, coin: string, dispatch: any, dispatchTypes: { amount: string, coin: string } }) {
     console.log(amount)
     return (
         <Wrapper>
@@ -88,11 +88,11 @@ function TokenInputController({ subTitles, amount, coin, dispatch }:
                 <input
                     value={amount}
                     onChange={(e) => {
-                        dispatch({ type: 'AMOUNT_CHANGE', payload: { target: subTitles.left, amount: e.target.value } })
+                        dispatch({ type: dispatchTypes.amount, payload: { target: subTitles.left, amount: e.target.value } })
                     }}
                     placeholder="0.0"
                     type="number" />
-                <div>{coin}</div>
+                <div>{coin}{dispatchTypes.coin}</div>
             </div>
         </Wrapper>
     )
