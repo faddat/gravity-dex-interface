@@ -49,7 +49,7 @@ function reducer(state, action) {
     let Target = null
 
     if (action.payload?.target) {
-        Target = action.payload.target === 'From' ? 'from' : 'to'
+        Target = action.payload.target.toLowerCase()
     }
 
     switch (action.type) {

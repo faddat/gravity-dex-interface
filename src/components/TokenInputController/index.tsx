@@ -74,20 +74,24 @@ const Wrapper = styled.div`
             align-items: center;
 
             .max-button {
-                height: 30px;
-                width: 38px;
-                background-color: #114ab3b3;
-                border: none;
-                border-radius: 8px;
-                font-size: 14px;
-                font-weight: 500;
-                cursor: pointer;
-                margin-right: 8px;
-                color:#fff;
-                transition: background-color 0.2s;
+                height: 28px;
 
+                margin-right: 8px;
+
+                background-color: rgba(67, 152, 255, 0.2);
+                color:#4397ff;
+                
+                border: 1px solid transparent;
+                border-radius: 8px;
+            
+                outline: none;
+                
+                font-size: 14px;
+                font: 400 13.3333px Arial;
+                cursor: pointer;
+                
                 &:hover { 
-                    background-color: #4397ff;        
+                    border: 1px solid #4397ff;        
                 }
             }
         }
@@ -126,7 +130,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                         onClick={() => {
                             dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
                         }}
-                    >Max</button>
+                    >MAX</button>
                     <div onClick={() => {
                         dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                     }}>{coin}</div>
