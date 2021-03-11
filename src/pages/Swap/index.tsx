@@ -43,7 +43,7 @@ const TYPES = {
     SET_AMOUNT_MAX: 'SET_AMOUNT_MAX'
 }
 
-//useReducer
+//reducer for useReducer
 function reducer(state, action) {
     switch (action.type) {
         case TYPES.AMOUNT_CHANGE:
@@ -51,7 +51,7 @@ function reducer(state, action) {
             return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SET_AMOUNT_MAX:
             alert('MAX')
-            return state - 1;
+            return state;
         case TYPES.SELECT_COIN:
             return state - 1;
         default:
@@ -81,7 +81,7 @@ function Swap() {
 
                 {/* From */}
                 <TokenInputController
-                    subTitles={{ left: 'From', right: `Balance: 0` }}
+                    subTitles={{ left: 'From', right: '0' }}
                     coin={state.fromCoin}
                     amount={state.fromAmount}
                     dispatch={dispatch}
@@ -99,7 +99,7 @@ function Swap() {
 
                 {/* To */}
                 <TokenInputController
-                    subTitles={{ left: 'To', right: `Balance: 0` }}
+                    subTitles={{ left: 'To', right: '0' }}
                     coin={state.toCoin}
                     amount={state.toAmount}
                     dispatch={dispatch}

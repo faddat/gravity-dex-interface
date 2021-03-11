@@ -107,11 +107,12 @@ function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes
         <Wrapper>
             <div className="sub-titles">
                 <div className="left">{subTitles.left}</div>
-                <div className="right">{subTitles.right}</div>
+                <div className="right">Balance: {subTitles.right}</div>
             </div>
             <div className="input-controllers">
 
-                <input className="left"
+                <input
+                    className="left"
                     value={amount}
                     onChange={(e) => {
                         dispatch({ type: dispatchTypes.amount, payload: { target: subTitles.left, amount: e.target.value } })
@@ -120,7 +121,12 @@ function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes
                     type="number" />
 
                 <div className="right">
-                    <button className="max-button">Max</button>
+                    <button
+                        className="max-button"
+                        onClick={() => {
+                            dispatch({ type: dispatchTypes.max, payload: { target: subTitles.left } })
+                        }}
+                    >Max</button>
                     <div onClick={() => {
                         dispatch({ type: dispatchTypes.coin, payload: { target: subTitles.left } })
                     }}>{coin}</div>
