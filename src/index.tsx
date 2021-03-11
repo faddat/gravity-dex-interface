@@ -6,16 +6,16 @@ import { HashRouter } from 'react-router-dom'
 import reportWebVitals from './reportWebVitals';
 // FixedGlobalStyle, ThemedGlobalStyle
 import { ThemeProvider, FixedGlobalStyle } from './theme'
-
+{/* <React.StrictMode></React.StrictMode> */ }
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <FixedGlobalStyle />
     <ThemeProvider>
       <HashRouter>
         <App />
       </HashRouter>
     </ThemeProvider>
-  </React.StrictMode>,
+  </>,
   document.getElementById('root')
 );
 
