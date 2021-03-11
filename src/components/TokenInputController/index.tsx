@@ -95,9 +95,9 @@ const Wrapper = styled.div`
 `
 
 
-function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes }:
+function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
     {
-        subTitles: { left: string, right: any },
+        header: { title: string, balance: number },
         amount: string,
         coin: string,
         dispatch: any,
@@ -106,8 +106,8 @@ function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes
     return (
         <Wrapper>
             <div className="sub-titles">
-                <div className="left">{subTitles.left}</div>
-                <div className="right">Balance: {subTitles.right}</div>
+                <div className="left">{header.title}</div>
+                <div className="right">Balance: {header.balance}</div>
             </div>
             <div className="input-controllers">
 
@@ -115,7 +115,7 @@ function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes
                     className="left"
                     value={amount}
                     onChange={(e) => {
-                        dispatch({ type: dispatchTypes.amount, payload: { target: subTitles.left, amount: e.target.value } })
+                        dispatch({ type: dispatchTypes.amount, payload: { target: header.title, amount: e.target.value } })
                     }}
                     placeholder="0.0"
                     type="number" />
@@ -124,11 +124,11 @@ function TokenInputController({ subTitles, amount, coin, dispatch, dispatchTypes
                     <button
                         className="max-button"
                         onClick={() => {
-                            dispatch({ type: dispatchTypes.max, payload: { target: subTitles.left } })
+                            dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
                         }}
                     >Max</button>
                     <div onClick={() => {
-                        dispatch({ type: dispatchTypes.coin, payload: { target: subTitles.left } })
+                        dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                     }}>{coin}</div>
                 </div>
             </div>

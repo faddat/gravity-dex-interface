@@ -64,6 +64,7 @@ function reducer(state, action) {
             alert('CHANGE')
             return state
         default:
+            console.log("DEFAULT: SWAP REDUCER")
             return state;
     }
 }
@@ -90,7 +91,7 @@ function Swap() {
 
                 {/* From */}
                 <TokenInputController
-                    subTitles={{ left: 'From', right: '0' }}
+                    header={{ title: 'From', balance: 0 }}
                     coin={state.fromCoin}
                     amount={state.fromAmount}
                     dispatch={dispatch}
@@ -108,7 +109,7 @@ function Swap() {
 
                 {/* To */}
                 <TokenInputController
-                    subTitles={{ left: 'To', right: '0' }}
+                    header={{ title: 'To', balance: 0 }}
                     coin={state.toCoin}
                     amount={state.toAmount}
                     dispatch={dispatch}
