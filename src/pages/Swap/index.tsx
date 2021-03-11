@@ -59,7 +59,7 @@ function reducer(state, action) {
     let Target = null
 
     if (action.payload?.target) {
-        Target = action.payload.target.toLowerCase()
+        Target = action.payload.target === "From" ? "from" : "to"
     }
 
     switch (action.type) {
@@ -123,7 +123,7 @@ function SwapCard() {
 
                 {/* To */}
                 <TokenInputController
-                    header={{ title: 'To', balance: 0 }}
+                    header={{ title: 'To (estimated)', balance: 0 }}
                     coin={state.toCoin}
                     amount={state.toAmount}
                     dispatch={dispatch}
