@@ -5,6 +5,7 @@ import SmallDownArrow from "../../assets/svgs/smallDownArrow"
 
 import BaseCard from "../../components/Cards/BaseCard"
 import TokenInputController from "../../components/TokenInputController/index"
+import ActionButton from "../../components/Buttons/ActionButton"
 
 //Styled-components
 const SwapWrapper = styled.div`
@@ -29,10 +30,19 @@ const SwapWrapper = styled.div`
 
         .arrow {
             cursor: pointer;
+
+            svg {
+                stroke: #4397ff;
+            }
+
             &:hover {
                 opacity: 0.6;
             }
         }
+   }
+
+   .SwapButton {
+       margin-top: 20px;
    }
 `
 
@@ -70,13 +80,17 @@ function reducer(state, action) {
 }
 
 
-function Swap() {
+function SwapCard() {
     const [state, dispatch] = React.useReducer(reducer, {
         fromCoin: 'ATOM',
         toCoin: 'IRIS',
         fromAmount: '',
         toAmount: '',
     })
+
+    function swap() {
+        alert('swap')
+    }
 
     return (
         <BaseCard>
@@ -115,9 +129,14 @@ function Swap() {
                     dispatch={dispatch}
                     dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_AMOUNT_MAX }}
                 />
+
+                {/* Swap Button */}
+                <ActionButton onClick={swap} css={{ marginTop: "16px" }}>
+                    Swap
+                </ActionButton>
             </SwapWrapper>
         </BaseCard>
     )
 }
 
-export default Swap
+export default SwapCard
