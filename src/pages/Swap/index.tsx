@@ -63,6 +63,7 @@ function Swap() {
     return (
         <BaseCard>
             <SwapWrapper>
+                {/* Header */}
                 <div className="header">
                     <div className="title">
                         Swap
@@ -70,15 +71,26 @@ function Swap() {
                     <div />
                 </div>
 
+                {/* From */}
                 <TokenInputController
                     subTitles={{ left: 'From', right: `Balance: 0` }}
                     coin={state.fromCoin}
                     amount={state.fromAmount}
                     dispatch={dispatch}
                 />
+
+                {/* From To change Arrow */}
                 <div className="from-to-swap">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#565A69" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="#565A69" strokeWidth="2"
+                        strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
                 </div>
+
+                {/* To */}
                 <TokenInputController
                     subTitles={{ left: 'To', right: `Balance: 0` }}
                     coin={state.toCoin}

@@ -7,7 +7,7 @@ const Wrapper = styled.div`
     border-radius: 20px;
     border: 1px solid rgb(247, 248, 250);
     padding: 12px;
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
 
     .sub-titles {
         display:flex;
@@ -69,7 +69,7 @@ const Wrapper = styled.div`
         }
 
         div {
-            flex: 1;
+            width:fit-content;
         }
     }
 `
@@ -92,7 +92,7 @@ function TokenInputController({ subTitles, amount, coin, dispatch }:
                     }}
                     placeholder="0.0"
                     type="number" />
-                <div>{coin}{amount}</div>
+                <div>{coin}</div>
             </div>
         </Wrapper>
     )
