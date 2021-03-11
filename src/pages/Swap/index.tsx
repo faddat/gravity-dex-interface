@@ -20,7 +20,7 @@ const SwapWrapper = styled.div`
         }
     }
 
-   .from-to-change {
+   .divider {
         display:flex;
         align-items:center;
         justify-content:center;
@@ -40,20 +40,29 @@ const SwapWrapper = styled.div`
 const TYPES = {
     AMOUNT_CHANGE: 'AMOUNT_CHANGE',
     SELECT_COIN: 'SELECT_COIN',
-    SET_AMOUNT_MAX: 'SET_AMOUNT_MAX'
+    SET_AMOUNT_MAX: 'SET_AMOUNT_MAX',
+    CHANGE_FROM_TO_COIN: 'CHANGE_FROM_TO_COIN'
 }
 
 //reducer for useReducer
 function reducer(state, action) {
+    let Target = null
+
+    if (action.payload?.target) {
+        Target = action.payload.target === 'From' ? 'from' : 'to'
+    }
+
     switch (action.type) {
         case TYPES.AMOUNT_CHANGE:
-            const Target = action.payload.target === 'From' ? 'from' : 'to'
             return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SET_AMOUNT_MAX:
             alert('MAX')
             return state;
         case TYPES.SELECT_COIN:
-            return state - 1;
+            return state;
+        case TYPES.CHANGE_FROM_TO_COIN:
+            alert('CHANGE')
+            return state
         default:
             return state;
     }
@@ -89,9 +98,9 @@ function Swap() {
                 />
 
                 {/* From <> To change arrow */}
-                <div className="from-to-change">
+                <div className="divider">
                     <div className="arrow" onClick={() => {
-                        alert('from<>to change')
+                        dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
                     }}>
                         <SmallDownArrow />
                     </div>
