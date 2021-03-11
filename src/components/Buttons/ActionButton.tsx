@@ -15,7 +15,7 @@ const Action = styled.div`
     color:#fff;
     font-size: 20px;
     &:hover {
-        opacity: 0.8;
+        background-color:rgb(60, 132, 219);
     }
 `
 
