@@ -4,7 +4,7 @@ import { lighten } from 'polished'
 
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
-import Spinner from '@bit/joshk.react-spinners-css.circle';
+import Circle from 'react-spinners-css'
 import GearButton from "../../components/Buttons/Gear"
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
@@ -242,7 +242,7 @@ function AppHeader() {
         :
         <WalletWidget>
           {/* determine pending status with local tx data */}
-          {isPending ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Spinner size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
+          {isPending ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Circle size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
             : <div onClick={() => { showStatusDetail() }} style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div>}
           <div className="atom-value">{AtomValue} ATOM</div>
 

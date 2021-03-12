@@ -133,7 +133,10 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                     >MAX</button>
                     <div onClick={() => {
                         dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
-                    }}>{coin}</div>
+                    }}>
+
+                        {coin}
+                    </div>
                 </div>
             </div>
         </Wrapper>

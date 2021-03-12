@@ -36,7 +36,7 @@ function App() {
       <AppHeader />
 
       <Switch>
-        <Route exact strict path="/swap" component={Swap} />
+        <Route exact strict path={["/", "/swap"]} component={Swap} />
         <Route exact strict path="/pools" component={Pools} />
         <Route exact strict path="/deposit" component={Deposit} />
         <Route exact strict path="/withdraw" component={Withdraw} />
