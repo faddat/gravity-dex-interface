@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@bit/joshk.react-spinners-css.circle": "^1.2.1",
     "@chainapsis/cosmosjs": "^0.0.3-alpha.3",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
@@ -22,6 +21,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
+    "react-spinners-css": "^1.2.2",
     "react-toastify": "^6.2.0",
     "rebass": "^4.0.7",
     "styled-components": "^5.2.1",
