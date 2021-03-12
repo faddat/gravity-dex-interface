@@ -87,7 +87,7 @@ const Wrapper = styled.div`
                 outline: none;
                 
                 font-size: 14px;
-                font: 400 13.3333px Arial;
+                font: 600 13.3333px Arial;
                 cursor: pointer;
                 
                 &:hover { 

@@ -107,6 +107,10 @@ background-color: #114ab3b3;
 padding: 1px 1px 1px 12px;
 border-radius: 12px;
 color: #fff;
+
+.atom-value {
+   font-weight: 500;
+}
 `
 
 const ConnectedWallet = styled.button`
@@ -123,6 +127,7 @@ outline:none;
 text-align: center;
 letter-spacing: 1px;
 border: 2px solid transparent;
+
 div {
   margin: 0 8px;
 }
@@ -141,13 +146,13 @@ function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
   const [isPending, setIsPending] = React.useState(false)
   const [walletAddress, setWalletAddress] = React.useState('')
-  const [TotalValue, setTotalValue] = React.useState(0)
+  const [AtomValue, setAtomValue] = React.useState(0)
 
   React.useEffect(() => {
     window.onload = () => {
       connectWallet(false)
       //test
-      setTotalValue(96133.71)
+      setAtomValue(100.71)
     }
   }, [])
 
@@ -239,7 +244,7 @@ function AppHeader() {
           {/* determine pending status with local tx data */}
           {isPending ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Spinner size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__1jlxF 12.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
             : <div onClick={() => { showStatusDetail() }} style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div>}
-          <div>${TotalValue}</div>
+          <div className="atom-value">{AtomValue} ATOM</div>
 
           <ConnectedWallet>
             <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>
