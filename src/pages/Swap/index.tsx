@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 
-import SmallDownArrow from "../../assets/svgs/smallDownArrow"
+import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
 import BaseCard from "../../components/Cards/BaseCard"
 import TokenInputController from "../../components/TokenInputController/index"
@@ -40,17 +40,13 @@ const SwapWrapper = styled.div`
             }
         }
    }
-
-   .SwapButton {
-       margin-top: 20px;
-   }
 `
 
 //reducer action types
 const TYPES = {
     AMOUNT_CHANGE: 'AMOUNT_CHANGE',
     SELECT_COIN: 'SELECT_COIN',
-    SET_AMOUNT_MAX: 'SET_AMOUNT_MAX',
+    SET_MAX_AMOUNT: 'SET_MAX_AMOUNT',
     CHANGE_FROM_TO_COIN: 'CHANGE_FROM_TO_COIN'
 }
 
@@ -65,7 +61,7 @@ function reducer(state, action) {
     switch (action.type) {
         case TYPES.AMOUNT_CHANGE:
             return { ...state, [`${Target}Amount`]: action.payload.amount }
-        case TYPES.SET_AMOUNT_MAX:
+        case TYPES.SET_MAX_AMOUNT:
             alert(`${Target} MAX`)
             return { ...state };
         case TYPES.SELECT_COIN:
@@ -83,7 +79,7 @@ function reducer(state, action) {
 function SwapCard() {
     const [state, dispatch] = React.useReducer(reducer, {
         fromCoin: 'ATOM',
-        toCoin: 'IRIS',
+        toCoin: '',
         fromAmount: '',
         toAmount: '',
     })
@@ -109,7 +105,7 @@ function SwapCard() {
                     coin={state.fromCoin}
                     amount={state.fromAmount}
                     dispatch={dispatch}
-                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_AMOUNT_MAX }}
+                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                 />
 
                 {/* From <> To change arrow */}
@@ -117,7 +113,7 @@ function SwapCard() {
                     <div className="arrow" onClick={() => {
                         dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
                     }}>
-                        <SmallDownArrow />
+                        <ChangeArrow />
                     </div>
                 </div>
 
@@ -127,7 +123,7 @@ function SwapCard() {
                     coin={state.toCoin}
                     amount={state.toAmount}
                     dispatch={dispatch}
-                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_AMOUNT_MAX }}
+                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                 />
 
                 {/* Swap Button */}

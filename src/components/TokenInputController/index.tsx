@@ -1,13 +1,12 @@
 import * as React from 'react';
 import styled from "styled-components";
-import BaseCard from "../../components/Cards/BaseCard"
 
+import CoinSelectorArrow from "../../assets/svgs/CoinSelectorArrow"
 
 const Wrapper = styled.div`
     border-radius: 20px;
     border: 1px solid rgb(247, 248, 250);
     padding: 12px;
-    /* border: 1px solid gray; */
 
     .sub-titles {
         display:flex;
@@ -27,31 +26,36 @@ const Wrapper = styled.div`
         align-items: center;
 
         .left {
-            flex: 1;
-            color: rgb(0, 0, 0);
-            width: 0px;
             position: relative;
-            font-weight: 500;
-            outline: none;
-            border: none;
+            display: inline-block;
             flex: 1 1 auto;
-            background-color: transparent;
-            font-size: 24px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+
+            width: 0px;
             padding: 0px;
-            appearance: textfield;
-            letter-spacing: normal;
-            word-spacing: normal;
+
+            font-size: 24px;
+            font-weight: 500;
+            color: rgb(0, 0, 0);
             text-transform: none;
             text-indent: 0px;
             text-shadow: none;
-            display: inline-block;
             text-align: start;
+            letter-spacing: normal;
+            word-spacing: normal;
             writing-mode: horizontal-tb;
             text-rendering: auto;
-
+           
+            outline: none;
+            border: none;
+            
+            background-color: transparent;
+            
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        
+            appearance: textfield;
+           
             &::placeholder {
                 color: rgb(179, 178, 178);
             }
@@ -161,9 +165,12 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                     <div className="coin-selector" onClick={() => {
                         dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                     }}>
-                        <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" />
-                        {coin} &nbsp;
-                        <svg width="12" height="7" viewBox="0 0 12 7" fill="none" className="sc-drKuOJ eTkZjG"><path d="M0.97168 1L6.20532 6L11.439 1" stroke="#353535"></path></svg>
+                        {coin !== '' ?
+                            <>
+                                <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin}
+                            </>
+                            : 'Select a token'}
+                         &nbsp; <CoinSelectorArrow />
                     </div>
                 </div>
             </div>
