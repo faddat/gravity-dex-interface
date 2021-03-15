@@ -76,7 +76,7 @@ const Wrapper = styled.div`
             .max-button {
                 height: 28px;
 
-                margin-right: 8px;
+                margin-right: 4px;
 
                 background-color: rgba(67, 152, 255, 0.2);
                 color:#4397ff;
@@ -94,7 +94,34 @@ const Wrapper = styled.div`
                     border: 1px solid #4397ff;        
                 }
             }
+
+            .coin-selector {
+                display:flex;
+                align-items: center;
+
+                padding: 4px 6px;
+
+                font-size: 18px;
+                font-weight: 600;
+
+                border-radius: 8px;
+                border: 1px transparent solid;
+
+                cursor: pointer;
+
+                .coin-image {
+                    width: 24px;
+                    height: 24px;
+
+                    margin-right: 8px;
+                }
+
+                &:hover {
+                    background-color: rgb(247, 248, 250);
+                }
+            }
         }
+
     }
 `
 
@@ -131,11 +158,12 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                             dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
                         }}
                     >MAX</button>
-                    <div onClick={() => {
+                    <div className="coin-selector" onClick={() => {
                         dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                     }}>
-
-                        {coin}
+                        <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" />
+                        {coin} &nbsp;
+                        <svg width="12" height="7" viewBox="0 0 12 7" fill="none" className="sc-drKuOJ eTkZjG"><path d="M0.97168 1L6.20532 6L11.439 1" stroke="#353535"></path></svg>
                     </div>
                 </div>
             </div>
