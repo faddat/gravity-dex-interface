@@ -1,11 +1,11 @@
 import * as React from 'react'
 import styled from "styled-components"
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import { ToastContainer, Flip } from "react-toastify";
 
 import AppHeader from "../components/Header"
 import Swap from "../pages/Swap"
-import Pools from "../pages/Pools"
+import Pool from "./Pool"
 import Deposit from "../pages/Deposit"
 import Withdraw from "../pages/Withdraw"
 
@@ -31,13 +31,22 @@ const HeaderWrapper = styled.div`
 
 
 function App() {
+  const history = useHistory();
+
+  React.useEffect(() => {
+    if (window.location.hash === '#/') {
+      history.push('/swap')
+    }
+  }, [])
+
   return (
     <AppWrapper>
+
       <AppHeader />
 
       <Switch>
         <Route exact strict path={["/", "/swap"]} component={Swap} />
-        <Route exact strict path="/pools" component={Pools} />
+        <Route exact strict path="/pool" component={Pool} />
         <Route exact strict path="/deposit" component={Deposit} />
         <Route exact strict path="/withdraw" component={Withdraw} />
       </Switch>
@@ -51,6 +60,7 @@ function App() {
         newestOnTop closeOnClick
         rtl={false} pauseOnFocusLoss
         draggable pauseOnHover />
+
     </AppWrapper>
   );
 }
