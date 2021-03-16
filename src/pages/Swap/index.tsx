@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from "styled-components"
+import { useDispatch, useSelector } from "react-redux";
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
@@ -84,6 +85,8 @@ function SwapCard() {
         toAmount: '',
     })
 
+    const PoolList = useSelector((state) => state)
+    console.log(PoolList)
     function swap() {
         alert('swap')
     }

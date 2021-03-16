@@ -3,18 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './pages/App';
 import { HashRouter } from 'react-router-dom'
+import { Provider } from "react-redux";
+import store from "./store/index";
 import reportWebVitals from './reportWebVitals';
 // FixedGlobalStyle, ThemedGlobalStyle
 import { ThemeProvider, FixedGlobalStyle } from './theme'
 {/* <React.StrictMode></React.StrictMode> */ }
 ReactDOM.render(
   <>
-    <FixedGlobalStyle />
-    <ThemeProvider>
-      <HashRouter>
-        <App />
-      </HashRouter>
-    </ThemeProvider>
+    <Provider store={store}>
+      <FixedGlobalStyle />
+      <ThemeProvider>
+        <HashRouter>
+          <App />
+        </HashRouter>
+      </ThemeProvider>
+    </Provider>
   </>,
   document.getElementById('root')
 );
