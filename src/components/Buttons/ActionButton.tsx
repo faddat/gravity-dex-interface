@@ -14,6 +14,7 @@ const Action = styled.div`
     background-color:#4397ff;
     color:#fff;
     font-size: 20px;
+    font-weight: 500;
 
     &.disabled {
         background-color: rgb(237, 238, 242);
