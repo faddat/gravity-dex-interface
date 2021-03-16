@@ -224,9 +224,9 @@ function AppHeader() {
     return (
       <Navigation>
         <StyledNavLink to={"/swap"}>Swap</StyledNavLink>
-        <StyledNavLink to={"/pools"}>Pools</StyledNavLink>
-        <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
-        <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink>
+        <StyledNavLink to={"/pool"}>Pool</StyledNavLink>
+        {/* <StyledNavLink to={"/deposit"}>Deposit</StyledNavLink>
+        <StyledNavLink to={"/Withdraw"}>Withdraw</StyledNavLink> */}
       </Navigation>
     )
   }
