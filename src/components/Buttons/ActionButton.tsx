@@ -23,6 +23,14 @@ const Action = styled.div`
         cursor: auto;
     }
 
+    &.connect-wallet {
+        background-color: hsl(213deg 100% 63% / 22%);
+        color:#4397ff;
+        &:hover {
+        background-color:hsl(213deg 100% 63% / 36%) !important;
+        }
+    }
+
     &:hover {
         background-color:rgb(60, 132, 219);
     }

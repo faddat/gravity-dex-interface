@@ -126,14 +126,14 @@ const Wrapper = styled.div`
             }
 
             .not-selected {
-                background-color: #114ab3b3;
+                background-color: #4397ff;
                 font-size: 15px;
                 padding: 6px 12px;
                 color: #fff;
                 font-weight: 500;
 
                 &:hover {
-                    background-color: rgba(13, 55, 133, 0.702) !important;
+                    background-color:  hsl(212.87671232876713, 58.87096774193549%, 51.37254901960785%) !important;
                 }
             }
         }
