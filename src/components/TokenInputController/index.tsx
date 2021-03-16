@@ -1,8 +1,9 @@
 import * as React from 'react';
 import styled from "styled-components";
+import { useToggle } from "ahooks"
 
 import CoinSelectorArrow from "../../assets/svgs/CoinSelectorArrow"
-
+import TokenSelectModal from "../../components/Modals/TokenListModal"
 const Wrapper = styled.div`
     border-radius: 20px;
     border: 1px solid rgb(247, 248, 250);
@@ -133,7 +134,7 @@ const Wrapper = styled.div`
                 font-weight: 500;
 
                 &:hover {
-                    background-color:  hsl(212.87671232876713, 58.87096774193549%, 51.37254901960785%) !important;
+                    background-color:  hsl(213deg 66% 57%) !important;
                 }
             }
         }
@@ -151,44 +152,49 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
         dispatchTypes: { amount: string, coin: string, max: string }
     }) {
     const isCoin = coin !== '' ? true : false
+    const [isTokenSelectModalOpen, { toggle: TokenSelectModalToggle }] = useToggle()
     return (
-        <Wrapper>
-            <div className="sub-titles">
-                <div className="left">{header.title}</div>
-                <div className="right">Balance: {header.balance}</div>
-            </div>
-            <div className="input-controllers">
+        <>
+            <Wrapper>
+                <div className="sub-titles">
+                    <div className="left">{header.title}</div>
+                    <div className="right">Balance: {header.balance}</div>
+                </div>
+                <div className="input-controllers">
 
-                <input
-                    className="left"
-                    value={amount}
-                    onChange={(e) => {
-                        dispatch({ type: dispatchTypes.amount, payload: { target: header.title, amount: e.target.value } })
-                    }}
-                    placeholder="0.0"
-                    type="number" />
-
-                <div className="right">
-                    <button
-                        className="max-button"
-                        style={{ display: `${isCoin ? '' : 'none'}` }}
-                        onClick={() => {
-                            dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
+                    <input
+                        className="left"
+                        value={amount}
+                        onChange={(e) => {
+                            dispatch({ type: dispatchTypes.amount, payload: { target: header.title, amount: e.target.value } })
                         }}
-                    >MAX</button>
-                    <div className={`coin-selector ${isCoin ? '' : 'not-selected'}`} onClick={() => {
-                        dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
-                    }}>
-                        {isCoin ?
-                            <>
-                                <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin}
-                            </>
-                            : 'Select a coin '}
-                         &nbsp; <CoinSelectorArrow stroke={coin !== '' ? '' : '#fff'} />
+                        placeholder="0.0"
+                        type="number" />
+
+                    <div className="right">
+                        <button
+                            className="max-button"
+                            style={{ display: `${isCoin ? '' : 'none'}` }}
+                            onClick={() => {
+                                dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
+                            }}
+                        >MAX</button>
+                        <div className={`coin-selector ${isCoin ? '' : 'not-selected'}`} onClick={() => {
+                            TokenSelectModalToggle()
+                            // dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
+                        }}>
+                            {isCoin ?
+                                <>
+                                    <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin}
+                                </>
+                                : 'Select a coin '}
+                            &nbsp; <CoinSelectorArrow stroke={coin !== '' ? '' : '#fff'} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Wrapper>
+            </Wrapper>
+            <TokenSelectModal isOpen={isTokenSelectModalOpen} toggle={TokenSelectModalToggle} />
+        </>
     )
 }
 

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import styled from "styled-components";
+import * as React from 'react'
+import styled from "styled-components"
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
@@ -89,49 +89,52 @@ function SwapCard() {
     }
 
     return (
-        <BaseCard>
-            <SwapWrapper>
-                {/* Header */}
-                <div className="header">
-                    <div className="title">
+        <>
+            <BaseCard>
+                <SwapWrapper>
+                    {/* Header */}
+                    <div className="header">
+                        <div className="title">
+                            Swap
+                    </div>
+                        <div />
+                    </div>
+
+                    {/* From */}
+                    <TokenInputController
+                        header={{ title: 'From', balance: 0 }}
+                        coin={state.fromCoin}
+                        amount={state.fromAmount}
+                        dispatch={dispatch}
+                        dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
+                    />
+
+                    {/* From <> To change arrow */}
+                    <div className="divider">
+                        <div className="arrow" onClick={() => {
+                            dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
+                        }}>
+                            <ChangeArrow />
+                        </div>
+                    </div>
+
+                    {/* To */}
+                    <TokenInputController
+                        header={{ title: 'To (estimated)', balance: 0 }}
+                        coin={state.toCoin}
+                        amount={state.toAmount}
+                        dispatch={dispatch}
+                        dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
+                    />
+
+                    {/* Swap Button */}
+                    <ActionButton onClick={swap} status={'connect-wallet'} css={{ marginTop: "16px" }}>
                         Swap
-                    </div>
-                    <div />
-                </div>
-
-                {/* From */}
-                <TokenInputController
-                    header={{ title: 'From', balance: 0 }}
-                    coin={state.fromCoin}
-                    amount={state.fromAmount}
-                    dispatch={dispatch}
-                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
-                />
-
-                {/* From <> To change arrow */}
-                <div className="divider">
-                    <div className="arrow" onClick={() => {
-                        dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
-                    }}>
-                        <ChangeArrow />
-                    </div>
-                </div>
-
-                {/* To */}
-                <TokenInputController
-                    header={{ title: 'To (estimated)', balance: 0 }}
-                    coin={state.toCoin}
-                    amount={state.toAmount}
-                    dispatch={dispatch}
-                    dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
-                />
-
-                {/* Swap Button */}
-                <ActionButton onClick={swap} status={'connect-wallet'} css={{ marginTop: "16px" }}>
-                    Swap
                 </ActionButton>
-            </SwapWrapper>
-        </BaseCard>
+                </SwapWrapper>
+            </BaseCard>
+
+        </>
     )
 }
 
