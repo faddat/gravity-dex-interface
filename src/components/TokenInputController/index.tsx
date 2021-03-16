@@ -183,7 +183,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                             <>
                                 <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin}
                             </>
-                            : 'Select a token '}
+                            : 'Select a coin '}
                          &nbsp; <CoinSelectorArrow stroke={coin !== '' ? '' : '#fff'} />
                     </div>
                 </div>

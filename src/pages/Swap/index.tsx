@@ -127,7 +127,7 @@ function SwapCard() {
                 />
 
                 {/* Swap Button */}
-                <ActionButton onClick={swap} css={{ marginTop: "16px" }}>
+                <ActionButton onClick={swap} status={'disabled'} css={{ marginTop: "16px" }}>
                     Swap
                 </ActionButton>
             </SwapWrapper>

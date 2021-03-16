@@ -14,14 +14,22 @@ const Action = styled.div`
     background-color:#4397ff;
     color:#fff;
     font-size: 20px;
+
+    &.disabled {
+        background-color: rgb(237, 238, 242);
+        color: rgb(136, 141, 155);
+        pointer-events: none;
+        cursor: auto;
+    }
+
     &:hover {
         background-color:rgb(60, 132, 219);
     }
 `
 
-function ActionButton({ onClick, children, css }: { onClick: any, children: React.ReactChild, css?: object }) {
+function ActionButton({ onClick, children, status = 'normal', css }: { onClick: any, children: React.ReactChild, status?: string, css?: object }) {
     return (
-        <Action onClick={onClick} style={css}>
+        <Action onClick={onClick} style={css} className={`${status}`}>
             {children}
         </Action>
     );
