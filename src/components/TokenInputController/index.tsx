@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useToggle } from "ahooks"
 
 import CoinSelectorArrow from "../../assets/svgs/CoinSelectorArrow"
-import TokenSelectModal from "../../components/Modals/TokenListModal"
+import CoinSelectModal from "../../components/Modals/TokenListModal"
 const Wrapper = styled.div`
     border-radius: 20px;
     border: 1px solid rgb(247, 248, 250);
@@ -152,7 +152,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
         dispatchTypes: { amount: string, coin: string, max: string }
     }) {
     const isCoin = coin !== '' ? true : false
-    const [isTokenSelectModalOpen, { toggle: TokenSelectModalToggle }] = useToggle()
+    const [isCoinSelectModalOpen, { toggle: CoinSelectModalToggle }] = useToggle()
     return (
         <>
             <Wrapper>
@@ -180,7 +180,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                             }}
                         >MAX</button>
                         <div className={`coin-selector ${isCoin ? '' : 'not-selected'}`} onClick={() => {
-                            TokenSelectModalToggle()
+                            CoinSelectModalToggle()
                             // dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                         }}>
                             {isCoin ?
@@ -193,7 +193,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                     </div>
                 </div>
             </Wrapper>
-            <TokenSelectModal isOpen={isTokenSelectModalOpen} toggle={TokenSelectModalToggle} />
+            <CoinSelectModal isOpen={isCoinSelectModalOpen} toggle={CoinSelectModalToggle} />
         </>
     )
 }
