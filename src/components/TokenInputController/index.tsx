@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useToggle } from "ahooks"
 
 import CoinSelectorArrow from "../../assets/svgs/CoinSelectorArrow"
-import CoinSelectModal from "../../components/Modals/TokenListModal"
+import CoinSelectModal from "../Modals/CoinSelectModal"
 const Wrapper = styled.div`
     border-radius: 20px;
     border: 1px solid rgb(247, 248, 250);

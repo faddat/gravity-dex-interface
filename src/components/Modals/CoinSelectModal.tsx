@@ -1,5 +1,5 @@
 import * as React from 'react';
-import BasicModal from "../Modals/BasicModal";
+import BasicModal from "./BasicModal";
 import styled from "styled-components";
 
 const Title = styled.div`
@@ -18,7 +18,7 @@ border-top-right-radius: 6px;
 padding: 60px 12px 40px ;
 `
 
-function TokenListModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
+function CoinSelectModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
 
     return (
 
@@ -28,4 +28,4 @@ function TokenListModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
     );
 }
 
-export default TokenListModal
+export default CoinSelectModal
