@@ -121,7 +121,19 @@ const Wrapper = styled.div`
                 }
 
                 &:hover {
-                    background-color: rgb(247, 248, 250);
+                    background-color: rgb(240 240 241);
+                }
+            }
+
+            .not-selected {
+                background-color: #114ab3b3;
+                font-size: 15px;
+                padding: 6px 12px;
+                color: #fff;
+                font-weight: 500;
+
+                &:hover {
+                    background-color: rgba(13, 55, 133, 0.702) !important;
                 }
             }
         }
@@ -138,6 +150,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
         dispatch: any,
         dispatchTypes: { amount: string, coin: string, max: string }
     }) {
+    const isCoin = coin !== '' ? true : false
     return (
         <Wrapper>
             <div className="sub-titles">
@@ -158,19 +171,20 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                 <div className="right">
                     <button
                         className="max-button"
+                        style={{ display: `${isCoin ? '' : 'none'}` }}
                         onClick={() => {
                             dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
                         }}
                     >MAX</button>
-                    <div className="coin-selector" onClick={() => {
+                    <div className={`coin-selector ${isCoin ? '' : 'not-selected'}`} onClick={() => {
                         dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                     }}>
-                        {coin !== '' ?
+                        {isCoin ?
                             <>
                                 <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin}
                             </>
-                            : 'Select a token'}
-                         &nbsp; <CoinSelectorArrow />
+                            : 'Select a token '}
+                         &nbsp; <CoinSelectorArrow stroke={coin !== '' ? '' : '#fff'} />
                     </div>
                 </div>
             </div>
