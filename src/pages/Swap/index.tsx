@@ -76,6 +76,15 @@ function reducer(state, action) {
     }
 }
 
+//helpers
+function getMyCoinBalance(coin, myBalance) {
+    if (myBalance[coin.toLowerCase()] !== undefined) {
+        return Number(myBalance[coin.toLowerCase()])
+    } else {
+        return 0
+    }
+}
+
 
 function SwapCard() {
     const [state, dispatch] = React.useReducer(reducer, {
@@ -85,8 +94,8 @@ function SwapCard() {
         toAmount: '',
     })
 
-    const PoolList = useSelector((state) => state)
-    console.log(PoolList)
+    const myBalance = useSelector((state) => state.store.userData.balance)
+
     function swap() {
         alert('swap')
     }
@@ -105,7 +114,7 @@ function SwapCard() {
 
                     {/* From */}
                     <TokenInputController
-                        header={{ title: 'From', balance: 0 }}
+                        header={{ title: 'From', balance: getMyCoinBalance(state.fromCoin, myBalance) }}
                         coin={state.fromCoin}
                         amount={state.fromAmount}
                         dispatch={dispatch}
@@ -123,7 +132,7 @@ function SwapCard() {
 
                     {/* To */}
                     <TokenInputController
-                        header={{ title: 'To (estimated)', balance: 0 }}
+                        header={{ title: 'To (estimated)', balance: getMyCoinBalance(state.toCoin, myBalance) }}
                         coin={state.toCoin}
                         amount={state.toAmount}
                         dispatch={dispatch}

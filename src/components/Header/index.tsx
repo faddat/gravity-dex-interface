@@ -148,7 +148,6 @@ function AppHeader() {
   const [isPending, setIsPending] = React.useState(false)
   const [walletAddress, setWalletAddress] = React.useState('')
   const atomBalance = useSelector((state) => state.store.userData.balance.atom)
-  console.log('atomBalance', atomBalance)
 
   React.useEffect(() => {
     window.onload = () => {
