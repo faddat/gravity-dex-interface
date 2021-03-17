@@ -4,13 +4,30 @@ import {
     createSlice
 } from "@reduxjs/toolkit";
 
-export const todoReducer = createSlice({
+//TEST DATA
+const TEST_INIT_DATA = {
+    userData: {
+        balance: {
+            atom: 100,
+            iris: 200,
+            kava: 300,
+            luna: 400,
+            band: 500,
+        }
+    },
+    poolData: {
+
+    }
+}
+
+
+export const RootReducer = createSlice({
     name: "todoList",
-    initialState: { test: 'test' },
+    initialState: TEST_INIT_DATA,
     reducers: {},
 });
 
-const reducer = combineReducers({ store: todoReducer.reducer });
+const reducer = combineReducers({ store: RootReducer.reducer });
 
 export default configureStore({
     reducer
