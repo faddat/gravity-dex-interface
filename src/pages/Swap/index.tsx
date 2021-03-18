@@ -66,6 +66,7 @@ function reducer(state, action) {
             alert(`${Target} MAX`)
             return { ...state };
         case TYPES.SELECT_COIN:
+            console.log(Target, action.payload.coin)
             return state;
         case TYPES.CHANGE_FROM_TO_COIN:
             alert('CHANGE')

@@ -15,8 +15,8 @@ const SelectCoinWrapper = styled.div`
     padding: 20px;
 
     .title {
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .close {
@@ -60,6 +60,8 @@ const SelectCoinWrapper = styled.div`
         height: 55px;
         align-items: center;
         justify-content: space-between;
+
+        cursor: pointer;
         
         .coin-info {
             display: flex;
@@ -88,22 +90,23 @@ const SelectCoinWrapper = styled.div`
     }
 }
 `
-function generateCoinList(pairs) {
-    return pairs.map((pair) => {
-        return (
-            <div className="row">
-                <div className="coin-info">
-                    <img className="coin-img" src={`/assets/coins/${pair}.png`} alt="coin pair" />{pair.toUpperCase()}
-                </div>
-                <div className="coin-balance">100</div>
-            </div>
-        )
-    })
-}
 
-function CoinSelectModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
+function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, toggle: any, selectCoin: any }) {
     const PoolsData = useSelector((state) => state.store.poolsData)
     console.log(PoolsData)
+
+    function generateCoinList(pairs) {
+        return pairs.map((pair, index) => {
+            return (
+                <div className="row" onClick={() => { selectCoin.dispatch({ type: selectCoin.type, payload: { coin: pair, target: selectCoin.target } }) }} key={index}>
+                    <div className="coin-info">
+                        <img className="coin-img" src={`/assets/coins/${pair}.png`} alt="coin pair" />{pair.toUpperCase()}
+                    </div>
+                    <div className="coin-balance">100</div>
+                </div>
+            )
+        })
+    }
 
     return (
 

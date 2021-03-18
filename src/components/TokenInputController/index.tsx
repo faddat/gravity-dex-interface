@@ -193,7 +193,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                     </div>
                 </div>
             </Wrapper>
-            <CoinSelectModal isOpen={isCoinSelectModalOpen} toggle={CoinSelectModalToggle} />
+            <CoinSelectModal isOpen={isCoinSelectModalOpen} toggle={CoinSelectModalToggle} selectCoin={{ dispatch: dispatch, type: dispatchTypes.coin, target: header.title }} />
         </>
     )
 }
