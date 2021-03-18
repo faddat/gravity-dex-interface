@@ -5,14 +5,14 @@ import BasicModal from "./BasicModal"
 import styled from "styled-components"
 
 const SelectCoinWrapper = styled.div`
-padding: 20px;
+
 .header{
     display:flex;
     justify-content: space-between;
     align-items: center;
     
-    width: 380px;
-    margin-bottom: 20px;
+    width: 420px;
+    padding: 20px;
 
     .title {
         font-size: 16px;
@@ -29,11 +29,14 @@ padding: 20px;
 }
 
 .search {
-    width: 100%;
-    /* height: 20px; */
-    font-size: 18px;
     display: flex;
+
+    width: calc(100% - 40px);
+    margin: 0 20px;
     padding: 16px;
+   
+    font-size: 18px;
+
     outline:none;
     border: 1px solid #acacac;
     border-radius: 20px;
@@ -47,10 +50,19 @@ padding: 20px;
     max-height: 500px;
     overflow: auto;
 
-    margin-top: 16px;
+    padding-left: 20px;
+
+    margin: 16px 0;
 
     .row {
+        display: flex;
+        width: 100%;
+        align-items: center;
         height: 80px;
+
+        &:hover {
+            background-color: rgba(229, 229, 231, 0.356);
+        }
     }
 }
 `
@@ -70,7 +82,7 @@ function CoinSelectModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
             <SelectCoinWrapper>
                 <div className="header">
                     <div className="title">Select a coin</div>
-                    <div className="close">X</div>
+                    <div className="close" onClick={() => { toggle() }}>X</div>
                 </div>
 
                 <input className="search" type="text" placeholder="Search Coin" />

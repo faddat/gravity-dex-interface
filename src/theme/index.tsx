@@ -36,7 +36,7 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     // border-radius
     modalBorderRadius: css`
-    border-radius: 4px;
+    border-radius: 12px;
     `
   }
 }
