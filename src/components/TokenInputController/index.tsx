@@ -144,11 +144,12 @@ const Wrapper = styled.div`
 `
 
 
-function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
+function TokenInputController({ header, amount, coin, counterPair, dispatch, dispatchTypes }:
     {
         header: { title: string, balance: number },
         amount: string,
         coin: string,
+        counterPair: string,
         dispatch: any,
         dispatchTypes: { amount: string, coin: string, max: string }
     }) {
@@ -195,7 +196,7 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                     </div>
                 </div>
             </Wrapper>
-            <CoinSelectModal isOpen={isCoinSelectModalOpen} toggle={CoinSelectModalToggle} selectCoin={{ dispatch: dispatch, type: dispatchTypes.coin, target: header.title }} />
+            <CoinSelectModal isOpen={isCoinSelectModalOpen} toggle={CoinSelectModalToggle} selectCoin={{ dispatch: dispatch, type: dispatchTypes.coin, target: header.title, counterPair: counterPair }} />
         </>
     )
 }

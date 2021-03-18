@@ -96,17 +96,27 @@ function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, togg
     const myBalance = useSelector((state) => state.store.userData.balance)
     const [searchKeyword, setSearchKeyword] = React.useState('')
 
-    function generateCoinList(pairs, keyword) {
+    React.useEffect(() => {
+        setSearchKeyword('')
+    }, [isOpen])
+
+    function generateCoinList(pairs, keyword, counterPair) {
         let listPairs = pairs
+
         if (keyword !== '') {
             listPairs = listPairs.filter((s => s.includes(keyword)))
         }
+
         return listPairs.map((pair, index) => {
+
+            if (counterPair === pair) {
+                return
+            }
+
             return (
                 <div className="row"
                     onClick={() => {
                         selectCoin.dispatch({ type: selectCoin.type, payload: { coin: pair, target: selectCoin.target } })
-                        setSearchKeyword('')
                         toggle()
                     }} key={index}>
                     <div className="coin-info">
@@ -129,7 +139,7 @@ function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, togg
 
                 <input className="search" value={searchKeyword} onChange={(e) => { setSearchKeyword(e.target.value) }} type="text" placeholder="Search Coin" />
                 <div className="coin-list-wrapper">
-                    {generateCoinList(PoolsData.pairs, searchKeyword)}
+                    {generateCoinList(PoolsData.pairs, searchKeyword, selectCoin.counterPair)}
                 </div>
 
             </SelectCoinWrapper>

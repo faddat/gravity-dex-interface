@@ -153,6 +153,7 @@ function SwapCard() {
                         header={{ title: 'From', balance: getMyCoinBalance(state.fromCoin, myBalance) }}
                         coin={state.fromCoin}
                         amount={state.fromAmount}
+                        counterPair={state.toCoin}
                         dispatch={dispatch}
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />
@@ -171,6 +172,7 @@ function SwapCard() {
                         header={{ title: 'To (estimated)', balance: getMyCoinBalance(state.toCoin, myBalance) }}
                         coin={state.toCoin}
                         amount={state.toAmount}
+                        counterPair={state.fromCoin}
                         dispatch={dispatch}
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />

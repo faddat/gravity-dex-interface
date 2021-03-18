@@ -17,7 +17,7 @@ const TEST_INIT_DATA = {
     },
     //헬퍼 함수 하나 빼서 getPool(a, b) pair 하나씩 넣고 안에서 알파벳 순으로 솔팅 돌리고 하면 될듯
     poolsData: {
-        pairs: ['atom', 'iris', 'band', 'luna', 'kava', 'atom', 'iris', 'band', 'luna', 'kava', 'atom', 'iris', 'band', 'luna', 'kava', 'atom', 'iris', 'band', 'luna', 'kava'],
+        pairs: ['atom', 'iris', 'band', 'luna', 'kava'],
         pools: {
             "atom-iris": { atom: 1000, iris: 1003 },
             "atom-band": { atom: 871.123, band: 111.31221 },
