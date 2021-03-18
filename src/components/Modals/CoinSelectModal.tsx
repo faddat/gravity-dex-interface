@@ -93,7 +93,6 @@ const SelectCoinWrapper = styled.div`
 
 function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, toggle: any, selectCoin: any }) {
     const PoolsData = useSelector((state) => state.store.poolsData)
-    console.log(PoolsData)
 
     function generateCoinList(pairs) {
         return pairs.map((pair, index) => {

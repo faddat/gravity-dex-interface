@@ -63,8 +63,8 @@ function reducer(state, action) {
         case TYPES.AMOUNT_CHANGE:
             return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SET_MAX_AMOUNT:
-            alert(`${Target} MAX`)
-            return { ...state };
+            console.log({ [`${Target}Amount`]: action.payload.amount })
+            return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SELECT_COIN:
             console.log(Target, action.payload.coin)
             return { ...state, [`${Target}Coin`]: action.payload.coin }
@@ -89,7 +89,7 @@ function getMyCoinBalance(coin, myBalance) {
 
 function SwapCard() {
     const [state, dispatch] = React.useReducer(reducer, {
-        fromCoin: 'ATOM',
+        fromCoin: 'atom',
         toCoin: '',
         fromAmount: '',
         toAmount: '',

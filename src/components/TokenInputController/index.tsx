@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { useToggle } from "ahooks"
+import { useDispatch, useSelector } from "react-redux";
 
 import CoinSelectorArrow from "../../assets/svgs/CoinSelectorArrow"
 import CoinSelectModal from "../Modals/CoinSelectModal"
@@ -153,6 +154,8 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
     }) {
     const isCoin = coin !== '' ? true : false
     const [isCoinSelectModalOpen, { toggle: CoinSelectModalToggle }] = useToggle()
+    const myBalance = useSelector((state) => state.store.userData.balance)
+
     return (
         <>
             <Wrapper>
@@ -174,18 +177,17 @@ function TokenInputController({ header, amount, coin, dispatch, dispatchTypes }:
                     <div className="right">
                         <button
                             className="max-button"
-                            style={{ display: `${isCoin ? '' : 'none'}` }}
+                            style={{ display: `${isCoin && header.title === 'from' ? '' : 'none'}` }}
                             onClick={() => {
-                                dispatch({ type: dispatchTypes.max, payload: { target: header.title } })
+                                dispatch({ type: dispatchTypes.max, payload: { target: header.title, amount: myBalance[coin] } })
                             }}
                         >MAX</button>
                         <div className={`coin-selector ${isCoin ? '' : 'not-selected'}`} onClick={() => {
                             CoinSelectModalToggle()
-                            // dispatch({ type: dispatchTypes.coin, payload: { target: header.title } })
                         }}>
                             {isCoin ?
                                 <>
-                                    <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin}
+                                    <img className="coin-image" src={`/assets/coins/${coin}.png`} alt="selected coin" /> {coin.toUpperCase()}
                                 </>
                                 : 'Select a coin '}
                             &nbsp; <CoinSelectorArrow stroke={coin !== '' ? '' : '#fff'} />
