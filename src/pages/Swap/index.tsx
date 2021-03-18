@@ -63,14 +63,12 @@ function reducer(state, action) {
         case TYPES.AMOUNT_CHANGE:
             return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SET_MAX_AMOUNT:
-            console.log({ [`${Target}Amount`]: action.payload.amount })
             return { ...state, [`${Target}Amount`]: action.payload.amount }
         case TYPES.SELECT_COIN:
-            console.log(Target, action.payload.coin)
             return { ...state, [`${Target}Coin`]: action.payload.coin }
         case TYPES.CHANGE_FROM_TO_COIN:
-            alert('CHANGE')
-            return state
+            // toCoin 수량 계산 및 액션버튼 검증로직
+            return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
         default:
             console.log("DEFAULT: SWAP REDUCER")
             return state;
