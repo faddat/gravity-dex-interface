@@ -42,7 +42,23 @@ padding: 20px;
         border-color: #4397ff;
     }
 }
+
+.coin-list-wrapper {
+    max-height: 500px;
+    overflow: auto;
+
+    margin-top: 16px;
+
+    .row {
+        height: 80px;
+    }
+}
 `
+function generateCoinList(pairs) {
+    return pairs.map((pair) => {
+        return <div className="row">{pair}</div>
+    })
+}
 
 function CoinSelectModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
     const PoolsData = useSelector((state) => state.store.poolsData)
@@ -58,6 +74,10 @@ function CoinSelectModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
                 </div>
 
                 <input className="search" type="text" placeholder="Search Coin" />
+                <div className="coin-list-wrapper">
+                    {generateCoinList(PoolsData.pairs)}
+                </div>
+
             </SelectCoinWrapper>
         </BasicModal>
     );
