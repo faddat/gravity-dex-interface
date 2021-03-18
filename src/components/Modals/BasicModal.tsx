@@ -22,6 +22,8 @@ background-color: rgba(0, 0, 0, 0.424);
 `
 
 const ModalWrapper = styled.div`
+max-width: 420px;
+/* width: 100%; */
 z-index: 10;
 position: absolute;
 top: 50%;
