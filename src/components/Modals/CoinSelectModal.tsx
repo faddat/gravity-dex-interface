@@ -57,8 +57,30 @@ const SelectCoinWrapper = styled.div`
     .row {
         display: flex;
         width: 100%;
+        height: 55px;
         align-items: center;
-        height: 80px;
+        justify-content: space-between;
+        
+        .coin-info {
+            display: flex;
+            align-items: center;
+
+            font-weight: 500;
+
+            .coin-img {
+                width: 28px;
+                height: 28px;
+                margin-right: 12px;
+                border: 1px solid rgb(197, 197, 197);
+                border-radius: 50%;
+            }
+        }
+
+        .coin-balance {
+            padding-right: 20px;
+        }
+
+      
 
         &:hover {
             background-color: rgba(229, 229, 231, 0.356);
@@ -68,7 +90,14 @@ const SelectCoinWrapper = styled.div`
 `
 function generateCoinList(pairs) {
     return pairs.map((pair) => {
-        return <div className="row">{pair}</div>
+        return (
+            <div className="row">
+                <div className="coin-info">
+                    <img className="coin-img" src={`/assets/coins/${pair}.png`} alt="coin pair" />{pair.toUpperCase()}
+                </div>
+                <div className="coin-balance">100</div>
+            </div>
+        )
     })
 }
 
