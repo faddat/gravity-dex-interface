@@ -9,13 +9,37 @@ padding: 20px;
 .header{
     display:flex;
     justify-content: space-between;
+    align-items: center;
+    
     width: 380px;
+    margin-bottom: 20px;
+
     .title {
         font-size: 16px;
         font-weight: 500;
     }
-    .close {
 
+    .close {
+        font-size: 20px;
+        cursor: pointer;
+        &:hover {
+            font-weight: bold;
+        }
+    }
+}
+
+.search {
+    width: 100%;
+    /* height: 20px; */
+    font-size: 18px;
+    display: flex;
+    padding: 16px;
+    outline:none;
+    border: 1px solid #acacac;
+    border-radius: 20px;
+
+    &:focus {
+        border-color: #4397ff;
     }
 }
 `
@@ -32,6 +56,8 @@ function CoinSelectModal({ isOpen, toggle }: { isOpen: boolean, toggle: any }) {
                     <div className="title">Select a coin</div>
                     <div className="close">X</div>
                 </div>
+
+                <input className="search" type="text" placeholder="Search Coin" />
             </SelectCoinWrapper>
         </BasicModal>
     );
