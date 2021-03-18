@@ -98,7 +98,11 @@ function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, togg
     function generateCoinList(pairs) {
         return pairs.map((pair, index) => {
             return (
-                <div className="row" onClick={() => { selectCoin.dispatch({ type: selectCoin.type, payload: { coin: pair, target: selectCoin.target } }) }} key={index}>
+                <div className="row"
+                    onClick={() => {
+                        selectCoin.dispatch({ type: selectCoin.type, payload: { coin: pair, target: selectCoin.target } })
+                        toggle()
+                    }} key={index}>
                     <div className="coin-info">
                         <img className="coin-img" src={`/assets/coins/${pair}.png`} alt="coin pair" />{pair.toUpperCase()}
                     </div>

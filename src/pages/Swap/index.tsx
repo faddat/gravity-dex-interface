@@ -67,7 +67,7 @@ function reducer(state, action) {
             return { ...state };
         case TYPES.SELECT_COIN:
             console.log(Target, action.payload.coin)
-            return state;
+            return { ...state, [`${Target}Coin`]: action.payload.coin }
         case TYPES.CHANGE_FROM_TO_COIN:
             alert('CHANGE')
             return state
