@@ -51,30 +51,6 @@ const TYPES = {
     CHANGE_FROM_TO_COIN: 'CHANGE_FROM_TO_COIN'
 }
 
-//reducer for useReducer
-function reducer(state, action) {
-    let Target = null
-
-    if (action.payload?.target) {
-        Target = action.payload.target === "From" ? "from" : "to"
-    }
-
-    switch (action.type) {
-        case TYPES.AMOUNT_CHANGE:
-            return { ...state, [`${Target}Amount`]: action.payload.amount }
-        case TYPES.SET_MAX_AMOUNT:
-            return { ...state, [`${Target}Amount`]: action.payload.amount }
-        case TYPES.SELECT_COIN:
-            return { ...state, [`${Target}Coin`]: action.payload.coin }
-        case TYPES.CHANGE_FROM_TO_COIN:
-            // toCoin 수량 계산 및 액션버튼 검증로직
-            return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
-        default:
-            console.log("DEFAULT: SWAP REDUCER")
-            return state;
-    }
-}
-
 //helpers
 function getMyCoinBalance(coin, myBalance) {
     if (myBalance[coin.toLowerCase()] !== undefined) {
@@ -84,16 +60,65 @@ function getMyCoinBalance(coin, myBalance) {
     }
 }
 
+function getButtonNameByStatus(status, fromCoin, toCoin) {
+    if (fromCoin === '' || toCoin === '') {
+        return 'Select a token'
+    } else if (status === 'over') {
+        return 'Insufficient balance'
+    } else {
+        return 'default'
+    }
+}
+
+function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
+    if (fromCoin === '' || toCoin === '' || status === 'over') {
+        return 'disabled'
+    } else if (status === 'over') {
+        return 'Insufficient balance'
+    }
+}
+
 
 function SwapCard() {
+    const myBalance = useSelector((state) => state.store.userData.balance)
+
+    //reducer for useReducer
+    function reducer(state, action) {
+        let target = null
+        let counterTarget = null
+
+        if (action.payload?.target) {
+            target = action.payload.target === "From" ? "from" : "to"
+            counterTarget = target === 'from' ? 'to' : 'from'
+        }
+
+        switch (action.type) {
+            case TYPES.AMOUNT_CHANGE:
+                let isOver = false
+                if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
+                    isOver = true
+                }
+                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : 'normal' }
+            case TYPES.SET_MAX_AMOUNT:
+                return { ...state, [`${target}Amount`]: action.payload.amount }
+            case TYPES.SELECT_COIN:
+                return { ...state, [`${target}Coin`]: action.payload.coin }
+            case TYPES.CHANGE_FROM_TO_COIN:
+                // toCoin 수량 계산 및 액션버튼 검증로직
+                return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+            default:
+                console.log("DEFAULT: SWAP REDUCER")
+                return state;
+        }
+    }
+
     const [state, dispatch] = React.useReducer(reducer, {
         fromCoin: 'atom',
         toCoin: '',
         fromAmount: '',
         toAmount: '',
+        status: 'disabled' // connectWallet, notSelected, Noamount, over, normal
     })
-
-    const myBalance = useSelector((state) => state.store.userData.balance)
 
     function swap() {
         alert('swap')
@@ -139,9 +164,9 @@ function SwapCard() {
                     />
 
                     {/* Swap Button */}
-                    <ActionButton onClick={swap} status={'connect-wallet'} css={{ marginTop: "16px" }}>
-                        Swap
-                </ActionButton>
+                    <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
+                        {getButtonNameByStatus(state.status, state.fromCoin, state.toCoin)}
+                    </ActionButton>
                 </SwapWrapper>
             </BaseCard>
 
