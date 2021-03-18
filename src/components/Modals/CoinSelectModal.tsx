@@ -93,6 +93,7 @@ const SelectCoinWrapper = styled.div`
 
 function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, toggle: any, selectCoin: any }) {
     const PoolsData = useSelector((state) => state.store.poolsData)
+    const myBalance = useSelector((state) => state.store.userData.balance)
 
     function generateCoinList(pairs) {
         return pairs.map((pair, index) => {
@@ -105,7 +106,7 @@ function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, togg
                     <div className="coin-info">
                         <img className="coin-img" src={`/assets/coins/${pair}.png`} alt="coin pair" />{pair.toUpperCase()}
                     </div>
-                    <div className="coin-balance">100</div>
+                    <div className="coin-balance">{myBalance[pair] || 0}</div>
                 </div>
             )
         })

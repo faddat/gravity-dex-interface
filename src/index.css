@@ -1,14 +1,13 @@
 body {
   margin: 0;
-  font-family: "Inter var", sans-serif;
+  font-family: 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-feature-settings: "ss01", "ss02", "cv01", "cv03";
-  font-variant: no-common-ligatures no-discretionary-ligatures no-historical-ligatures no-contextual;
-  font-variant-numeric: slashed-zero !important;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
