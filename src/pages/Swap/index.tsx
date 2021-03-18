@@ -65,21 +65,26 @@ function getButtonNameByStatus(status, fromCoin, toCoin) {
         return 'Select a token'
     } else if (status === 'over') {
         return 'Insufficient balance'
+    } else if (status === 'empty') {
+        return 'Enter an amount'
     } else {
-        return 'default'
+        return 'SWAP'
     }
 }
 
 function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
-    if (fromCoin === '' || toCoin === '' || status === 'over') {
+    if (fromCoin === '' || toCoin === '' || status === 'over' || status === 'empty') {
         return 'disabled'
-    } else if (status === 'over') {
-        return 'Insufficient balance'
+    } else {
+        return 'normal'
     }
 }
 
 
 function SwapCard() {
+    React.useEffect(() => {
+        //미로그인시 connectWallet 스테이터스 아니면 empty로
+    }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
 
     //reducer for useReducer
@@ -95,12 +100,19 @@ function SwapCard() {
         switch (action.type) {
             case TYPES.AMOUNT_CHANGE:
                 let isOver = false
+                let isEmpty = false
+
                 if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
                     isOver = true
                 }
-                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : 'normal' }
+
+                if (action.payload.amount == 0) {
+                    isEmpty = true
+                }
+
+                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : isEmpty ? 'empty' : 'normal' }
             case TYPES.SET_MAX_AMOUNT:
-                return { ...state, [`${target}Amount`]: action.payload.amount }
+                return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
                 return { ...state, [`${target}Coin`]: action.payload.coin }
             case TYPES.CHANGE_FROM_TO_COIN:
@@ -117,7 +129,7 @@ function SwapCard() {
         toCoin: '',
         fromAmount: '',
         toAmount: '',
-        status: 'disabled' // connectWallet, notSelected, Noamount, over, normal
+        status: 'empty' // connectWallet, notSelected, empty, over, normal
     })
 
     function swap() {
