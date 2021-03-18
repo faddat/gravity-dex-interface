@@ -97,7 +97,6 @@ function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, togg
     const [searchKeyword, setSearchKeyword] = React.useState('')
 
     function generateCoinList(pairs, keyword) {
-        console.log(keyword)
         let listPairs = pairs
         if (keyword !== '') {
             listPairs = listPairs.filter((s => s.includes(keyword)))
@@ -107,6 +106,7 @@ function CoinSelectModal({ isOpen, toggle, selectCoin }: { isOpen: boolean, togg
                 <div className="row"
                     onClick={() => {
                         selectCoin.dispatch({ type: selectCoin.type, payload: { coin: pair, target: selectCoin.target } })
+                        setSearchKeyword('')
                         toggle()
                     }} key={index}>
                     <div className="coin-info">
