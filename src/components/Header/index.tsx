@@ -148,12 +148,17 @@ function AppHeader() {
   const [isPending, setIsPending] = React.useState(false)
   const [walletAddress, setWalletAddress] = React.useState('')
   const atomBalance = useSelector((state) => state.store.userData.balance.atom)
+  const walletStatus = useSelector((state) => state.store.userData.walletStatus)
 
   React.useEffect(() => {
     window.onload = () => {
       connectWallet(false)
     }
   }, [])
+
+  const dispatch = useDispatch()
+  dispatch({ type: 'rootStore/setStatusPending' })
+  console.log(walletStatus)
 
   async function connectWallet(isToggle = true) {
 

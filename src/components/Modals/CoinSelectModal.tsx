@@ -23,7 +23,7 @@ const SelectCoinWrapper = styled.div`
         font-size: 20px;
         cursor: pointer;
         &:hover {
-            font-weight: bold;
+            opacity: 0.7;
         }
     }
 }
