@@ -16,6 +16,13 @@ const TEST_INIT_DATA = {
         },
         walletStatus: 'normal' // normal, pending, error
     },
+    priceData: {
+        atom: 1,
+        iris: 2,
+        kava: 3,
+        luna: 4,
+        band: 5
+    },
     //헬퍼 함수 하나 빼서 getPool(a, b) pair 하나씩 넣고 안에서 알파벳 순으로 솔팅 돌리고 하면 될듯
     poolsData: {
         pairs: ['atom', 'iris', 'band', 'luna', 'kava'],

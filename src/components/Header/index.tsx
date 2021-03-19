@@ -108,8 +108,9 @@ padding: 1px 1px 1px 12px;
 border-radius: 12px;
 color: #fff;
 
-.atom-value {
-   font-weight: 500;
+.total-value {
+  font-weight: 500;
+  letter-spacing: 0.8px;
 }
 `
 
@@ -148,7 +149,8 @@ align-items: center;
 function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
   const [walletAddress, setWalletAddress] = React.useState('')
-  const atomBalance = useSelector((state) => state.store.userData.balance.atom)
+  const userBalance = useSelector((state) => state.store.userData.balance)
+  const priceData = useSelector((state) => state.store.priceData)
   const walletStatus = useSelector((state) => state.store.userData.walletStatus)
   const dispatch = useDispatch()
   React.useEffect(() => {
@@ -238,6 +240,14 @@ function AppHeader() {
     dispatch({ type: 'rootStore/setStatusPending' })
   }
 
+  function getTotalValue(userBalance) {
+    let totalValue = 0
+    for (let pair in userBalance) {
+      totalValue += Number(userBalance[pair]) * Number(priceData[pair])
+    }
+    return totalValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   function walletWidget() {
 
     return (
@@ -246,7 +256,7 @@ function AppHeader() {
         <WalletWidget>
           {/* determine pending status with local tx data */}
 
-          <div className="atom-value">{atomBalance} ATOM</div>
+          <div className="total-value">${getTotalValue(userBalance)}</div>
 
           <ConnectedWallet onClick={() => { showStatusDetail() }}>
             {walletStatus !== "pending" ? <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div> : <div style={{ margin: 0 }}><GridSpinner size={19} /><div style={{ marginLeft: "12px" }}>Pending</div></div>}
