@@ -1,14 +1,13 @@
-import * as React from 'react';
-import styled from "styled-components";
+import * as React from 'react'
+import styled from "styled-components"
 import { lighten } from 'polished'
 
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
-import { Circle } from 'react-spinners-css'
 import GearButton from "../../components/Buttons/Gear"
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
-
+import { GridSpinner } from 'react-spinners-kit'
 
 import { chainInfo } from "../../cosmos-amm/config"
 import { GaiaApi } from "@chainapsis/cosmosjs/gaia/api"
@@ -31,11 +30,11 @@ ${({ theme }) => theme.mediaWidth.upToExtraSmall`
 `
 
 const LogoImg = styled.img`
-width: 70px;
+width: 40px;
 height: 35px;
 ${({ theme }) => theme.mediaWidth.upToExtraSmall`
-  width: 50px;
-  height: 30px;
+  width: 40px;
+  height: 35px;
   `};
 vertical-align: middle;
 
@@ -130,6 +129,9 @@ letter-spacing: 1px;
 border: 2px solid transparent;
 
 div {
+  display:flex;
+  align-items: center;
+  justify-content:space-between;
   margin: 0 8px;
 }
 
@@ -145,20 +147,15 @@ align-items: center;
 
 function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
-  const [isPending, setIsPending] = React.useState(false)
   const [walletAddress, setWalletAddress] = React.useState('')
   const atomBalance = useSelector((state) => state.store.userData.balance.atom)
   const walletStatus = useSelector((state) => state.store.userData.walletStatus)
-
+  const dispatch = useDispatch()
   React.useEffect(() => {
     window.onload = () => {
       connectWallet(false)
     }
   }, [])
-
-  const dispatch = useDispatch()
-  dispatch({ type: 'rootStore/setStatusPending' })
-  console.log(walletStatus)
 
   async function connectWallet(isToggle = true) {
 
@@ -235,23 +232,25 @@ function AppHeader() {
     )
   }
 
-  function walletWidget() {
+  function showStatusDetail() {
+    //open modal below is test
 
-    function showStatusDetail() {
-      setIsPending(!isPending)
-    }
+    dispatch({ type: 'rootStore/setStatusPending' })
+  }
+
+  function walletWidget() {
 
     return (
       walletAddress === '' ? <ConnectWallet onClick={() => { connectWalletModalToggle() }}>CONNECT WALLET</ConnectWallet>
         :
         <WalletWidget>
           {/* determine pending status with local tx data */}
-          {isPending ? <div onClick={() => { showStatusDetail() }} style={{ height: "25px" }}><Circle size={30} color="radial-gradient(50% 50% at 50% 50%, rgb(251 220 0) 0%, rgb(108, 151, 222) 100%)" style={{ width: "26px", height: "26px", margin: "0 8px 0 0", animation: "style_lds-circle__3XnE0 8.4s cubic-bezier(0, 0.2, 0.8, 1) infinite" }} /></div>
-            : <div onClick={() => { showStatusDetail() }} style={{ background: "radial-gradient(50% 50% at 50% 50%, rgb(0 251 135) 0%, rgb(108, 151, 222) 100%)", width: "26px", height: "26px", borderRadius: "50%", marginRight: "8px" }}></div>}
+
           <div className="atom-value">{atomBalance} ATOM</div>
 
-          <ConnectedWallet>
-            <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div>
+          <ConnectedWallet onClick={() => { showStatusDetail() }}>
+            {walletStatus !== "pending" ? <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div> : <div style={{ margin: 0 }}><GridSpinner size={19} /><div style={{ marginLeft: "12px" }}>Pending</div></div>}
+
           </ConnectedWallet>
         </WalletWidget>
 
