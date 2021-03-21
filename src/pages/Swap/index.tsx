@@ -106,7 +106,7 @@ function SwapCard() {
         //미로그인시 connectWallet 스테이터스 아니면 empty로
     }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
-
+    const slippage = useSelector((state) => state.store.userData.slippage)
     //reducer for useReducer
     function reducer(state, action) {
         let target = null
@@ -205,7 +205,7 @@ function SwapCard() {
 
                     <div className="swap-detail">
                         <div className="left">Slippage Tolerance</div>
-                        <div className="right">1%</div>
+                        <div className="right">{slippage}%</div>
                     </div>
 
 

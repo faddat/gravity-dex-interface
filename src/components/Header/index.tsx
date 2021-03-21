@@ -7,6 +7,7 @@ import logo from "../../assets/logo/logo.png"
 import GearButton from "../../components/Buttons/Gear"
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
+import SettingModal from "./SettingModal"
 import { GridSpinner } from 'react-spinners-kit'
 
 import { chainInfo } from "../../cosmos-amm/config"
@@ -79,11 +80,11 @@ const StyledNavLink = styled(NavLink).attrs({
 
 const ConnectWallet = styled.button`
 width: fit-content;
-padding: 12px 24px 8px;
+padding: 10px 24px 10px;
 border-radius: 12px;
 background-color: ${({ theme }) => theme.blue1};
 
-font-weight: 600;
+font-weight: 500;
 font-size: 16px;
 border: none;
 color: ${({ theme }) => theme.white};
@@ -148,6 +149,7 @@ align-items: center;
 
 function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
+  const [isSettingModalOpen, { toggle: settingModalToggle }] = useToggle();
   const [walletAddress, setWalletAddress] = React.useState('')
   const userBalance = useSelector((state) => state.store.userData.balance)
   const priceData = useSelector((state) => state.store.priceData)
@@ -274,11 +276,15 @@ function AppHeader() {
       <NavigationFrame>
         {navigationLinks()}
         {walletWidget()}
-        <GearButton onClick={() => { alert('test') }} />
+        <GearButton onClick={() => { settingModalToggle() }} />
       </NavigationFrame>
 
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
         <ConnectWalletModal close={connectWalletModalToggle} connect={connectWallet} />
+      </BasicModal>
+
+      <BasicModal elementId="modal" isOpen={isSettingModalOpen} toggle={settingModalToggle}>
+        <SettingModal close={settingModalToggle} connect={connectWallet}></SettingModal>
       </BasicModal>
 
     </HeaderFrame>

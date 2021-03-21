@@ -14,6 +14,7 @@ const TEST_INIT_DATA = {
             luna: 400,
             band: 500,
         },
+        slippage: 1,
         walletStatus: 'normal' // normal, pending, error
     },
     priceData: {
@@ -41,6 +42,9 @@ export const RootReducer = createSlice({
         setStatusPending: (state, action) => {
             console.log(state)
             state.userData.walletStatus = 'pending'
+        },
+        setSlippage: (state, action) => {
+            state.userData.slippage = action.payload
         }
     },
 });
