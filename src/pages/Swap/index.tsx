@@ -41,6 +41,26 @@ const SwapWrapper = styled.div`
             }
         }
    }
+
+   .swap-detail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 6px 12px;
+
+        font-size: 14px;
+        font-weight: 500;
+        color: rgb(86, 90, 105);
+
+        .left {
+            
+        }
+
+        .right {
+
+        }
+   }
 `
 
 //reducer action types
@@ -176,6 +196,18 @@ function SwapCard() {
                         dispatch={dispatch}
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />
+
+                    {/* Swap detail */}
+                    <div className="swap-detail">
+                        <div className="left">Price</div>
+                        <div className="right">1</div>
+                    </div>
+
+                    <div className="swap-detail">
+                        <div className="left">Slippage Tolerance</div>
+                        <div className="right">1%</div>
+                    </div>
+
 
                     {/* Swap Button */}
                     <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
