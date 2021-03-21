@@ -8,7 +8,7 @@ width: 300px;
 
 color: black;
 text-align:center;
-font-weight: bold;
+font-weight: 500;
 line-height: 1.8;
 font-size: 18px;
 
@@ -23,7 +23,8 @@ div {
     top: 20px;
     right: 20px;
     line-height: 1;
-    font-size: 24px;
+    font-size: 22px;
+    font-weight: 300;
     transition: opacity 0.2s;
     cursor: pointer;
 
@@ -69,8 +70,7 @@ button {
 
     div {
         font-size: 15px;
-        height: 16px;
-        font-weight: bold;
+        font-weight: 500;
     }
 }
 `
