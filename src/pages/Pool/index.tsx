@@ -76,6 +76,11 @@ const PoolWrapper = styled.div`
                     border: 1px solid #4397ff;
                     background-color:#4397ff;
                     color: #fff;
+
+                    &:hover {
+                        border-color: transparent;
+                        background-color: hsl(213deg 66% 57%);
+                    }
                 }
             }
         }
