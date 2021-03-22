@@ -39,6 +39,7 @@ const PoolWrapper = styled.div`
         .title {
             font-size: 20px;
             font-weight: 500;
+            min-width: 125px;
         }
 
         .buttons {
@@ -82,6 +83,23 @@ const PoolWrapper = styled.div`
                         background-color: hsl(213deg 66% 57%);
                     }
                 }
+            }
+        }
+
+        .search {
+            display: flex;
+
+            width: calc(100%);
+            padding: 6px 16px;
+
+            font-size: 16px;
+
+            outline:none;
+            border: 1px solid #acacac;
+            border-radius: 20px;
+
+            &:focus {
+                border-color: #4397ff;
             }
         }
     }
@@ -128,6 +146,18 @@ function Deposit() {
                     <div className="buttons">
                         <button className="button">Create a pair</button>
                         <button className="button">Add Liquidity</button>
+                    </div>
+                </div>
+
+                <div className="no-pool">No liquidity found</div>
+
+                <div className="header">
+                    <div className="title">
+                        All liquidity
+                    </div>
+
+                    <div className="buttons">
+                        <input type="text" className="search" placeholder="Search Pool" />
                     </div>
                 </div>
 
