@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom'
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
@@ -9,6 +10,22 @@ import TokenInputController from "../../components/TokenInputController/index"
 import ActionButton from "../../components/Buttons/ActionButton"
 
 //Styled-components
+const Wrapper = styled.div`
+    position: absolute;
+    top:0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    background-color:#fff;
+
+    min-height: 100vh;
+    background-position: 0px -30vh;
+    background-repeat: no-repeat;
+    background-image: radial-gradient(50% 50% at 50% 50%,rgb(3 34 255 / 20%) 0%,rgb(19 74 195 / 0) 100%);
+`
+
+
 const SwapWrapper = styled.div`
     .header {
         display: flex;
@@ -16,10 +33,19 @@ const SwapWrapper = styled.div`
         justify-content: space-between;
         margin-bottom: 16px;
 
-        .title {
-            padding-left: 4px;
-            font-weight: 500;
+       .back {
+           font-size: 24px;
+           cursor: pointer;
+
+           &:hover {
+                opacity: 0.6;
+            }
         }
+
+       .title {
+           font-size: 20px;
+           font-weight: 500;
+       }
     }
 
    .divider {
@@ -101,12 +127,13 @@ function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
 }
 
 
-function CreateCard() {
+function SwapCard() {
     React.useEffect(() => {
         //미로그인시 connectWallet 스테이터스 아니면 empty로
     }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
     const slippage = useSelector((state) => state.store.userData.slippage)
+    const history = useHistory();
     //reducer for useReducer
     function reducer(state, action) {
         let target = null
@@ -157,15 +184,14 @@ function CreateCard() {
     }
 
     return (
-        <>
+        <Wrapper>
             <BaseCard>
                 <SwapWrapper>
                     {/* Header */}
                     <div className="header">
-                        <div className="title">
-                            Swap
-                    </div>
-                        <div />
+                        <div className="back" onClick={() => { history.push('/pool') }}>←</div>
+                        <div className="title"> Create a Pair</div>
+                        <div style={{ width: "23px" }}></div>
                     </div>
 
                     {/* From */}
@@ -215,9 +241,8 @@ function CreateCard() {
                     </ActionButton>
                 </SwapWrapper>
             </BaseCard>
-
-        </>
+        </Wrapper>
     )
 }
 
-export default CreateCard
+export default SwapCard

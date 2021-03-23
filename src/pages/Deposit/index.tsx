@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom'
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
@@ -9,17 +10,53 @@ import TokenInputController from "../../components/TokenInputController/index"
 import ActionButton from "../../components/Buttons/ActionButton"
 
 //Styled-components
-const SwapWrapper = styled.div`
+const Wrapper = styled.div`
+    position: absolute;
+    top:0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    background-color:#fff;
+
+    min-height: 100vh;
+    background-position: 0px -30vh;
+    background-repeat: no-repeat;
+    background-image: radial-gradient(50% 50% at 50% 50%,rgb(3 34 255 / 20%) 0%,rgb(19 74 195 / 0) 100%);
+`
+
+
+const DepositWrapper = styled.div`
     .header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 16px;
 
-        .title {
-            padding-left: 4px;
-            font-weight: 500;
+       .back {
+           font-size: 24px;
+           cursor: pointer;
+
+           &:hover {
+                opacity: 0.6;
+            }
         }
+
+       .title {
+           font-size: 20px;
+           font-weight: 500;
+       }
+    }
+
+    .info-box {
+        box-sizing: border-box;
+        margin: 20px 0;
+        min-width: 0px;
+        padding: 1.25rem;
+        background-color:rgb(234 243 253);
+        color: rgb(0 124 255);
+        border-radius: 12px;
+        width: fit-content;
     }
 
    .divider {
@@ -29,16 +66,8 @@ const SwapWrapper = styled.div`
         padding: 16px 0;
         transition: opacity 0.2s;
 
-        .arrow {
-            cursor: pointer;
-
-            svg {
-                stroke: #4397ff;
-            }
-
-            &:hover {
-                opacity: 0.6;
-            }
+        .plus {
+            font-size: 24px;
         }
    }
 
@@ -80,8 +109,8 @@ function getMyCoinBalance(coin, myBalance) {
     }
 }
 
-function getButtonNameByStatus(status, fromCoin, toCoin) {
-    if (fromCoin === '' || toCoin === '') {
+function getButtonNameByStatus(status, xCoin, yCoin) {
+    if (xCoin === '' || yCoin === '') {
         return 'Select a token'
     } else if (status === 'over') {
         return 'Insufficient balance'
@@ -92,8 +121,8 @@ function getButtonNameByStatus(status, fromCoin, toCoin) {
     }
 }
 
-function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
-    if (fromCoin === '' || toCoin === '' || status === 'over' || status === 'empty') {
+function getButtonCssClassNameByStatus(status, xCoin, yCoin) {
+    if (xCoin === '' || yCoin === '' || status === 'over' || status === 'empty') {
         return 'disabled'
     } else {
         return 'normal'
@@ -101,20 +130,21 @@ function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
 }
 
 
-function AddCard() {
+function SwapCard() {
     React.useEffect(() => {
         //미로그인시 connectWallet 스테이터스 아니면 empty로
     }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
     const slippage = useSelector((state) => state.store.userData.slippage)
+    const history = useHistory();
     //reducer for useReducer
     function reducer(state, action) {
         let target = null
         let counterTarget = null
 
         if (action.payload?.target) {
-            target = action.payload.target === "From" ? "from" : "to"
-            counterTarget = target === 'from' ? 'to' : 'from'
+            target = action.payload.target === "X" ? "x" : "y"
+            counterTarget = target === 'x' ? 'y' : 'x'
         }
 
         switch (action.type) {
@@ -136,8 +166,8 @@ function AddCard() {
             case TYPES.SELECT_COIN:
                 return { ...state, [`${target}Coin`]: action.payload.coin }
             case TYPES.CHANGE_FROM_TO_COIN:
-                // toCoin 수량 계산 및 액션버튼 검증로직
-                return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+                // yCoin 수량 계산 및 액션버튼 검증로직
+                return { ...state, xCoin: state.yCoin, yCoin: state.xCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
             default:
                 console.log("DEFAULT: SWAP REDUCER")
                 return state;
@@ -145,10 +175,10 @@ function AddCard() {
     }
 
     const [state, dispatch] = React.useReducer(reducer, {
-        fromCoin: 'atom',
-        toCoin: '',
-        fromAmount: '',
-        toAmount: '',
+        xCoin: 'atom',
+        yCoin: '',
+        xAmount: '',
+        yAmount: '',
         status: 'empty' // connectWallet, notSelected, empty, over, normal
     })
 
@@ -157,42 +187,44 @@ function AddCard() {
     }
 
     return (
-        <>
+        <Wrapper>
             <BaseCard>
-                <SwapWrapper>
+                <DepositWrapper>
                     {/* Header */}
                     <div className="header">
-                        <div className="title">
-                            Swap
+                        <div className="back" onClick={() => { history.push('/pool') }}>←</div>
+                        <div className="title"> Deposit Liquidity</div>
+                        <div style={{ width: "23px" }}></div>
                     </div>
-                        <div />
+
+                    {/* Info */}
+                    <div className="info-box">
+                        <span style={{ fontWeight: "bold" }}>Tip:</span> When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn fees proportional to your share of the pool, and can be redeemed at any time.
                     </div>
 
                     {/* From */}
                     <TokenInputController
-                        header={{ title: 'From', balance: getMyCoinBalance(state.fromCoin, myBalance) }}
-                        coin={state.fromCoin}
-                        amount={state.fromAmount}
-                        counterPair={state.toCoin}
+                        header={{ title: 'X', balance: getMyCoinBalance(state.xCoin, myBalance) }}
+                        coin={state.xCoin}
+                        amount={state.xAmount}
+                        counterPair={state.yCoin}
                         dispatch={dispatch}
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />
 
-                    {/* From <> To change arrow */}
+                    {/* plus icon */}
                     <div className="divider">
-                        <div className="arrow" onClick={() => {
-                            dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
-                        }}>
-                            <ChangeArrow />
+                        <div className="plus">
+                            +
                         </div>
                     </div>
 
                     {/* To */}
                     <TokenInputController
-                        header={{ title: 'To (estimated)', balance: getMyCoinBalance(state.toCoin, myBalance) }}
-                        coin={state.toCoin}
-                        amount={state.toAmount}
-                        counterPair={state.fromCoin}
+                        header={{ title: 'Y', balance: getMyCoinBalance(state.yCoin, myBalance) }}
+                        coin={state.yCoin}
+                        amount={state.yAmount}
+                        counterPair={state.xCoin}
                         dispatch={dispatch}
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />
@@ -210,14 +242,13 @@ function AddCard() {
 
 
                     {/* Swap Button */}
-                    <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
-                        {getButtonNameByStatus(state.status, state.fromCoin, state.toCoin)}
+                    <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.xCoin, state.yCoin)} css={{ marginTop: "16px" }}>
+                        {getButtonNameByStatus(state.status, state.xCoin, state.yCoin)}
                     </ActionButton>
-                </SwapWrapper>
+                </DepositWrapper>
             </BaseCard>
-
-        </>
+        </Wrapper>
     )
 }
 
-export default AddCard
+export default SwapCard

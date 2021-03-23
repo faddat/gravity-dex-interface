@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom'
 
 const PoolWrapper = styled.div`
     width: calc(100% - 100px);
@@ -132,7 +133,7 @@ const PoolWrapper = styled.div`
         border-radius: 20px;
         padding: 20px;
         margin-bottom: 20px;
-        background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(25 69 193 / 34%) 0%,rgb(239 227 218 / 50%) 100%);
+        background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(129 157 236 / 34%) 0%,rgb(239 227 218 / 50%) 100%);
         
         
         .background {
@@ -265,6 +266,7 @@ const PoolWrapper = styled.div`
 
 function Pool() {
     const poolData = useSelector((state) => state.store.poolsData)
+    const history = useHistory();
     const [searchKeyword, setSearchKeyword] = React.useState('')
     console.log(poolData)
 
@@ -388,6 +390,11 @@ function Pool() {
         }
 
     }
+
+    function goUrlWithPairs(a, b) {
+        history.push('/swap')
+    }
+
     return (
         <>
             <PoolWrapper>
@@ -407,8 +414,8 @@ function Pool() {
                     </div>
 
                     <div className="buttons">
-                        <button className="button">Create a pair</button>
-                        <button className="button">Add Liquidity</button>
+                        <button className="button" onClick={() => { history.push('/create') }}>Create a pair</button>
+                        <button className="button" onClick={() => { history.push('/deposit') }}>Deposit Liquidity</button>
                     </div>
                 </div>
 
