@@ -122,14 +122,114 @@ const PoolWrapper = styled.div`
         align-items: center;
     }
 
+    .pool {
+        display: flex;
+       flex-direction: column;
+        position: relative;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 20px;
+        padding: 20px;
+        background: radial-gradient(91.85% 100% at 1.84% 0%, rgba(33, 114, 229, 0.2) 0%, rgb(237, 238, 242) 100%);
+        
+        
+        .background {
+            position:absolute;
+            mix-blend-mode: overlay;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('./assets/images/noise.png')  0% 0% / cover;
+            z-index: 1;
+        }
+
+        .pool-title {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .pool-name {
+                font-size: 20px;
+                font-weight: 500;
+            }
+            
+            .manage {
+                z-index: 2;
+                .button {
+                    font-weight: 500;
+                    color: #4397ff;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        .checkbox {
+            display: none;
+        }
+
+        .checkbox:checked + .pool-details {
+            display: none;
+        }
+      
+        .pool-details {
+            display:flex;
+            width: 100%;
+            flex-direction: column;
+
+            margin-top: 20px;
+
+            .detail {
+                display:flex;
+                flex-direction: row;
+                width: 100%;
+                justify-content: space-between;
+                margin-bottom: 8px;
+            }
+        }
+    }
 `
 
+function Pool() {
+    function poolGenerator() {
+        if (true) {
+            return (
+                <div className="pool">
+                    <span className="background"></span>
+                    <div className="pool-title">
+                        <div className="pool-name">DAI/ETH</div>
+                        <div className="manage">
+                            <label className="button" htmlFor="1">Manage</label>
+                        </div>
+                    </div>
+                    <input type="checkbox" className="checkbox" id="1" />
+                    <div className="pool-details">
+                        <div className="detail">
+                            <div>Your total pool tokens:</div>
+                            <div>1</div>
+                        </div>
+                        <div className="detail">
+                            <div>Pooled DAI:</div>
+                            <div>2</div>
+                        </div>
+                        <div className="detail">
+                            <div>Pooled ETH:</div>
+                            <div>3</div>
+                        </div>
+                        <div className="detail">
+                            <div>Your pool share:</div>
+                            <div>4</div>
+                        </div>
+                    </div>
 
 
-
-
-
-function Deposit() {
+                </div>
+            )
+        } else {
+            return <div className="no-pool">No liquidity found</div>
+        }
+    }
     return (
         <>
             <PoolWrapper>
@@ -153,8 +253,8 @@ function Deposit() {
                         <button className="button">Add Liquidity</button>
                     </div>
                 </div>
+                {poolGenerator()}
 
-                <div className="no-pool">No liquidity found</div>
 
                 <div className="header">
                     <div className="title">
@@ -172,4 +272,4 @@ function Deposit() {
     )
 }
 
-export default Deposit
+export default Pool
