@@ -55,16 +55,8 @@ const SwapWrapper = styled.div`
         padding: 16px 0;
         transition: opacity 0.2s;
 
-        .arrow {
-            cursor: pointer;
-
-            svg {
-                stroke: #4397ff;
-            }
-
-            &:hover {
-                opacity: 0.6;
-            }
+        .plus {
+            font-size: 24px;
         }
    }
 
@@ -133,6 +125,8 @@ function SwapCard() {
     }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
     const slippage = useSelector((state) => state.store.userData.slippage)
+    const poolData = useSelector((state) => state.store.poolsData.pools)
+
     const history = useHistory();
     //reducer for useReducer
     function reducer(state, action) {
@@ -161,6 +155,15 @@ function SwapCard() {
             case TYPES.SET_MAX_AMOUNT:
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
+                let coinA = state[`${counterTarget}Coin`]
+                let coinB = action.payload.coin
+                const sortedCoins = [coinA, coinB].sort()
+                const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
+
+                if (!slectedPairsPoolData) {
+                    history.push(`/deposit?X=${coinA}&Y=${coinB}`)
+                }
+
                 return { ...state, [`${target}Coin`]: action.payload.coin }
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
@@ -204,12 +207,10 @@ function SwapCard() {
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />
 
-                    {/* From <> To change arrow */}
+                    {/* plus icon */}
                     <div className="divider">
-                        <div className="arrow" onClick={() => {
-                            dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
-                        }}>
-                            <ChangeArrow />
+                        <div className="plus">
+                            +
                         </div>
                     </div>
 
