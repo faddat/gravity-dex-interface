@@ -220,7 +220,8 @@ const PoolWrapper = styled.div`
                 }
 
                 .apy {
-                    font-weight: bold;
+                    font-size: 18px;
+                    font-weight: 500;
                 }
             }
         }
@@ -355,7 +356,7 @@ function Pool() {
                                 </div>
                                 <div className="detail">
                                     <div>APY:</div>
-                                    <div>4%</div>
+                                    <div className="apy">4%</div>
                                 </div>
 
                                 <div className="pool-action">

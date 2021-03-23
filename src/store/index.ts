@@ -31,8 +31,8 @@ const TEST_INIT_DATA = {
             "atom/iris": { atom: 1000.123123123123, iris: 1003, totalPoolToken: 1, userPoolData: { poolTokenAmount: 0.011234 } },
             "atom/band": { atom: 871.123, band: 111.31221, totalPoolToken: 1, userPoolData: {} },
             "band/luna": { band: 233333, luna: 12234.23124, totalPoolToken: 1, userPoolData: { poolTokenAmount: 0.01232 } },
-            "atom/luna": { atom: 233333, luna: 12234.23124, totalPoolToken: 1, userPoolData: {} },
-            "kava/luna": { kava: 233333, luna: 12234.23124, totalPoolToken: 1, userPoolData: {} },
+            "atom/luna": { atom: 423333, luna: 12234.23124, totalPoolToken: 1, userPoolData: {} },
+            "kava/luna": { kava: 13333.1231215, luna: 12234.23124, totalPoolToken: 1, userPoolData: {} },
         }
     }
 }
