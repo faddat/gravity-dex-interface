@@ -98,8 +98,13 @@ const PoolWrapper = styled.div`
             border: 1px solid #acacac;
             border-radius: 20px;
 
+
             &:focus {
                 border-color: #4397ff;
+            }
+
+            &::placeholder {
+                color: #c4c4c4;
             }
         }
     }
