@@ -153,8 +153,24 @@ const PoolWrapper = styled.div`
             justify-content: space-between;
 
             .pool-name {
+                display: flex;
+                align-items: center;
+
                 font-size: 20px;
                 font-weight: 500;
+
+                .wrapper {
+                    height: 22px;
+                    margin-right: 12px; 
+
+                    .coin-img {
+                        width: 22px;
+                        height: 22px;
+                        border: 1px solid #bebebe;
+                        border-radius: 50%;
+                    }
+                }
+               
             }
             
             .manage {
@@ -238,18 +254,24 @@ function Pool() {
 
         if (data) {
             for (let pool in data) {
-                console.log(data[pool].userPoolData)
-                // if (isUser && isEmpty(data[pool].userPoolData)) {
-                //     return <div className="no-pool">No liquidity found</div>
-                // }
 
-                let uppercasePoolNames = pool.toUpperCase()
+                const coinX = pool.split('/')[0]
+                const coinY = pool.split('/')[1]
+                const uppercasePoolNames = pool.toUpperCase()
+
                 if (isUser && data[pool].userPoolData.poolTokenAmount) {
                     result.push(
                         (<div className="pool" key={pool + '*'}>
                             <span className="background"></span>
                             <div className="pool-title">
-                                <div className="pool-name">{uppercasePoolNames}</div>
+
+                                <div className="pool-name">
+                                    <div className="wrapper">
+                                        <img className="coin-img" src={`/assets/coins/${coinX}.png`} alt="pairX" />
+                                        <img className="coin-img" src={`/assets/coins/${coinY}.png`} alt="pairY" />
+                                    </div>
+                                    <div>{uppercasePoolNames}</div>
+                                </div>
                                 <div className="manage">
                                     <label className="button" htmlFor={pool}>Manage</label>
                                 </div>
@@ -282,11 +304,21 @@ function Pool() {
                         </div>)
                     )
                 } else if (!isUser) {
+
+
                     result.push(
                         <div className="pool all-pool" key={pool}>
                             <span className="background"></span>
                             <div className="pool-title">
-                                <div className="pool-name">{uppercasePoolNames}</div>
+                                <div className="pool-name">
+                                    <div className="wrapper">
+                                        <img className="coin-img" src={`/assets/coins/${coinX}.png`} alt="pairX" />
+                                        <img className="coin-img" src={`/assets/coins/${coinY}.png`} alt="pairY" />
+                                    </div>
+                                    <div>
+                                        {uppercasePoolNames}
+                                    </div>
+                                </div>
                                 <div className="manage">
                                     <label className="button" htmlFor={pool + '*'}>Manage</label>
                                 </div>
