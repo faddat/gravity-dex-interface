@@ -132,7 +132,7 @@ const PoolWrapper = styled.div`
         border-radius: 20px;
         padding: 20px;
         margin-bottom: 20px;
-        background: radial-gradient(91.85% 100% at 1.84% 0%, rgba(33, 114, 229, 0.2) 0%, rgb(237, 238, 242) 100%);
+        background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(27 24 216 / 20%) 0%,rgb(239 227 218 / 50%) 100%);
         
         
         .background {
@@ -193,7 +193,7 @@ const PoolWrapper = styled.div`
     }
 
     .all-pool {
-       background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(33 211 229 / 20%) 0%,rgb(237,238,242) 100%);
+       background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(33 211 229 / 20%) 0%,rgb(242 237 237) 100%);
     }
 `
 
