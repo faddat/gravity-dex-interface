@@ -204,6 +204,24 @@ const PoolWrapper = styled.div`
                 width: 100%;
                 justify-content: space-between;
                 margin-bottom: 8px;
+
+                &-amount {
+                    display:flex;
+                    align-items: center;
+                    .coin-img {
+                        width: 16px;
+                        height: 16px;
+
+                        margin-left: 8px;
+
+                        border: 1px solid #bebebe;
+                        border-radius: 50%;
+                    }
+                }
+
+                .apy {
+                    font-weight: bold;
+                }
             }
         }
     }
@@ -286,11 +304,11 @@ function Pool() {
                                 </div>
                                 <div className="detail">
                                     <div>Pooled {uppercasePoolNames.split('/')[0]}:</div>
-                                    <div>{parseFloat(cutNumber(myShare * pairPoolData[coinX], 8))}</div>
+                                    <div className="detail-amount">{parseFloat(cutNumber(myShare * pairPoolData[coinX], 8))} <img className="coin-img" src={`/assets/coins/${coinX}.png`} alt="pairX" /></div>
                                 </div>
                                 <div className="detail">
                                     <div>Pooled {uppercasePoolNames.split('/')[1]}:</div>
-                                    <div>{parseFloat(cutNumber(myShare * pairPoolData[coinY], 8))}</div>
+                                    <div className="detail-amount">{parseFloat(cutNumber(myShare * pairPoolData[coinY], 8))} <img className="coin-img" src={`/assets/coins/${coinY}.png`} alt="pairY" /></div>
                                 </div>
                                 <div className="detail">
                                     <div>Your pool share:</div>
@@ -329,11 +347,11 @@ function Pool() {
                             <div className="pool-details">
                                 <div className="detail">
                                     <div>Total Pooled {uppercasePoolNames.split('/')[0]}:</div>
-                                    <div>{parseFloat(cutNumber(pairPoolData[coinX], 4))}</div>
+                                    <div className="detail-amount">{parseFloat(cutNumber(pairPoolData[coinX], 4))}   <img className="coin-img" src={`/assets/coins/${coinX}.png`} alt="pairX" /></div>
                                 </div>
                                 <div className="detail">
                                     <div>Total Pooled {uppercasePoolNames.split('/')[1]}:</div>
-                                    <div>{parseFloat(cutNumber(pairPoolData[coinY], 4))}</div>
+                                    <div className="detail-amount">{parseFloat(cutNumber(pairPoolData[coinY], 4))}  <img className="coin-img" src={`/assets/coins/${coinY}.png`} alt="pairY" /></div>
                                 </div>
                                 <div className="detail">
                                     <div>APY:</div>
