@@ -1,11 +1,12 @@
 import * as React from 'react';
 import styled from "styled-components";
-
+import { useDispatch, useSelector } from "react-redux";
 
 const PoolWrapper = styled.div`
     width: calc(100% - 100px);
     max-width: 640px;
     margin: 0 auto;
+    padding-bottom: 60px;
     .info {
        
         height: auto;
@@ -124,12 +125,13 @@ const PoolWrapper = styled.div`
 
     .pool {
         display: flex;
-       flex-direction: column;
+        flex-direction: column;
         position: relative;
         align-items: center;
         justify-content: space-between;
         border-radius: 20px;
         padding: 20px;
+        margin-bottom: 20px;
         background: radial-gradient(91.85% 100% at 1.84% 0%, rgba(33, 114, 229, 0.2) 0%, rgb(237, 238, 242) 100%);
         
         
@@ -170,11 +172,11 @@ const PoolWrapper = styled.div`
         }
 
         .checkbox:checked + .pool-details {
-            display: none;
+            display:flex;
         }
       
         .pool-details {
-            display:flex;
+            display: none;
             width: 100%;
             flex-direction: column;
 
@@ -192,42 +194,60 @@ const PoolWrapper = styled.div`
 `
 
 function Pool() {
-    function poolGenerator() {
-        if (true) {
-            return (
-                <div className="pool">
-                    <span className="background"></span>
-                    <div className="pool-title">
-                        <div className="pool-name">DAI/ETH</div>
-                        <div className="manage">
-                            <label className="button" htmlFor="1">Manage</label>
-                        </div>
-                    </div>
-                    <input type="checkbox" className="checkbox" id="1" />
-                    <div className="pool-details">
-                        <div className="detail">
-                            <div>Your total pool tokens:</div>
-                            <div>1</div>
-                        </div>
-                        <div className="detail">
-                            <div>Pooled DAI:</div>
-                            <div>2</div>
-                        </div>
-                        <div className="detail">
-                            <div>Pooled ETH:</div>
-                            <div>3</div>
-                        </div>
-                        <div className="detail">
-                            <div>Your pool share:</div>
-                            <div>4</div>
-                        </div>
-                    </div>
+    const poolData = useSelector((state) => state.store.poolsData)
+    console.log(poolData)
 
+    function poolGenerator(data, isUser) {
 
-                </div>
-            )
+        let result = []
+        if (data) {
+            for (let pool in data) {
+                console.log(data[pool].userPoolData)
+
+                if (isUser && isEmpty(data[pool].userPoolData)) {
+                    return <div className="no-pool">No liquidity found</div>
+                }
+
+                result.push(
+                    (<div className="pool" key={pool + isUser}>
+                        <span className="background"></span>
+                        <div className="pool-title">
+                            <div className="pool-name">{pool.toUpperCase().replace('-', '/')}</div>
+                            <div className="manage">
+                                <label className="button" htmlFor={pool}>Manage</label>
+                            </div>
+                        </div>
+                        <input type="checkbox" className="checkbox" id={pool} />
+                        <div className="pool-details">
+                            <div className="detail">
+                                <div>Your total pool tokens:</div>
+                                <div>1</div>
+                            </div>
+                            <div className="detail">
+                                <div>Pooled DAI:</div>
+                                <div>2</div>
+                            </div>
+                            <div className="detail">
+                                <div>Pooled ETH:</div>
+                                <div>3</div>
+                            </div>
+                            <div className="detail">
+                                <div>Your pool share:</div>
+                                <div>4</div>
+                            </div>
+                        </div>
+                    </div>)
+                )
+
+            }
         } else {
             return <div className="no-pool">No liquidity found</div>
+        }
+
+        return result
+
+        function isEmpty(param) {
+            return Object.keys(param).length === 0;
         }
     }
     return (
@@ -253,8 +273,8 @@ function Pool() {
                         <button className="button">Add Liquidity</button>
                     </div>
                 </div>
-                {poolGenerator()}
 
+                {poolGenerator(poolData.pools, true)}
 
                 <div className="header">
                     <div className="title">
@@ -266,7 +286,8 @@ function Pool() {
                     </div>
                 </div>
 
-                <div className="no-pool">No liquidity found</div>
+                {poolGenerator(poolData.pools, false)}
+
             </PoolWrapper>
         </>
     )
