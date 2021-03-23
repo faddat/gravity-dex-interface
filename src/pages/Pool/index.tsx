@@ -254,10 +254,12 @@ function Pool() {
 
         if (data) {
             for (let pool in data) {
-
+                const pairPoolData = data[pool]
                 const coinX = pool.split('/')[0]
                 const coinY = pool.split('/')[1]
                 const uppercasePoolNames = pool.toUpperCase()
+
+                const myShare = (pairPoolData.userPoolData.poolTokenAmount / pairPoolData.totalPoolToken)
 
                 if (isUser && data[pool].userPoolData.poolTokenAmount) {
                     result.push(
@@ -280,19 +282,19 @@ function Pool() {
                             <div className="pool-details">
                                 <div className="detail">
                                     <div>Your total pool tokens:</div>
-                                    <div>1</div>
+                                    <div>{parseFloat(cutNumber(pairPoolData.userPoolData.poolTokenAmount, 4))}</div>
                                 </div>
                                 <div className="detail">
                                     <div>Pooled {uppercasePoolNames.split('/')[0]}:</div>
-                                    <div>2</div>
+                                    <div>{parseFloat(cutNumber(myShare * pairPoolData[coinX], 8))}</div>
                                 </div>
                                 <div className="detail">
                                     <div>Pooled {uppercasePoolNames.split('/')[1]}:</div>
-                                    <div>3</div>
+                                    <div>{parseFloat(cutNumber(myShare * pairPoolData[coinY], 8))}</div>
                                 </div>
                                 <div className="detail">
                                     <div>Your pool share:</div>
-                                    <div>4</div>
+                                    <div>{parseFloat(cutNumber(myShare, 8))}%</div>
                                 </div>
 
                                 <div className="pool-action">
@@ -304,7 +306,7 @@ function Pool() {
                         </div>)
                     )
                 } else if (!isUser) {
-
+                    console.log(pairPoolData)
 
                     result.push(
                         <div className="pool all-pool" key={pool}>
@@ -327,11 +329,11 @@ function Pool() {
                             <div className="pool-details">
                                 <div className="detail">
                                     <div>Total Pooled {uppercasePoolNames.split('/')[0]}:</div>
-                                    <div>2</div>
+                                    <div>{parseFloat(cutNumber(pairPoolData[coinX], 4))}</div>
                                 </div>
                                 <div className="detail">
                                     <div>Total Pooled {uppercasePoolNames.split('/')[1]}:</div>
-                                    <div>3</div>
+                                    <div>{parseFloat(cutNumber(pairPoolData[coinY], 4))}</div>
                                 </div>
                                 <div className="detail">
                                     <div>APY:</div>
@@ -359,6 +361,13 @@ function Pool() {
         function isEmpty(param) {
             return Object.keys(param).length === 0;
         }
+
+        function cutNumber(number, digitsAfterDot) {
+            const str = `${number}`;
+
+            return str.slice(0, str.indexOf('.') + digitsAfterDot + 1);
+        }
+
     }
     return (
         <>
