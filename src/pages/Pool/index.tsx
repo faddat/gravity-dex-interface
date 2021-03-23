@@ -195,6 +195,37 @@ const PoolWrapper = styled.div`
     .all-pool {
        background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(33 211 229 / 20%) 0%,rgb(242 237 237) 100%);
     }
+
+    .pool-action {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+
+        margin-top: 16px;
+
+        button {
+            width: calc(50% - 20px);
+            font-size: 15px;
+            padding: 8px;
+            font-weight: 500;
+            text-align: center;
+            border-radius: 8px;
+            outline: none;
+            border: 1px solid transparent;
+            text-decoration: none;
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+            -webkit-box-align: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            background-color: #4397ff;
+            color: white;
+        }
+    }
 `
 
 function Pool() {
@@ -241,7 +272,13 @@ function Pool() {
                                     <div>Your pool share:</div>
                                     <div>4</div>
                                 </div>
+
+                                <div className="pool-action">
+                                    <button>Deposit</button><button>Withdraw</button>
+                                </div>
                             </div>
+
+
                         </div>)
                     )
                 } else if (!isUser) {
@@ -267,6 +304,10 @@ function Pool() {
                                 <div className="detail">
                                     <div>APY:</div>
                                     <div>4%</div>
+                                </div>
+
+                                <div className="pool-action">
+                                    <button>Deposit</button>
                                 </div>
                             </div>
                         </div>
