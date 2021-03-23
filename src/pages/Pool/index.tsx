@@ -191,6 +191,10 @@ const PoolWrapper = styled.div`
             }
         }
     }
+
+    .all-pool {
+       background: radial-gradient(91.85% 100% at 1.84% 0%,rgb(33 211 229 / 20%) 0%,rgb(237,238,242) 100%);
+    }
 `
 
 function Pool() {
@@ -204,44 +208,70 @@ function Pool() {
         if (data) {
             for (let pool in data) {
                 console.log(data[pool].userPoolData)
-
-                if (isUser && isEmpty(data[pool].userPoolData)) {
-                    return <div className="no-pool">No liquidity found</div>
-                }
+                // if (isUser && isEmpty(data[pool].userPoolData)) {
+                //     return <div className="no-pool">No liquidity found</div>
+                // }
 
                 let uppercasePoolNames = pool.toUpperCase()
-
-                result.push(
-                    (<div className="pool" key={pool + `${isUser ? '*' : ''}`}>
-                        <span className="background"></span>
-                        <div className="pool-title">
-                            <div className="pool-name">{uppercasePoolNames}</div>
-                            <div className="manage">
-                                <label className="button" htmlFor={pool}>Manage</label>
+                if (isUser && data[pool].userPoolData.poolTokenAmount) {
+                    result.push(
+                        (<div className="pool" key={pool + '*'}>
+                            <span className="background"></span>
+                            <div className="pool-title">
+                                <div className="pool-name">{uppercasePoolNames}</div>
+                                <div className="manage">
+                                    <label className="button" htmlFor={pool}>Manage</label>
+                                </div>
+                            </div>
+                            <input type="checkbox" className="checkbox" id={pool} />
+                            <div className="pool-details">
+                                <div className="detail">
+                                    <div>Your total pool tokens:</div>
+                                    <div>1</div>
+                                </div>
+                                <div className="detail">
+                                    <div>Pooled {uppercasePoolNames.split('/')[0]}:</div>
+                                    <div>2</div>
+                                </div>
+                                <div className="detail">
+                                    <div>Pooled {uppercasePoolNames.split('/')[1]}:</div>
+                                    <div>3</div>
+                                </div>
+                                <div className="detail">
+                                    <div>Your pool share:</div>
+                                    <div>4</div>
+                                </div>
+                            </div>
+                        </div>)
+                    )
+                } else if (!isUser) {
+                    result.push(
+                        <div className="pool all-pool" key={pool}>
+                            <span className="background"></span>
+                            <div className="pool-title">
+                                <div className="pool-name">{uppercasePoolNames}</div>
+                                <div className="manage">
+                                    <label className="button" htmlFor={pool + '*'}>Manage</label>
+                                </div>
+                            </div>
+                            <input type="checkbox" className="checkbox" id={pool + '*'} />
+                            <div className="pool-details">
+                                <div className="detail">
+                                    <div>Total Pooled {uppercasePoolNames.split('/')[0]}:</div>
+                                    <div>2</div>
+                                </div>
+                                <div className="detail">
+                                    <div>Total Pooled {uppercasePoolNames.split('/')[1]}:</div>
+                                    <div>3</div>
+                                </div>
+                                <div className="detail">
+                                    <div>APY:</div>
+                                    <div>4%</div>
+                                </div>
                             </div>
                         </div>
-                        <input type="checkbox" className="checkbox" id={pool} />
-                        <div className="pool-details">
-                            <div className="detail">
-                                <div>Your total pool tokens:</div>
-                                <div>1</div>
-                            </div>
-                            <div className="detail">
-                                <div>Pooled {uppercasePoolNames.split('/')[0]}:</div>
-                                <div>2</div>
-                            </div>
-                            <div className="detail">
-                                <div>Pooled {uppercasePoolNames.split('/')[1]}:</div>
-                                <div>3</div>
-                            </div>
-                            <div className="detail">
-                                <div>Your pool share:</div>
-                                <div>4</div>
-                            </div>
-                        </div>
-                    </div>)
-                )
-
+                    )
+                }
             }
         } else {
             return <div className="no-pool">No liquidity found</div>

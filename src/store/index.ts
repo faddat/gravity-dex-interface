@@ -28,9 +28,9 @@ const TEST_INIT_DATA = {
     poolsData: {
         pairs: ['atom', 'iris', 'band', 'luna', 'kava'],
         pools: {
-            "atom/iris": { atom: 1000, iris: 1003, userPoolData: {} },
+            "atom/iris": { atom: 1000, iris: 1003, userPoolData: { poolTokenAmount: 0.01 } },
             "atom/band": { atom: 871.123, band: 111.31221, userPoolData: {} },
-            "band/luna": { band: 233333, luna: 12234.23124, userPoolData: {} },
+            "band/luna": { band: 233333, luna: 12234.23124, userPoolData: { poolTokenAmount: 0.02 } },
             "atom/luna": { atom: 233333, luna: 12234.23124, userPoolData: {} },
             "kava/luna": { kava: 233333, luna: 12234.23124, userPoolData: {} },
         }
