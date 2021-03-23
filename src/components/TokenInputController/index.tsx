@@ -178,7 +178,7 @@ function TokenInputController({ header, amount, coin, counterPair, dispatch, dis
                     <div className="right">
                         <button
                             className="max-button"
-                            style={{ display: `${isCoin && header.title === 'From' && Number(amount) < Number(header.balance) ? '' : 'none'}` }}
+                            style={{ display: `${isCoin && (header.title === 'From' || header.title === 'X') && Number(amount) < Number(header.balance) ? '' : 'none'}` }}
                             onClick={() => {
                                 dispatch({ type: dispatchTypes.max, payload: { target: header.title, amount: myBalance[coin] } })
                             }}
