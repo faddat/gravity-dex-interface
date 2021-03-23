@@ -195,11 +195,12 @@ const PoolWrapper = styled.div`
 
 function Pool() {
     const poolData = useSelector((state) => state.store.poolsData)
+    const [searchKeyword, setSearchKeyword] = React.useState('')
     console.log(poolData)
 
-    function poolGenerator(data, isUser) {
-
+    function poolGenerator(data, isUser, keyword = '') {
         let result = []
+
         if (data) {
             for (let pool in data) {
                 console.log(data[pool].userPoolData)
@@ -208,11 +209,13 @@ function Pool() {
                     return <div className="no-pool">No liquidity found</div>
                 }
 
+                let uppercasePoolNames = pool.toUpperCase()
+
                 result.push(
-                    (<div className="pool" key={pool + isUser}>
+                    (<div className="pool" key={pool + `${isUser ? '*' : ''}`}>
                         <span className="background"></span>
                         <div className="pool-title">
-                            <div className="pool-name">{pool.toUpperCase().replace('-', '/')}</div>
+                            <div className="pool-name">{uppercasePoolNames}</div>
                             <div className="manage">
                                 <label className="button" htmlFor={pool}>Manage</label>
                             </div>
@@ -224,11 +227,11 @@ function Pool() {
                                 <div>1</div>
                             </div>
                             <div className="detail">
-                                <div>Pooled DAI:</div>
+                                <div>Pooled {uppercasePoolNames.split('/')[0]}:</div>
                                 <div>2</div>
                             </div>
                             <div className="detail">
-                                <div>Pooled ETH:</div>
+                                <div>Pooled {uppercasePoolNames.split('/')[1]}:</div>
                                 <div>3</div>
                             </div>
                             <div className="detail">
@@ -242,6 +245,10 @@ function Pool() {
             }
         } else {
             return <div className="no-pool">No liquidity found</div>
+        }
+
+        if (!isUser && keyword !== '') {
+            result = result.filter((s => s.key.includes(keyword)))
         }
 
         return result
@@ -282,11 +289,11 @@ function Pool() {
                     </div>
 
                     <div className="buttons">
-                        <input type="text" className="search" placeholder="Search Pool" />
+                        <input type="text" className="search" value={searchKeyword} onChange={(e) => { setSearchKeyword(e.target.value) }} placeholder="Search Pool" />
                     </div>
                 </div>
 
-                {poolGenerator(poolData.pools, false)}
+                {poolGenerator(poolData.pools, false, searchKeyword)}
 
             </PoolWrapper>
         </>
