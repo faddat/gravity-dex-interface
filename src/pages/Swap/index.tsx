@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedPairsPoolData } from "../../utils/global-functions"
+import { getSelectedPairsPoolData, getPoolPrice, cutNumber } from "../../utils/global-functions"
 import { useHistory } from 'react-router-dom'
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
@@ -143,15 +143,18 @@ function SwapCard() {
 
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal' }
             case TYPES.SET_MAX_AMOUNT:
+
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
                 const selectedPooldata = getSelectedPairsPoolData(state, action, counterTarget, poolData)
-
+                let price;
                 if (!selectedPooldata) {
                     history.push('/create')
+                } else {
+                    price = getPoolPrice(state, action, counterTarget, poolData)
                 }
 
-                return { ...state, [`${target}Coin`]: action.payload.coin }
+                return { ...state, [`${target}Coin`]: action.payload.coin, price: price }
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
                 return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
@@ -166,7 +169,8 @@ function SwapCard() {
         toCoin: '',
         fromAmount: '',
         toAmount: '',
-        status: 'empty' // connectWallet, notSelected, empty, over, normal
+        status: 'empty', // connectWallet, notSelected, empty, over, normal
+        price: '-'
     })
 
     function swap() {
@@ -221,7 +225,7 @@ function SwapCard() {
                     {/* Swap detail */}
                     <div className="swap-detail">
                         <div className="left">Price</div>
-                        <div className="right">1</div>
+                        <div className="right">{state.price !== '-' ? (`${parseFloat(cutNumber(state.price, 6))} ${state.fromCoin.toUpperCase()} per ${state.toCoin.toUpperCase()}`) : '-'}</div>
                     </div>
 
                     <div className="swap-detail">

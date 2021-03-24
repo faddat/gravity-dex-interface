@@ -24,6 +24,12 @@ export function getMyTokenBalance(token, indexer) {
     }
 }
 
+export function cutNumber(number, digitsAfterDot) {
+    const str = `${number}`;
+
+    return str.slice(0, str.indexOf('.') + digitsAfterDot + 1);
+}
+
 // export function sortReserveCoinDenoms(x, y) {
 //     return [x, y].sort()
 // }
@@ -39,6 +45,17 @@ export function getSelectedPairsPoolData(state, action, counterTarget, poolData)
     const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
 
     return slectedPairsPoolData === undefined ? false : slectedPairsPoolData
+}
+
+export function getPoolPrice(state, action, counterTarget, poolData) {
+    let coinA = state[`${counterTarget}Coin`]
+    let coinB = action.payload.coin
+    const sortedCoins = [coinA, coinB].sort()
+    const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
+
+    const price = slectedPairsPoolData[coinA] / slectedPairsPoolData[coinB]
+
+    return price
 }
 
 
