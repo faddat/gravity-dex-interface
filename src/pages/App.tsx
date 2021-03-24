@@ -14,6 +14,7 @@ import Rank from "../pages/Rank"
 //test
 import { testTxGenerator } from "../cosmos-amm/new-cosmos-amm"
 import { test2 } from "../cosmos-amm/new2-cosmos-amm"
+import { testSign } from "../cosmos-amm/new-sign-comsos-amm"
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -45,7 +46,8 @@ function App() {
     window.onload = () => {
       //test 
       // testTxGenerator()
-      test2()
+      // test2()
+      testSign()
     }
   }, [])
 
