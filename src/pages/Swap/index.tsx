@@ -107,6 +107,8 @@ function SwapCard() {
     }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
     const slippage = useSelector((state) => state.store.userData.slippage)
+    const storeDispatch = useDispatch()
+
     //reducer for useReducer
     function reducer(state, action) {
         let target = null
@@ -121,6 +123,7 @@ function SwapCard() {
             case TYPES.AMOUNT_CHANGE:
                 let isOver = false
                 let isEmpty = false
+                let isCounterPairEmpty = false
 
                 if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
                     isOver = true
@@ -130,10 +133,15 @@ function SwapCard() {
                     isEmpty = true
                 }
 
-                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : isEmpty ? 'empty' : 'normal' }
+                if (state[`${counterTarget}Amount`] === '' || state[`${counterTarget}Amount`] == 0) {
+                    isCounterPairEmpty = true
+                }
+
+                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal' }
             case TYPES.SET_MAX_AMOUNT:
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
+
                 return { ...state, [`${target}Coin`]: action.payload.coin }
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
@@ -154,6 +162,10 @@ function SwapCard() {
 
     function swap() {
         alert('swap')
+        storeDispatch({ type: 'rootStore/togglePendingStatus' })
+        setTimeout(() => {
+            storeDispatch({ type: 'rootStore/togglePendingStatus' })
+        }, 3000)
     }
 
     return (

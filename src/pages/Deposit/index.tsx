@@ -151,6 +151,7 @@ function SwapCard() {
             case TYPES.AMOUNT_CHANGE:
                 let isOver = false
                 let isEmpty = false
+                let isCounterPairEmpty = false
 
                 if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
                     isOver = true
@@ -160,7 +161,11 @@ function SwapCard() {
                     isEmpty = true
                 }
 
-                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : isEmpty ? 'empty' : 'normal' }
+                if (state[`${counterTarget}Amount`] === '' || state[`${counterTarget}Amount`] == 0) {
+                    isCounterPairEmpty = true
+                }
+
+                return { ...state, [`${target}Amount`]: action.payload.amount, status: isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal' }
             case TYPES.SET_MAX_AMOUNT:
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
