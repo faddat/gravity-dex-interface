@@ -261,7 +261,7 @@ function AppHeader() {
           <div className="total-value">${getTotalValue(userBalance)}</div>
 
           <ConnectedWallet onClick={() => { showStatusDetail() }}>
-            {walletStatus !== "pending" ? <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div> : <div style={{ margin: 0 }}><GridSpinner size={19} /><div style={{ marginLeft: "12px" }}>Pending</div></div>}
+            {walletStatus !== "pending" ? <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div> : <div style={{ margin: 0, paddingRight: "6px" }}><div style={{ margin: "0 0 0 12px" }}>Pending</div><GridSpinner size={19} /></div>}
 
           </ConnectedWallet>
         </WalletWidget>
