@@ -11,6 +11,9 @@ import Deposit from "../pages/Deposit"
 import Withdraw from "../pages/Withdraw"
 import Rank from "../pages/Rank"
 
+//test
+import { testTxGenerator } from "../cosmos-amm/new-cosmos-amm"
+
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
@@ -38,6 +41,10 @@ function App() {
   React.useEffect(() => {
     if (window.location.hash === '#/') {
       history.push('/swap')
+    }
+    window.onload = () => {
+      //test 
+      testTxGenerator()
     }
   }, [])
 
