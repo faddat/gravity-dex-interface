@@ -58,8 +58,9 @@ import { Tendermint34Client } from "@cosmjs/tendermint-rpc";
 import { QueryClientImpl } from "./liquidity_codecs/query";
 import { DirectSecp256k1HdWallet, Registry } from "@cosmjs/proto-signing";
 import { defaultRegistryTypes, SigningStargateClient } from "@cosmjs/stargate";
-import { MsgSwapRequest } from "./liquidity_codecs/tx";
-
+import { Coin } from "./liquidity_codecs/cosmos_proto/coin"
+import { MsgSwap } from "./liquidity_codecs/tx";
+import Long from "long";
 export async function testSign() {
     // Inside an async function...
     // The Tendermint client knows how to talk to the Tendermint RPC endpoint
@@ -80,7 +81,7 @@ export async function testSign() {
 
     const myRegistry = new Registry([
         ...defaultRegistryTypes,
-        ["/tendermint.liquidity.MsgSwap", MsgSwapRequest],
+        ["/tendermint.liquidity.MsgSwap", MsgSwap],
     ]);
     const chainId = "swap-testnet-2001";
     await window.keplr.enable(chainId);
@@ -92,22 +93,18 @@ export async function testSign() {
     const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, wallet, { registry: myRegistry });
     const message = {
         typeUrl: "/tendermint.liquidity.MsgSwap",
+
         value: {
-            "swap_requester_address": "cosmos1ltz6n5d2jrvvnfjwly5w6wjwy0x38vg5x89u6u",
-            "pool_id": "1",
-            "swap_type": 1,
-            "offer_coin": {
-                "denom": "uatom",
-                "amount": "20000000"
-            },
-            "demand_coin_denom": "uscrt",
-            "order_price": "5.628541962635075890",
-            "offer_coin_fee": {
-                "denom": "uatom",
-                "amount": "30000"
-            }
+            "swapRequesterAddress": "cosmos1ltz6n5d2jrvvnfjwly5w6wjwy0x38vg5x89u6u",
+            "poolId": new Long(8),
+            "swapYype": 1,
+            "offerCoin": { "denom": "uluna", "amount": "10000000" },
+            "demandCoinDenom": "uatom",
+            "orderPrice": new Uint8Array(2.343495760438650155),
+            "offerCoinFee": { "denom": "uluna", "amount": "15000" }
         }
-    };
+    }
+
     const fee = {
         amount: [
             {
@@ -117,6 +114,6 @@ export async function testSign() {
         ],
         gas: "10000",
     };
-    const response = await client.signAndBroadcast(firstAccount.address, [message], fee);
+    const response = await client.signAndBroadcast(firstAccount.address, [message], fee, 'test');
 
 }
