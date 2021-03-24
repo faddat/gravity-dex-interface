@@ -5,36 +5,36 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "tendermint.liquidity";
 
-/** MsgCreatePool defines an sdk.Msg type that supports submitting create liquidity pool */
-export interface MsgCreatePool {
+/** MsgCreateLiquidityPool defines an sdk.Msg type that supports submitting create liquidity pool */
+export interface MsgCreateLiquidityPool {
   poolCreatorAddress: string;
-  /** id of target pool type, only 1 is allowed on this version, Must match the value in the pool. */
-  poolTypeId: number;
+  /** index of target pool type, only 1 is allowed on this version, Must match the value in the pool. */
+  poolTypeIndex: number;
   /** reserve coin pair of the pool to deposit */
   depositCoins: Coin[];
 }
 
-/** MsgCreatePoolRequest is the request type for the Msg/MsgCreatePoolRequest RPC method. */
-export interface MsgCreatePoolRequest {
+/** MsgCreateLiquidityPoolRequest is the request type for the Msg/MsgCreateLiquidityPoolRequest RPC method. */
+export interface MsgCreateLiquidityPoolRequest {
   baseReq?: BaseReq;
-  /** MsgCreatePool */
-  msg?: MsgCreatePool;
+  /** MsgCreateLiquidityPool */
+  msg?: MsgCreateLiquidityPool;
 }
 
-/** MsgCreatePoolResponse defines the Msg/CreatePool response type. */
-export interface MsgCreatePoolResponse {
+/** MsgCreateLiquidityPoolResponse defines the Msg/CreateLiquidityPool response type. */
+export interface MsgCreateLiquidityPoolResponse {
   stdTx?: StdTx;
 }
 
 /**
- * `MsgDepositWithinBatch defines` an `sdk.Msg` type that supports submitting deposit request to the batch of the liquidity pool
- * Deposit submit to the batch of the Liquidity pool with the specified `pool_id`, deposit_coins for reserve
+ * `MsgDepositToLiquidityPool defines` an `sdk.Msg` type that supports submitting deposit request to the batch of the liquidity pool
+ * Deposit submit to the batch of the Liquidity pool with the specified `pool_id`, deposit coins for reserve
  * this requests are stacked in the batch of the liquidity pool, not immediately processed and
  * processed in the `endblock` at once with other requests.
  *
  * See: https://github.com/tendermint/liquidity/blob/develop/x/liquidity/spec/04_messages.md
  */
-export interface MsgDepositWithinBatch {
+export interface MsgDepositToLiquidityPool {
   /**
    * The publisher in which to create the book.
    *
@@ -49,90 +49,90 @@ export interface MsgDepositWithinBatch {
   depositCoins: Coin[];
 }
 
-/** MsgDepositWithinBatchRequest is the request type for the Msg/DepositWithinBatch RPC method. */
-export interface MsgDepositWithinBatchRequest {
+/** MsgDepositToLiquidityPoolRequest is the request type for the Msg/DepositToLiquidityPool RPC method. */
+export interface MsgDepositToLiquidityPoolRequest {
   baseReq?: BaseReq;
   /** id of the target pool */
   poolId: Long;
-  /** MsgDepositWithinBatch */
-  msg?: MsgDepositWithinBatch;
+  /** MsgDepositToLiquidityPool */
+  msg?: MsgDepositToLiquidityPool;
 }
 
-/** MsgDepositWithinBatchResponse defines the Msg/DepositWithinBatch response type. */
-export interface MsgDepositWithinBatchResponse {
+/** MsgDepositToLiquidityPoolResponse defines the Msg/DepositToLiquidityPool response type. */
+export interface MsgDepositToLiquidityPoolResponse {
   stdTx?: StdTx;
 }
 
 /**
- * `MsgWithdrawWithinBatch` defines an `sdk.Msg` type that supports submitting withdraw request to the batch of the liquidity pool
+ * `MsgWithdrawFromLiquidityPool` defines an `sdk.Msg` type that supports submitting withdraw request to the batch of the liquidity pool
  * Withdraw submit to the batch from the Liquidity pool with the specified `pool_id`, `pool_coin` of the pool
  * this requests are stacked in the batch of the liquidity pool, not immediately processed and
  * processed in the `endblock` at once with other requests.
  *
  * See: https://github.com/tendermint/liquidity/blob/develop/x/liquidity/spec/04_messages.md
  */
-export interface MsgWithdrawWithinBatch {
+export interface MsgWithdrawFromLiquidityPool {
   withdrawerAddress: string;
   /** id of the target pool */
   poolId: Long;
   poolCoin?: Coin;
 }
 
-/** MsgWithdrawWithinBatchRequest is the request type for the Query/WithdrawWithinBatch RPC method. */
-export interface MsgWithdrawWithinBatchRequest {
+/** MsgWithdrawFromLiquidityPoolRequest is the request type for the Query/WithdrawFromLiquidityPool RPC method. */
+export interface MsgWithdrawFromLiquidityPoolRequest {
   baseReq?: BaseReq;
   /** id of the target pool */
   poolId: Long;
-  /** MsgWithdrawWithinBatch */
-  msg?: MsgWithdrawWithinBatch;
+  /** MsgWithdrawFromLiquidityPool */
+  msg?: MsgWithdrawFromLiquidityPool;
 }
 
-/** MsgWithdrawWithinBatchResponse defines the Msg/WithdrawWithinBatch response type. */
-export interface MsgWithdrawWithinBatchResponse {
+/** MsgWithdrawFromLiquidityPoolResponse defines the Msg/WithdrawFromLiquidityPool response type. */
+export interface MsgWithdrawFromLiquidityPoolResponse {
   stdTx?: StdTx;
 }
 
 /**
- * `MsgSwapWithinBatch` defines an sdk.Msg type that supports submitting swap offer request to the batch of the liquidity pool
- * Swap offer submit to the batch to the Liquidity pool with the specified the `pool_id`, `swap_type_id`,
- * `demand_coin_denom` with the coin and the price you're offering and current `params.swap_fee_rate`
+ * `MsgSwap` defines an sdk.Msg type that supports submitting swap offer request to the batch of the liquidity pool
+ * Swap offer to the Liquidity pool with the specified `pool_id`, `pool_type_index`, `swap_type`,
+ * `demand_coin_denom` with the coin and the price you're offering
  * this requests are stacked in the batch of the liquidity pool, not immediately processed and
  * processed in the `endblock` at once with other requests
  * You should request the same each field as the pool
- * Currently, only the default `swap_type_id`1 is available on this version
+ * Currently, only the default `swap_type`1 is available on this version
  * The detailed swap algorithm can be found here.
  *
  * See: https://github.com/tendermint/liquidity/tree/develop/doc
  * https://github.com/tendermint/liquidity/blob/develop/x/liquidity/spec/04_messages.md
  */
-export interface MsgSwapWithinBatch {
+export interface MsgSwap {
   /** address of swap requester */
   swapRequesterAddress: string;
   /** id of the target pool */
   poolId: Long;
-  /** id of swap type, only 1 is allowed on this version, Must match the value in the pool. */
-  swapTypeId: number;
+  /** id of swap type type, only 1 is allowed on this version, Must match the value in the pool. */
+  swapType: number;
   /** offer sdk.coin for the swap request, Must match the denom in the pool. */
   offerCoin?: Coin;
   /** denom of demand coin to be exchanged on the swap request, Must match the denom in the pool. */
   demandCoinDenom: string;
   /** offer coin fee for pay fees in half offer coin */
   offerCoinFee?: Coin;
-  /** limit order price for the order, the price is the exchange ratio of X/Y where X is the amount of the first coin and Y is the amount of the second coin when their denoms are sorted alphabetically */
+  /** limit order price for this offer */
   orderPrice: Uint8Array;
 }
 
-/** MsgSwapWithinBatchRequest is the request type for the Query/Swap RPC method. */
-export interface MsgSwapWithinBatchRequest {
+/** MsgSwapRequest is the request type for the Query/Swap RPC method. */
+export interface MsgSwapRequest {
   baseReq?: BaseReq;
   /** id of the target pool */
   poolId: Long;
-  /** MsgSwapWithinBatch */
-  msg?: MsgSwapWithinBatch;
+  /** MsgSwap */
+  msg?: MsgSwap;
 }
 
-/** MsgSwapWithinBatchResponse defines the Msg/Swap response type. */
-export interface MsgSwapWithinBatchResponse {
+/** MsgSwapResponse defines the Msg/Swap response type. */
+export interface MsgSwapResponse {
   stdTx?: StdTx;
 }
 
@@ -201,18 +201,21 @@ export interface StdTx {
   signature?: Signature;
 }
 
-const baseMsgCreatePool: object = { poolCreatorAddress: "", poolTypeId: 0 };
+const baseMsgCreateLiquidityPool: object = {
+  poolCreatorAddress: "",
+  poolTypeIndex: 0,
+};
 
-export const MsgCreatePool = {
+export const MsgCreateLiquidityPool = {
   encode(
-    message: MsgCreatePool,
+    message: MsgCreateLiquidityPool,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.poolCreatorAddress !== "") {
       writer.uint32(10).string(message.poolCreatorAddress);
     }
-    if (message.poolTypeId !== 0) {
-      writer.uint32(16).uint32(message.poolTypeId);
+    if (message.poolTypeIndex !== 0) {
+      writer.uint32(16).uint32(message.poolTypeIndex);
     }
     for (const v of message.depositCoins) {
       Coin.encode(v!, writer.uint32(34).fork()).ldelim();
@@ -220,10 +223,13 @@ export const MsgCreatePool = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCreatePool {
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): MsgCreateLiquidityPool {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgCreatePool } as MsgCreatePool;
+    const message = { ...baseMsgCreateLiquidityPool } as MsgCreateLiquidityPool;
     message.depositCoins = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -232,7 +238,7 @@ export const MsgCreatePool = {
           message.poolCreatorAddress = reader.string();
           break;
         case 2:
-          message.poolTypeId = reader.uint32();
+          message.poolTypeIndex = reader.uint32();
           break;
         case 4:
           message.depositCoins.push(Coin.decode(reader, reader.uint32()));
@@ -245,8 +251,8 @@ export const MsgCreatePool = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreatePool {
-    const message = { ...baseMsgCreatePool } as MsgCreatePool;
+  fromJSON(object: any): MsgCreateLiquidityPool {
+    const message = { ...baseMsgCreateLiquidityPool } as MsgCreateLiquidityPool;
     message.depositCoins = [];
     if (
       object.poolCreatorAddress !== undefined &&
@@ -256,10 +262,10 @@ export const MsgCreatePool = {
     } else {
       message.poolCreatorAddress = "";
     }
-    if (object.poolTypeId !== undefined && object.poolTypeId !== null) {
-      message.poolTypeId = Number(object.poolTypeId);
+    if (object.poolTypeIndex !== undefined && object.poolTypeIndex !== null) {
+      message.poolTypeIndex = Number(object.poolTypeIndex);
     } else {
-      message.poolTypeId = 0;
+      message.poolTypeIndex = 0;
     }
     if (object.depositCoins !== undefined && object.depositCoins !== null) {
       for (const e of object.depositCoins) {
@@ -269,11 +275,12 @@ export const MsgCreatePool = {
     return message;
   },
 
-  toJSON(message: MsgCreatePool): unknown {
+  toJSON(message: MsgCreateLiquidityPool): unknown {
     const obj: any = {};
     message.poolCreatorAddress !== undefined &&
       (obj.poolCreatorAddress = message.poolCreatorAddress);
-    message.poolTypeId !== undefined && (obj.poolTypeId = message.poolTypeId);
+    message.poolTypeIndex !== undefined &&
+      (obj.poolTypeIndex = message.poolTypeIndex);
     if (message.depositCoins) {
       obj.depositCoins = message.depositCoins.map((e) =>
         e ? Coin.toJSON(e) : undefined
@@ -284,8 +291,10 @@ export const MsgCreatePool = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgCreatePool>): MsgCreatePool {
-    const message = { ...baseMsgCreatePool } as MsgCreatePool;
+  fromPartial(
+    object: DeepPartial<MsgCreateLiquidityPool>
+  ): MsgCreateLiquidityPool {
+    const message = { ...baseMsgCreateLiquidityPool } as MsgCreateLiquidityPool;
     message.depositCoins = [];
     if (
       object.poolCreatorAddress !== undefined &&
@@ -295,10 +304,10 @@ export const MsgCreatePool = {
     } else {
       message.poolCreatorAddress = "";
     }
-    if (object.poolTypeId !== undefined && object.poolTypeId !== null) {
-      message.poolTypeId = object.poolTypeId;
+    if (object.poolTypeIndex !== undefined && object.poolTypeIndex !== null) {
+      message.poolTypeIndex = object.poolTypeIndex;
     } else {
-      message.poolTypeId = 0;
+      message.poolTypeIndex = 0;
     }
     if (object.depositCoins !== undefined && object.depositCoins !== null) {
       for (const e of object.depositCoins) {
@@ -309,18 +318,21 @@ export const MsgCreatePool = {
   },
 };
 
-const baseMsgCreatePoolRequest: object = {};
+const baseMsgCreateLiquidityPoolRequest: object = {};
 
-export const MsgCreatePoolRequest = {
+export const MsgCreateLiquidityPoolRequest = {
   encode(
-    message: MsgCreatePoolRequest,
+    message: MsgCreateLiquidityPoolRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.baseReq !== undefined) {
       BaseReq.encode(message.baseReq, writer.uint32(10).fork()).ldelim();
     }
     if (message.msg !== undefined) {
-      MsgCreatePool.encode(message.msg, writer.uint32(18).fork()).ldelim();
+      MsgCreateLiquidityPool.encode(
+        message.msg,
+        writer.uint32(18).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -328,10 +340,12 @@ export const MsgCreatePoolRequest = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgCreatePoolRequest {
+  ): MsgCreateLiquidityPoolRequest {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgCreatePoolRequest } as MsgCreatePoolRequest;
+    const message = {
+      ...baseMsgCreateLiquidityPoolRequest,
+    } as MsgCreateLiquidityPoolRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -339,7 +353,7 @@ export const MsgCreatePoolRequest = {
           message.baseReq = BaseReq.decode(reader, reader.uint32());
           break;
         case 2:
-          message.msg = MsgCreatePool.decode(reader, reader.uint32());
+          message.msg = MsgCreateLiquidityPool.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -349,41 +363,49 @@ export const MsgCreatePoolRequest = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreatePoolRequest {
-    const message = { ...baseMsgCreatePoolRequest } as MsgCreatePoolRequest;
+  fromJSON(object: any): MsgCreateLiquidityPoolRequest {
+    const message = {
+      ...baseMsgCreateLiquidityPoolRequest,
+    } as MsgCreateLiquidityPoolRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromJSON(object.baseReq);
     } else {
       message.baseReq = undefined;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgCreatePool.fromJSON(object.msg);
+      message.msg = MsgCreateLiquidityPool.fromJSON(object.msg);
     } else {
       message.msg = undefined;
     }
     return message;
   },
 
-  toJSON(message: MsgCreatePoolRequest): unknown {
+  toJSON(message: MsgCreateLiquidityPoolRequest): unknown {
     const obj: any = {};
     message.baseReq !== undefined &&
       (obj.baseReq = message.baseReq
         ? BaseReq.toJSON(message.baseReq)
         : undefined);
     message.msg !== undefined &&
-      (obj.msg = message.msg ? MsgCreatePool.toJSON(message.msg) : undefined);
+      (obj.msg = message.msg
+        ? MsgCreateLiquidityPool.toJSON(message.msg)
+        : undefined);
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgCreatePoolRequest>): MsgCreatePoolRequest {
-    const message = { ...baseMsgCreatePoolRequest } as MsgCreatePoolRequest;
+  fromPartial(
+    object: DeepPartial<MsgCreateLiquidityPoolRequest>
+  ): MsgCreateLiquidityPoolRequest {
+    const message = {
+      ...baseMsgCreateLiquidityPoolRequest,
+    } as MsgCreateLiquidityPoolRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromPartial(object.baseReq);
     } else {
       message.baseReq = undefined;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgCreatePool.fromPartial(object.msg);
+      message.msg = MsgCreateLiquidityPool.fromPartial(object.msg);
     } else {
       message.msg = undefined;
     }
@@ -391,11 +413,11 @@ export const MsgCreatePoolRequest = {
   },
 };
 
-const baseMsgCreatePoolResponse: object = {};
+const baseMsgCreateLiquidityPoolResponse: object = {};
 
-export const MsgCreatePoolResponse = {
+export const MsgCreateLiquidityPoolResponse = {
   encode(
-    message: MsgCreatePoolResponse,
+    message: MsgCreateLiquidityPoolResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.stdTx !== undefined) {
@@ -407,10 +429,12 @@ export const MsgCreatePoolResponse = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgCreatePoolResponse {
+  ): MsgCreateLiquidityPoolResponse {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgCreatePoolResponse } as MsgCreatePoolResponse;
+    const message = {
+      ...baseMsgCreateLiquidityPoolResponse,
+    } as MsgCreateLiquidityPoolResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -425,8 +449,10 @@ export const MsgCreatePoolResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgCreatePoolResponse {
-    const message = { ...baseMsgCreatePoolResponse } as MsgCreatePoolResponse;
+  fromJSON(object: any): MsgCreateLiquidityPoolResponse {
+    const message = {
+      ...baseMsgCreateLiquidityPoolResponse,
+    } as MsgCreateLiquidityPoolResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromJSON(object.stdTx);
     } else {
@@ -435,7 +461,7 @@ export const MsgCreatePoolResponse = {
     return message;
   },
 
-  toJSON(message: MsgCreatePoolResponse): unknown {
+  toJSON(message: MsgCreateLiquidityPoolResponse): unknown {
     const obj: any = {};
     message.stdTx !== undefined &&
       (obj.stdTx = message.stdTx ? StdTx.toJSON(message.stdTx) : undefined);
@@ -443,9 +469,11 @@ export const MsgCreatePoolResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<MsgCreatePoolResponse>
-  ): MsgCreatePoolResponse {
-    const message = { ...baseMsgCreatePoolResponse } as MsgCreatePoolResponse;
+    object: DeepPartial<MsgCreateLiquidityPoolResponse>
+  ): MsgCreateLiquidityPoolResponse {
+    const message = {
+      ...baseMsgCreateLiquidityPoolResponse,
+    } as MsgCreateLiquidityPoolResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromPartial(object.stdTx);
     } else {
@@ -455,14 +483,14 @@ export const MsgCreatePoolResponse = {
   },
 };
 
-const baseMsgDepositWithinBatch: object = {
+const baseMsgDepositToLiquidityPool: object = {
   depositorAddress: "",
   poolId: Long.UZERO,
 };
 
-export const MsgDepositWithinBatch = {
+export const MsgDepositToLiquidityPool = {
   encode(
-    message: MsgDepositWithinBatch,
+    message: MsgDepositToLiquidityPool,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.depositorAddress !== "") {
@@ -480,10 +508,12 @@ export const MsgDepositWithinBatch = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgDepositWithinBatch {
+  ): MsgDepositToLiquidityPool {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgDepositWithinBatch } as MsgDepositWithinBatch;
+    const message = {
+      ...baseMsgDepositToLiquidityPool,
+    } as MsgDepositToLiquidityPool;
     message.depositCoins = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -505,8 +535,10 @@ export const MsgDepositWithinBatch = {
     return message;
   },
 
-  fromJSON(object: any): MsgDepositWithinBatch {
-    const message = { ...baseMsgDepositWithinBatch } as MsgDepositWithinBatch;
+  fromJSON(object: any): MsgDepositToLiquidityPool {
+    const message = {
+      ...baseMsgDepositToLiquidityPool,
+    } as MsgDepositToLiquidityPool;
     message.depositCoins = [];
     if (
       object.depositorAddress !== undefined &&
@@ -529,7 +561,7 @@ export const MsgDepositWithinBatch = {
     return message;
   },
 
-  toJSON(message: MsgDepositWithinBatch): unknown {
+  toJSON(message: MsgDepositToLiquidityPool): unknown {
     const obj: any = {};
     message.depositorAddress !== undefined &&
       (obj.depositorAddress = message.depositorAddress);
@@ -546,9 +578,11 @@ export const MsgDepositWithinBatch = {
   },
 
   fromPartial(
-    object: DeepPartial<MsgDepositWithinBatch>
-  ): MsgDepositWithinBatch {
-    const message = { ...baseMsgDepositWithinBatch } as MsgDepositWithinBatch;
+    object: DeepPartial<MsgDepositToLiquidityPool>
+  ): MsgDepositToLiquidityPool {
+    const message = {
+      ...baseMsgDepositToLiquidityPool,
+    } as MsgDepositToLiquidityPool;
     message.depositCoins = [];
     if (
       object.depositorAddress !== undefined &&
@@ -572,11 +606,11 @@ export const MsgDepositWithinBatch = {
   },
 };
 
-const baseMsgDepositWithinBatchRequest: object = { poolId: Long.UZERO };
+const baseMsgDepositToLiquidityPoolRequest: object = { poolId: Long.UZERO };
 
-export const MsgDepositWithinBatchRequest = {
+export const MsgDepositToLiquidityPoolRequest = {
   encode(
-    message: MsgDepositWithinBatchRequest,
+    message: MsgDepositToLiquidityPoolRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.baseReq !== undefined) {
@@ -586,7 +620,7 @@ export const MsgDepositWithinBatchRequest = {
       writer.uint32(16).uint64(message.poolId);
     }
     if (message.msg !== undefined) {
-      MsgDepositWithinBatch.encode(
+      MsgDepositToLiquidityPool.encode(
         message.msg,
         writer.uint32(26).fork()
       ).ldelim();
@@ -597,12 +631,12 @@ export const MsgDepositWithinBatchRequest = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgDepositWithinBatchRequest {
+  ): MsgDepositToLiquidityPoolRequest {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgDepositWithinBatchRequest,
-    } as MsgDepositWithinBatchRequest;
+      ...baseMsgDepositToLiquidityPoolRequest,
+    } as MsgDepositToLiquidityPoolRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -613,7 +647,10 @@ export const MsgDepositWithinBatchRequest = {
           message.poolId = reader.uint64() as Long;
           break;
         case 3:
-          message.msg = MsgDepositWithinBatch.decode(reader, reader.uint32());
+          message.msg = MsgDepositToLiquidityPool.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -623,10 +660,10 @@ export const MsgDepositWithinBatchRequest = {
     return message;
   },
 
-  fromJSON(object: any): MsgDepositWithinBatchRequest {
+  fromJSON(object: any): MsgDepositToLiquidityPoolRequest {
     const message = {
-      ...baseMsgDepositWithinBatchRequest,
-    } as MsgDepositWithinBatchRequest;
+      ...baseMsgDepositToLiquidityPoolRequest,
+    } as MsgDepositToLiquidityPoolRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromJSON(object.baseReq);
     } else {
@@ -638,14 +675,14 @@ export const MsgDepositWithinBatchRequest = {
       message.poolId = Long.UZERO;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgDepositWithinBatch.fromJSON(object.msg);
+      message.msg = MsgDepositToLiquidityPool.fromJSON(object.msg);
     } else {
       message.msg = undefined;
     }
     return message;
   },
 
-  toJSON(message: MsgDepositWithinBatchRequest): unknown {
+  toJSON(message: MsgDepositToLiquidityPoolRequest): unknown {
     const obj: any = {};
     message.baseReq !== undefined &&
       (obj.baseReq = message.baseReq
@@ -655,17 +692,17 @@ export const MsgDepositWithinBatchRequest = {
       (obj.poolId = (message.poolId || Long.UZERO).toString());
     message.msg !== undefined &&
       (obj.msg = message.msg
-        ? MsgDepositWithinBatch.toJSON(message.msg)
+        ? MsgDepositToLiquidityPool.toJSON(message.msg)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<MsgDepositWithinBatchRequest>
-  ): MsgDepositWithinBatchRequest {
+    object: DeepPartial<MsgDepositToLiquidityPoolRequest>
+  ): MsgDepositToLiquidityPoolRequest {
     const message = {
-      ...baseMsgDepositWithinBatchRequest,
-    } as MsgDepositWithinBatchRequest;
+      ...baseMsgDepositToLiquidityPoolRequest,
+    } as MsgDepositToLiquidityPoolRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromPartial(object.baseReq);
     } else {
@@ -677,7 +714,7 @@ export const MsgDepositWithinBatchRequest = {
       message.poolId = Long.UZERO;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgDepositWithinBatch.fromPartial(object.msg);
+      message.msg = MsgDepositToLiquidityPool.fromPartial(object.msg);
     } else {
       message.msg = undefined;
     }
@@ -685,11 +722,11 @@ export const MsgDepositWithinBatchRequest = {
   },
 };
 
-const baseMsgDepositWithinBatchResponse: object = {};
+const baseMsgDepositToLiquidityPoolResponse: object = {};
 
-export const MsgDepositWithinBatchResponse = {
+export const MsgDepositToLiquidityPoolResponse = {
   encode(
-    message: MsgDepositWithinBatchResponse,
+    message: MsgDepositToLiquidityPoolResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.stdTx !== undefined) {
@@ -701,12 +738,12 @@ export const MsgDepositWithinBatchResponse = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgDepositWithinBatchResponse {
+  ): MsgDepositToLiquidityPoolResponse {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgDepositWithinBatchResponse,
-    } as MsgDepositWithinBatchResponse;
+      ...baseMsgDepositToLiquidityPoolResponse,
+    } as MsgDepositToLiquidityPoolResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -721,10 +758,10 @@ export const MsgDepositWithinBatchResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgDepositWithinBatchResponse {
+  fromJSON(object: any): MsgDepositToLiquidityPoolResponse {
     const message = {
-      ...baseMsgDepositWithinBatchResponse,
-    } as MsgDepositWithinBatchResponse;
+      ...baseMsgDepositToLiquidityPoolResponse,
+    } as MsgDepositToLiquidityPoolResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromJSON(object.stdTx);
     } else {
@@ -733,7 +770,7 @@ export const MsgDepositWithinBatchResponse = {
     return message;
   },
 
-  toJSON(message: MsgDepositWithinBatchResponse): unknown {
+  toJSON(message: MsgDepositToLiquidityPoolResponse): unknown {
     const obj: any = {};
     message.stdTx !== undefined &&
       (obj.stdTx = message.stdTx ? StdTx.toJSON(message.stdTx) : undefined);
@@ -741,11 +778,11 @@ export const MsgDepositWithinBatchResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<MsgDepositWithinBatchResponse>
-  ): MsgDepositWithinBatchResponse {
+    object: DeepPartial<MsgDepositToLiquidityPoolResponse>
+  ): MsgDepositToLiquidityPoolResponse {
     const message = {
-      ...baseMsgDepositWithinBatchResponse,
-    } as MsgDepositWithinBatchResponse;
+      ...baseMsgDepositToLiquidityPoolResponse,
+    } as MsgDepositToLiquidityPoolResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromPartial(object.stdTx);
     } else {
@@ -755,14 +792,14 @@ export const MsgDepositWithinBatchResponse = {
   },
 };
 
-const baseMsgWithdrawWithinBatch: object = {
+const baseMsgWithdrawFromLiquidityPool: object = {
   withdrawerAddress: "",
   poolId: Long.UZERO,
 };
 
-export const MsgWithdrawWithinBatch = {
+export const MsgWithdrawFromLiquidityPool = {
   encode(
-    message: MsgWithdrawWithinBatch,
+    message: MsgWithdrawFromLiquidityPool,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.withdrawerAddress !== "") {
@@ -780,10 +817,12 @@ export const MsgWithdrawWithinBatch = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgWithdrawWithinBatch {
+  ): MsgWithdrawFromLiquidityPool {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgWithdrawWithinBatch } as MsgWithdrawWithinBatch;
+    const message = {
+      ...baseMsgWithdrawFromLiquidityPool,
+    } as MsgWithdrawFromLiquidityPool;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -804,8 +843,10 @@ export const MsgWithdrawWithinBatch = {
     return message;
   },
 
-  fromJSON(object: any): MsgWithdrawWithinBatch {
-    const message = { ...baseMsgWithdrawWithinBatch } as MsgWithdrawWithinBatch;
+  fromJSON(object: any): MsgWithdrawFromLiquidityPool {
+    const message = {
+      ...baseMsgWithdrawFromLiquidityPool,
+    } as MsgWithdrawFromLiquidityPool;
     if (
       object.withdrawerAddress !== undefined &&
       object.withdrawerAddress !== null
@@ -827,7 +868,7 @@ export const MsgWithdrawWithinBatch = {
     return message;
   },
 
-  toJSON(message: MsgWithdrawWithinBatch): unknown {
+  toJSON(message: MsgWithdrawFromLiquidityPool): unknown {
     const obj: any = {};
     message.withdrawerAddress !== undefined &&
       (obj.withdrawerAddress = message.withdrawerAddress);
@@ -841,9 +882,11 @@ export const MsgWithdrawWithinBatch = {
   },
 
   fromPartial(
-    object: DeepPartial<MsgWithdrawWithinBatch>
-  ): MsgWithdrawWithinBatch {
-    const message = { ...baseMsgWithdrawWithinBatch } as MsgWithdrawWithinBatch;
+    object: DeepPartial<MsgWithdrawFromLiquidityPool>
+  ): MsgWithdrawFromLiquidityPool {
+    const message = {
+      ...baseMsgWithdrawFromLiquidityPool,
+    } as MsgWithdrawFromLiquidityPool;
     if (
       object.withdrawerAddress !== undefined &&
       object.withdrawerAddress !== null
@@ -866,11 +909,11 @@ export const MsgWithdrawWithinBatch = {
   },
 };
 
-const baseMsgWithdrawWithinBatchRequest: object = { poolId: Long.UZERO };
+const baseMsgWithdrawFromLiquidityPoolRequest: object = { poolId: Long.UZERO };
 
-export const MsgWithdrawWithinBatchRequest = {
+export const MsgWithdrawFromLiquidityPoolRequest = {
   encode(
-    message: MsgWithdrawWithinBatchRequest,
+    message: MsgWithdrawFromLiquidityPoolRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.baseReq !== undefined) {
@@ -880,7 +923,7 @@ export const MsgWithdrawWithinBatchRequest = {
       writer.uint32(16).uint64(message.poolId);
     }
     if (message.msg !== undefined) {
-      MsgWithdrawWithinBatch.encode(
+      MsgWithdrawFromLiquidityPool.encode(
         message.msg,
         writer.uint32(26).fork()
       ).ldelim();
@@ -891,12 +934,12 @@ export const MsgWithdrawWithinBatchRequest = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgWithdrawWithinBatchRequest {
+  ): MsgWithdrawFromLiquidityPoolRequest {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgWithdrawWithinBatchRequest,
-    } as MsgWithdrawWithinBatchRequest;
+      ...baseMsgWithdrawFromLiquidityPoolRequest,
+    } as MsgWithdrawFromLiquidityPoolRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -907,7 +950,10 @@ export const MsgWithdrawWithinBatchRequest = {
           message.poolId = reader.uint64() as Long;
           break;
         case 3:
-          message.msg = MsgWithdrawWithinBatch.decode(reader, reader.uint32());
+          message.msg = MsgWithdrawFromLiquidityPool.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -917,10 +963,10 @@ export const MsgWithdrawWithinBatchRequest = {
     return message;
   },
 
-  fromJSON(object: any): MsgWithdrawWithinBatchRequest {
+  fromJSON(object: any): MsgWithdrawFromLiquidityPoolRequest {
     const message = {
-      ...baseMsgWithdrawWithinBatchRequest,
-    } as MsgWithdrawWithinBatchRequest;
+      ...baseMsgWithdrawFromLiquidityPoolRequest,
+    } as MsgWithdrawFromLiquidityPoolRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromJSON(object.baseReq);
     } else {
@@ -932,14 +978,14 @@ export const MsgWithdrawWithinBatchRequest = {
       message.poolId = Long.UZERO;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgWithdrawWithinBatch.fromJSON(object.msg);
+      message.msg = MsgWithdrawFromLiquidityPool.fromJSON(object.msg);
     } else {
       message.msg = undefined;
     }
     return message;
   },
 
-  toJSON(message: MsgWithdrawWithinBatchRequest): unknown {
+  toJSON(message: MsgWithdrawFromLiquidityPoolRequest): unknown {
     const obj: any = {};
     message.baseReq !== undefined &&
       (obj.baseReq = message.baseReq
@@ -949,17 +995,17 @@ export const MsgWithdrawWithinBatchRequest = {
       (obj.poolId = (message.poolId || Long.UZERO).toString());
     message.msg !== undefined &&
       (obj.msg = message.msg
-        ? MsgWithdrawWithinBatch.toJSON(message.msg)
+        ? MsgWithdrawFromLiquidityPool.toJSON(message.msg)
         : undefined);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<MsgWithdrawWithinBatchRequest>
-  ): MsgWithdrawWithinBatchRequest {
+    object: DeepPartial<MsgWithdrawFromLiquidityPoolRequest>
+  ): MsgWithdrawFromLiquidityPoolRequest {
     const message = {
-      ...baseMsgWithdrawWithinBatchRequest,
-    } as MsgWithdrawWithinBatchRequest;
+      ...baseMsgWithdrawFromLiquidityPoolRequest,
+    } as MsgWithdrawFromLiquidityPoolRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromPartial(object.baseReq);
     } else {
@@ -971,7 +1017,7 @@ export const MsgWithdrawWithinBatchRequest = {
       message.poolId = Long.UZERO;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgWithdrawWithinBatch.fromPartial(object.msg);
+      message.msg = MsgWithdrawFromLiquidityPool.fromPartial(object.msg);
     } else {
       message.msg = undefined;
     }
@@ -979,11 +1025,11 @@ export const MsgWithdrawWithinBatchRequest = {
   },
 };
 
-const baseMsgWithdrawWithinBatchResponse: object = {};
+const baseMsgWithdrawFromLiquidityPoolResponse: object = {};
 
-export const MsgWithdrawWithinBatchResponse = {
+export const MsgWithdrawFromLiquidityPoolResponse = {
   encode(
-    message: MsgWithdrawWithinBatchResponse,
+    message: MsgWithdrawFromLiquidityPoolResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.stdTx !== undefined) {
@@ -995,12 +1041,12 @@ export const MsgWithdrawWithinBatchResponse = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): MsgWithdrawWithinBatchResponse {
+  ): MsgWithdrawFromLiquidityPoolResponse {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseMsgWithdrawWithinBatchResponse,
-    } as MsgWithdrawWithinBatchResponse;
+      ...baseMsgWithdrawFromLiquidityPoolResponse,
+    } as MsgWithdrawFromLiquidityPoolResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1015,10 +1061,10 @@ export const MsgWithdrawWithinBatchResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgWithdrawWithinBatchResponse {
+  fromJSON(object: any): MsgWithdrawFromLiquidityPoolResponse {
     const message = {
-      ...baseMsgWithdrawWithinBatchResponse,
-    } as MsgWithdrawWithinBatchResponse;
+      ...baseMsgWithdrawFromLiquidityPoolResponse,
+    } as MsgWithdrawFromLiquidityPoolResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromJSON(object.stdTx);
     } else {
@@ -1027,7 +1073,7 @@ export const MsgWithdrawWithinBatchResponse = {
     return message;
   },
 
-  toJSON(message: MsgWithdrawWithinBatchResponse): unknown {
+  toJSON(message: MsgWithdrawFromLiquidityPoolResponse): unknown {
     const obj: any = {};
     message.stdTx !== undefined &&
       (obj.stdTx = message.stdTx ? StdTx.toJSON(message.stdTx) : undefined);
@@ -1035,11 +1081,11 @@ export const MsgWithdrawWithinBatchResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<MsgWithdrawWithinBatchResponse>
-  ): MsgWithdrawWithinBatchResponse {
+    object: DeepPartial<MsgWithdrawFromLiquidityPoolResponse>
+  ): MsgWithdrawFromLiquidityPoolResponse {
     const message = {
-      ...baseMsgWithdrawWithinBatchResponse,
-    } as MsgWithdrawWithinBatchResponse;
+      ...baseMsgWithdrawFromLiquidityPoolResponse,
+    } as MsgWithdrawFromLiquidityPoolResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromPartial(object.stdTx);
     } else {
@@ -1049,16 +1095,16 @@ export const MsgWithdrawWithinBatchResponse = {
   },
 };
 
-const baseMsgSwapWithinBatch: object = {
+const baseMsgSwap: object = {
   swapRequesterAddress: "",
   poolId: Long.UZERO,
-  swapTypeId: 0,
+  swapType: 0,
   demandCoinDenom: "",
 };
 
-export const MsgSwapWithinBatch = {
+export const MsgSwap = {
   encode(
-    message: MsgSwapWithinBatch,
+    message: MsgSwap,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.swapRequesterAddress !== "") {
@@ -1067,8 +1113,8 @@ export const MsgSwapWithinBatch = {
     if (!message.poolId.isZero()) {
       writer.uint32(16).uint64(message.poolId);
     }
-    if (message.swapTypeId !== 0) {
-      writer.uint32(24).uint32(message.swapTypeId);
+    if (message.swapType !== 0) {
+      writer.uint32(24).uint32(message.swapType);
     }
     if (message.offerCoin !== undefined) {
       Coin.encode(message.offerCoin, writer.uint32(34).fork()).ldelim();
@@ -1085,10 +1131,10 @@ export const MsgSwapWithinBatch = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSwapWithinBatch {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSwap {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgSwapWithinBatch } as MsgSwapWithinBatch;
+    const message = { ...baseMsgSwap } as MsgSwap;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1099,7 +1145,7 @@ export const MsgSwapWithinBatch = {
           message.poolId = reader.uint64() as Long;
           break;
         case 3:
-          message.swapTypeId = reader.uint32();
+          message.swapType = reader.uint32();
           break;
         case 4:
           message.offerCoin = Coin.decode(reader, reader.uint32());
@@ -1121,8 +1167,8 @@ export const MsgSwapWithinBatch = {
     return message;
   },
 
-  fromJSON(object: any): MsgSwapWithinBatch {
-    const message = { ...baseMsgSwapWithinBatch } as MsgSwapWithinBatch;
+  fromJSON(object: any): MsgSwap {
+    const message = { ...baseMsgSwap } as MsgSwap;
     if (
       object.swapRequesterAddress !== undefined &&
       object.swapRequesterAddress !== null
@@ -1136,10 +1182,10 @@ export const MsgSwapWithinBatch = {
     } else {
       message.poolId = Long.UZERO;
     }
-    if (object.swapTypeId !== undefined && object.swapTypeId !== null) {
-      message.swapTypeId = Number(object.swapTypeId);
+    if (object.swapType !== undefined && object.swapType !== null) {
+      message.swapType = Number(object.swapType);
     } else {
-      message.swapTypeId = 0;
+      message.swapType = 0;
     }
     if (object.offerCoin !== undefined && object.offerCoin !== null) {
       message.offerCoin = Coin.fromJSON(object.offerCoin);
@@ -1165,13 +1211,13 @@ export const MsgSwapWithinBatch = {
     return message;
   },
 
-  toJSON(message: MsgSwapWithinBatch): unknown {
+  toJSON(message: MsgSwap): unknown {
     const obj: any = {};
     message.swapRequesterAddress !== undefined &&
       (obj.swapRequesterAddress = message.swapRequesterAddress);
     message.poolId !== undefined &&
       (obj.poolId = (message.poolId || Long.UZERO).toString());
-    message.swapTypeId !== undefined && (obj.swapTypeId = message.swapTypeId);
+    message.swapType !== undefined && (obj.swapType = message.swapType);
     message.offerCoin !== undefined &&
       (obj.offerCoin = message.offerCoin
         ? Coin.toJSON(message.offerCoin)
@@ -1189,8 +1235,8 @@ export const MsgSwapWithinBatch = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgSwapWithinBatch>): MsgSwapWithinBatch {
-    const message = { ...baseMsgSwapWithinBatch } as MsgSwapWithinBatch;
+  fromPartial(object: DeepPartial<MsgSwap>): MsgSwap {
+    const message = { ...baseMsgSwap } as MsgSwap;
     if (
       object.swapRequesterAddress !== undefined &&
       object.swapRequesterAddress !== null
@@ -1204,10 +1250,10 @@ export const MsgSwapWithinBatch = {
     } else {
       message.poolId = Long.UZERO;
     }
-    if (object.swapTypeId !== undefined && object.swapTypeId !== null) {
-      message.swapTypeId = object.swapTypeId;
+    if (object.swapType !== undefined && object.swapType !== null) {
+      message.swapType = object.swapType;
     } else {
-      message.swapTypeId = 0;
+      message.swapType = 0;
     }
     if (object.offerCoin !== undefined && object.offerCoin !== null) {
       message.offerCoin = Coin.fromPartial(object.offerCoin);
@@ -1236,11 +1282,11 @@ export const MsgSwapWithinBatch = {
   },
 };
 
-const baseMsgSwapWithinBatchRequest: object = { poolId: Long.UZERO };
+const baseMsgSwapRequest: object = { poolId: Long.UZERO };
 
-export const MsgSwapWithinBatchRequest = {
+export const MsgSwapRequest = {
   encode(
-    message: MsgSwapWithinBatchRequest,
+    message: MsgSwapRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.baseReq !== undefined) {
@@ -1250,20 +1296,15 @@ export const MsgSwapWithinBatchRequest = {
       writer.uint32(16).uint64(message.poolId);
     }
     if (message.msg !== undefined) {
-      MsgSwapWithinBatch.encode(message.msg, writer.uint32(26).fork()).ldelim();
+      MsgSwap.encode(message.msg, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): MsgSwapWithinBatchRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSwapRequest {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseMsgSwapWithinBatchRequest,
-    } as MsgSwapWithinBatchRequest;
+    const message = { ...baseMsgSwapRequest } as MsgSwapRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1274,7 +1315,7 @@ export const MsgSwapWithinBatchRequest = {
           message.poolId = reader.uint64() as Long;
           break;
         case 3:
-          message.msg = MsgSwapWithinBatch.decode(reader, reader.uint32());
+          message.msg = MsgSwap.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1284,10 +1325,8 @@ export const MsgSwapWithinBatchRequest = {
     return message;
   },
 
-  fromJSON(object: any): MsgSwapWithinBatchRequest {
-    const message = {
-      ...baseMsgSwapWithinBatchRequest,
-    } as MsgSwapWithinBatchRequest;
+  fromJSON(object: any): MsgSwapRequest {
+    const message = { ...baseMsgSwapRequest } as MsgSwapRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromJSON(object.baseReq);
     } else {
@@ -1299,14 +1338,14 @@ export const MsgSwapWithinBatchRequest = {
       message.poolId = Long.UZERO;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgSwapWithinBatch.fromJSON(object.msg);
+      message.msg = MsgSwap.fromJSON(object.msg);
     } else {
       message.msg = undefined;
     }
     return message;
   },
 
-  toJSON(message: MsgSwapWithinBatchRequest): unknown {
+  toJSON(message: MsgSwapRequest): unknown {
     const obj: any = {};
     message.baseReq !== undefined &&
       (obj.baseReq = message.baseReq
@@ -1315,18 +1354,12 @@ export const MsgSwapWithinBatchRequest = {
     message.poolId !== undefined &&
       (obj.poolId = (message.poolId || Long.UZERO).toString());
     message.msg !== undefined &&
-      (obj.msg = message.msg
-        ? MsgSwapWithinBatch.toJSON(message.msg)
-        : undefined);
+      (obj.msg = message.msg ? MsgSwap.toJSON(message.msg) : undefined);
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<MsgSwapWithinBatchRequest>
-  ): MsgSwapWithinBatchRequest {
-    const message = {
-      ...baseMsgSwapWithinBatchRequest,
-    } as MsgSwapWithinBatchRequest;
+  fromPartial(object: DeepPartial<MsgSwapRequest>): MsgSwapRequest {
+    const message = { ...baseMsgSwapRequest } as MsgSwapRequest;
     if (object.baseReq !== undefined && object.baseReq !== null) {
       message.baseReq = BaseReq.fromPartial(object.baseReq);
     } else {
@@ -1338,7 +1371,7 @@ export const MsgSwapWithinBatchRequest = {
       message.poolId = Long.UZERO;
     }
     if (object.msg !== undefined && object.msg !== null) {
-      message.msg = MsgSwapWithinBatch.fromPartial(object.msg);
+      message.msg = MsgSwap.fromPartial(object.msg);
     } else {
       message.msg = undefined;
     }
@@ -1346,11 +1379,11 @@ export const MsgSwapWithinBatchRequest = {
   },
 };
 
-const baseMsgSwapWithinBatchResponse: object = {};
+const baseMsgSwapResponse: object = {};
 
-export const MsgSwapWithinBatchResponse = {
+export const MsgSwapResponse = {
   encode(
-    message: MsgSwapWithinBatchResponse,
+    message: MsgSwapResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.stdTx !== undefined) {
@@ -1359,15 +1392,10 @@ export const MsgSwapWithinBatchResponse = {
     return writer;
   },
 
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): MsgSwapWithinBatchResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgSwapResponse {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseMsgSwapWithinBatchResponse,
-    } as MsgSwapWithinBatchResponse;
+    const message = { ...baseMsgSwapResponse } as MsgSwapResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1382,10 +1410,8 @@ export const MsgSwapWithinBatchResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgSwapWithinBatchResponse {
-    const message = {
-      ...baseMsgSwapWithinBatchResponse,
-    } as MsgSwapWithinBatchResponse;
+  fromJSON(object: any): MsgSwapResponse {
+    const message = { ...baseMsgSwapResponse } as MsgSwapResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromJSON(object.stdTx);
     } else {
@@ -1394,19 +1420,15 @@ export const MsgSwapWithinBatchResponse = {
     return message;
   },
 
-  toJSON(message: MsgSwapWithinBatchResponse): unknown {
+  toJSON(message: MsgSwapResponse): unknown {
     const obj: any = {};
     message.stdTx !== undefined &&
       (obj.stdTx = message.stdTx ? StdTx.toJSON(message.stdTx) : undefined);
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<MsgSwapWithinBatchResponse>
-  ): MsgSwapWithinBatchResponse {
-    const message = {
-      ...baseMsgSwapWithinBatchResponse,
-    } as MsgSwapWithinBatchResponse;
+  fromPartial(object: DeepPartial<MsgSwapResponse>): MsgSwapResponse {
+    const message = { ...baseMsgSwapResponse } as MsgSwapResponse;
     if (object.stdTx !== undefined && object.stdTx !== null) {
       message.stdTx = StdTx.fromPartial(object.stdTx);
     } else {
@@ -2066,17 +2088,19 @@ export const StdTx = {
 /** Msg defines the liquidity Msg service. */
 export interface Msg {
   /** Submit create liquidity pool message. */
-  CreatePool(request: MsgCreatePool): Promise<MsgCreatePoolResponse>;
+  CreateLiquidityPool(
+    request: MsgCreateLiquidityPool
+  ): Promise<MsgCreateLiquidityPoolResponse>;
   /** Submit deposit to the liquidity pool batch. */
-  DepositWithinBatch(
-    request: MsgDepositWithinBatch
-  ): Promise<MsgDepositWithinBatchResponse>;
+  DepositToLiquidityPool(
+    request: MsgDepositToLiquidityPool
+  ): Promise<MsgDepositToLiquidityPoolResponse>;
   /** Submit withdraw from to the liquidity pool batch. */
-  WithdrawWithinBatch(
-    request: MsgWithdrawWithinBatch
-  ): Promise<MsgWithdrawWithinBatchResponse>;
+  WithdrawFromLiquidityPool(
+    request: MsgWithdrawFromLiquidityPool
+  ): Promise<MsgWithdrawFromLiquidityPoolResponse>;
   /** Submit swap to the liquidity pool batch. */
-  Swap(request: MsgSwapWithinBatch): Promise<MsgSwapWithinBatchResponse>;
+  Swap(request: MsgSwap): Promise<MsgSwapResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -2084,52 +2108,52 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
-  CreatePool(request: MsgCreatePool): Promise<MsgCreatePoolResponse> {
-    const data = MsgCreatePool.encode(request).finish();
+  CreateLiquidityPool(
+    request: MsgCreateLiquidityPool
+  ): Promise<MsgCreateLiquidityPoolResponse> {
+    const data = MsgCreateLiquidityPool.encode(request).finish();
     const promise = this.rpc.request(
       "tendermint.liquidity.Msg",
-      "CreatePool",
+      "CreateLiquidityPool",
       data
     );
     return promise.then((data) =>
-      MsgCreatePoolResponse.decode(new _m0.Reader(data))
+      MsgCreateLiquidityPoolResponse.decode(new _m0.Reader(data))
     );
   }
 
-  DepositWithinBatch(
-    request: MsgDepositWithinBatch
-  ): Promise<MsgDepositWithinBatchResponse> {
-    const data = MsgDepositWithinBatch.encode(request).finish();
+  DepositToLiquidityPool(
+    request: MsgDepositToLiquidityPool
+  ): Promise<MsgDepositToLiquidityPoolResponse> {
+    const data = MsgDepositToLiquidityPool.encode(request).finish();
     const promise = this.rpc.request(
       "tendermint.liquidity.Msg",
-      "DepositWithinBatch",
+      "DepositToLiquidityPool",
       data
     );
     return promise.then((data) =>
-      MsgDepositWithinBatchResponse.decode(new _m0.Reader(data))
+      MsgDepositToLiquidityPoolResponse.decode(new _m0.Reader(data))
     );
   }
 
-  WithdrawWithinBatch(
-    request: MsgWithdrawWithinBatch
-  ): Promise<MsgWithdrawWithinBatchResponse> {
-    const data = MsgWithdrawWithinBatch.encode(request).finish();
+  WithdrawFromLiquidityPool(
+    request: MsgWithdrawFromLiquidityPool
+  ): Promise<MsgWithdrawFromLiquidityPoolResponse> {
+    const data = MsgWithdrawFromLiquidityPool.encode(request).finish();
     const promise = this.rpc.request(
       "tendermint.liquidity.Msg",
-      "WithdrawWithinBatch",
+      "WithdrawFromLiquidityPool",
       data
     );
     return promise.then((data) =>
-      MsgWithdrawWithinBatchResponse.decode(new _m0.Reader(data))
+      MsgWithdrawFromLiquidityPoolResponse.decode(new _m0.Reader(data))
     );
   }
 
-  Swap(request: MsgSwapWithinBatch): Promise<MsgSwapWithinBatchResponse> {
-    const data = MsgSwapWithinBatch.encode(request).finish();
+  Swap(request: MsgSwap): Promise<MsgSwapResponse> {
+    const data = MsgSwap.encode(request).finish();
     const promise = this.rpc.request("tendermint.liquidity.Msg", "Swap", data);
-    return promise.then((data) =>
-      MsgSwapWithinBatchResponse.decode(new _m0.Reader(data))
-    );
+    return promise.then((data) => MsgSwapResponse.decode(new _m0.Reader(data)));
   }
 }
 

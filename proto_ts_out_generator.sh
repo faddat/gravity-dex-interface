@@ -1,6 +1,6 @@
 ROOT_PROTO_DIR="./src/cosmos-amm"
 LIQUIDITY_PROTO_DIR="$ROOT_PROTO_DIR/liquidity_proto"
-THIRD_PARTY_PROTO_DIR="$ROOT_PROTO_DIR/third_party/proto"
+THIRD_PARTY_PROTO_DIR="$ROOT_PROTO_DIR/third_party"
 OUT_DIR="./src/cosmos-amm/liquidity_codecs"
 
 mkdir -p "$OUT_DIR"

@@ -1,12 +1,13 @@
 /* eslint-disable */
 import Long from "long";
 import {
-  Pool,
-  PoolBatch,
+  LiquidityPool,
+  LiquidityPoolMetadata,
+  LiquidityPoolBatch,
   Params,
-  SwapMsgState,
-  DepositMsgState,
-  WithdrawMsgState,
+  BatchPoolSwapMsg,
+  BatchPoolDepositMsg,
+  BatchPoolWithdrawMsg,
 } from "./liquidity";
 import { PageRequest, PageResponse } from "./cosmos_proto/pagination";
 import _m0 from "protobufjs/minimal";
@@ -18,43 +19,11 @@ export interface QueryLiquidityPoolRequest {
   poolId: Long;
 }
 
-/** the response type for the QueryLiquidityPoolResponse RPC method. It returns the liquidity pool corresponding to the requested pool_id. */
+/** the response type for the QueryLiquidityPoolResponse RPC method. It returns the liquidity pool with batch and metadata containing total pool coin supply and reserved coins corresponding to the requested pool_id. */
 export interface QueryLiquidityPoolResponse {
-  /**
-   * // id of the pool
-   *    uint64 id = 1 [(gogoproto.moretags) = "yaml:\"id\"", (gogoproto.jsontag) = "id",
-   *        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-   *            example: "\"1\"",
-   *            format: "uint64"
-   *        }];
-   *
-   *    // id of the pool type
-   *    uint32 type_id = 2 [(gogoproto.moretags) = "yaml:\"type_id\"",
-   *        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-   *            example: "\"1\"",
-   *            format: "uint32"
-   *        }];
-   *
-   *    // denoms of reserve coin pair of the pool
-   *    repeated string reserve_coin_denoms = 3 [(gogoproto.moretags) = "yaml:\"reserve_coin_denoms\"",
-   *        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-   *            example: "[\"denomX\",\"denomY\"]"
-   *        }];
-   *
-   *    // reserve account address of the pool
-   *    string reserve_account_address = 4 [(gogoproto.moretags) = "yaml:\"reserve_account_address\"",
-   *        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-   *            example: "\"cosmos16ddqestwukv0jzcyfn3fdfq9h2wrs83cr4rfm3\"",
-   *            format: "sdk.AccAddress"
-   *        }];
-   *
-   *    // denom of pool coin of the pool
-   *    string pool_coin_denom = 5 [(gogoproto.moretags) = "yaml:\"pool_coin_denom\"",
-   *        (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
-   *            example: "\"poolD35A0CC16EE598F90B044CE296A405BA9C381E38837599D96F2F70C2F02A23A4\"",
-   *        }];
-   */
-  pool?: Pool;
+  liquidityPool?: LiquidityPool;
+  liquidityPoolMetadata?: LiquidityPoolMetadata;
+  liquidityPoolBatch?: LiquidityPoolBatch;
 }
 
 /** the request type for the QueryLiquidityPoolBatch RPC method. requestable including specified pool_id. */
@@ -65,7 +34,7 @@ export interface QueryLiquidityPoolBatchRequest {
 
 /** the response type for the QueryLiquidityPoolBatchResponse RPC method. It returns the liquidity pool batch corresponding to the requested pool_id. */
 export interface QueryLiquidityPoolBatchResponse {
-  batch?: PoolBatch;
+  batch?: LiquidityPoolBatch;
 }
 
 /** the request type for the QueryLiquidityPools RPC method. requestable including pagination offset, limit, key. */
@@ -76,7 +45,20 @@ export interface QueryLiquidityPoolsRequest {
 
 /** the response type for the QueryLiquidityPoolsResponse RPC method. This includes list of all liquidity pools currently existed and paging results containing next_key and total count. */
 export interface QueryLiquidityPoolsResponse {
-  pools: Pool[];
+  pools: QueryLiquidityPoolResponse[];
+  /** pagination defines the pagination in the response. not working on this version. */
+  pagination?: PageResponse;
+}
+
+/** the request type for the QueryLiquidityPoolsBatch RPC method, requestable including pagination offset, limit, key. */
+export interface QueryLiquidityPoolsBatchRequest {
+  /** pagination defines an optional pagination for the request. */
+  pagination?: PageRequest;
+}
+
+/** the response type for the QueryLiquidityPoolsBatchResponse RPC method. This includes list of all batches that all currently existing pools and paging results containing next_key and total count. */
+export interface QueryLiquidityPoolsBatchResponse {
+  poolsBatch: QueryLiquidityPoolBatchResponse[];
   /** pagination defines the pagination in the response. not working on this version. */
   pagination?: PageResponse;
 }
@@ -108,14 +90,14 @@ export interface QueryPoolBatchSwapMsgRequest {
 
 /** the response type for the QueryPoolBatchSwapMsgs RPC method. This includes list of all currently existing swap messages of the batch and paging results containing next_key and total count. */
 export interface QueryPoolBatchSwapMsgsResponse {
-  swaps: SwapMsgState[];
+  swaps: BatchPoolSwapMsg[];
   /** pagination defines the pagination in the response. not working on this version. */
   pagination?: PageResponse;
 }
 
 /** the response type for the QueryPoolBatchSwapMsg RPC method. This includes a batch swap message of the batch */
 export interface QueryPoolBatchSwapMsgResponse {
-  swap?: SwapMsgState;
+  swaps?: BatchPoolSwapMsg;
 }
 
 /** the request type for the QueryPoolBatchDeposit RPC method. requestable including specified pool_id and pagination offset, limit, key. */
@@ -136,14 +118,14 @@ export interface QueryPoolBatchDepositMsgRequest {
 
 /** the response type for the QueryPoolBatchDeposit RPC method. This includes a list of all currently existing deposit messages of the batch and paging results containing next_key and total count. */
 export interface QueryPoolBatchDepositMsgsResponse {
-  deposits: DepositMsgState[];
+  deposits: BatchPoolDepositMsg[];
   /** pagination defines the pagination in the response. not working on this version. */
   pagination?: PageResponse;
 }
 
 /** the response type for the QueryPoolBatchDepositMsg RPC method. This includes a batch swap message of the batch */
 export interface QueryPoolBatchDepositMsgResponse {
-  deposit?: DepositMsgState;
+  deposits?: BatchPoolDepositMsg;
 }
 
 /** the request type for the QueryPoolBatchWithdraw RPC method. requestable including specified pool_id and pagination offset, limit, key. */
@@ -164,14 +146,14 @@ export interface QueryPoolBatchWithdrawMsgRequest {
 
 /** the response type for the QueryPoolBatchWithdraw RPC method. This includes a list of all currently existing withdraw messages of the batch and paging results containing next_key and total count. */
 export interface QueryPoolBatchWithdrawMsgsResponse {
-  withdraws: WithdrawMsgState[];
+  withdraws: BatchPoolWithdrawMsg[];
   /** pagination defines the pagination in the response. not working on this version. */
   pagination?: PageResponse;
 }
 
 /** the response type for the QueryPoolBatchWithdrawMsg RPC method. This includes a batch swap message of the batch */
 export interface QueryPoolBatchWithdrawMsgResponse {
-  withdraw?: WithdrawMsgState;
+  withdraws?: BatchPoolWithdrawMsg;
 }
 
 const baseQueryLiquidityPoolRequest: object = { poolId: Long.UZERO };
@@ -251,8 +233,23 @@ export const QueryLiquidityPoolResponse = {
     message: QueryLiquidityPoolResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.pool !== undefined) {
-      Pool.encode(message.pool, writer.uint32(10).fork()).ldelim();
+    if (message.liquidityPool !== undefined) {
+      LiquidityPool.encode(
+        message.liquidityPool,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.liquidityPoolMetadata !== undefined) {
+      LiquidityPoolMetadata.encode(
+        message.liquidityPoolMetadata,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (message.liquidityPoolBatch !== undefined) {
+      LiquidityPoolBatch.encode(
+        message.liquidityPoolBatch,
+        writer.uint32(26).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -270,7 +267,19 @@ export const QueryLiquidityPoolResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.pool = Pool.decode(reader, reader.uint32());
+          message.liquidityPool = LiquidityPool.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.liquidityPoolMetadata = LiquidityPoolMetadata.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 3:
+          message.liquidityPoolBatch = LiquidityPoolBatch.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -284,18 +293,48 @@ export const QueryLiquidityPoolResponse = {
     const message = {
       ...baseQueryLiquidityPoolResponse,
     } as QueryLiquidityPoolResponse;
-    if (object.pool !== undefined && object.pool !== null) {
-      message.pool = Pool.fromJSON(object.pool);
+    if (object.liquidityPool !== undefined && object.liquidityPool !== null) {
+      message.liquidityPool = LiquidityPool.fromJSON(object.liquidityPool);
     } else {
-      message.pool = undefined;
+      message.liquidityPool = undefined;
+    }
+    if (
+      object.liquidityPoolMetadata !== undefined &&
+      object.liquidityPoolMetadata !== null
+    ) {
+      message.liquidityPoolMetadata = LiquidityPoolMetadata.fromJSON(
+        object.liquidityPoolMetadata
+      );
+    } else {
+      message.liquidityPoolMetadata = undefined;
+    }
+    if (
+      object.liquidityPoolBatch !== undefined &&
+      object.liquidityPoolBatch !== null
+    ) {
+      message.liquidityPoolBatch = LiquidityPoolBatch.fromJSON(
+        object.liquidityPoolBatch
+      );
+    } else {
+      message.liquidityPoolBatch = undefined;
     }
     return message;
   },
 
   toJSON(message: QueryLiquidityPoolResponse): unknown {
     const obj: any = {};
-    message.pool !== undefined &&
-      (obj.pool = message.pool ? Pool.toJSON(message.pool) : undefined);
+    message.liquidityPool !== undefined &&
+      (obj.liquidityPool = message.liquidityPool
+        ? LiquidityPool.toJSON(message.liquidityPool)
+        : undefined);
+    message.liquidityPoolMetadata !== undefined &&
+      (obj.liquidityPoolMetadata = message.liquidityPoolMetadata
+        ? LiquidityPoolMetadata.toJSON(message.liquidityPoolMetadata)
+        : undefined);
+    message.liquidityPoolBatch !== undefined &&
+      (obj.liquidityPoolBatch = message.liquidityPoolBatch
+        ? LiquidityPoolBatch.toJSON(message.liquidityPoolBatch)
+        : undefined);
     return obj;
   },
 
@@ -305,10 +344,30 @@ export const QueryLiquidityPoolResponse = {
     const message = {
       ...baseQueryLiquidityPoolResponse,
     } as QueryLiquidityPoolResponse;
-    if (object.pool !== undefined && object.pool !== null) {
-      message.pool = Pool.fromPartial(object.pool);
+    if (object.liquidityPool !== undefined && object.liquidityPool !== null) {
+      message.liquidityPool = LiquidityPool.fromPartial(object.liquidityPool);
     } else {
-      message.pool = undefined;
+      message.liquidityPool = undefined;
+    }
+    if (
+      object.liquidityPoolMetadata !== undefined &&
+      object.liquidityPoolMetadata !== null
+    ) {
+      message.liquidityPoolMetadata = LiquidityPoolMetadata.fromPartial(
+        object.liquidityPoolMetadata
+      );
+    } else {
+      message.liquidityPoolMetadata = undefined;
+    }
+    if (
+      object.liquidityPoolBatch !== undefined &&
+      object.liquidityPoolBatch !== null
+    ) {
+      message.liquidityPoolBatch = LiquidityPoolBatch.fromPartial(
+        object.liquidityPoolBatch
+      );
+    } else {
+      message.liquidityPoolBatch = undefined;
     }
     return message;
   },
@@ -392,7 +451,10 @@ export const QueryLiquidityPoolBatchResponse = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.batch !== undefined) {
-      PoolBatch.encode(message.batch, writer.uint32(10).fork()).ldelim();
+      LiquidityPoolBatch.encode(
+        message.batch,
+        writer.uint32(10).fork()
+      ).ldelim();
     }
     return writer;
   },
@@ -410,7 +472,7 @@ export const QueryLiquidityPoolBatchResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.batch = PoolBatch.decode(reader, reader.uint32());
+          message.batch = LiquidityPoolBatch.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -425,7 +487,7 @@ export const QueryLiquidityPoolBatchResponse = {
       ...baseQueryLiquidityPoolBatchResponse,
     } as QueryLiquidityPoolBatchResponse;
     if (object.batch !== undefined && object.batch !== null) {
-      message.batch = PoolBatch.fromJSON(object.batch);
+      message.batch = LiquidityPoolBatch.fromJSON(object.batch);
     } else {
       message.batch = undefined;
     }
@@ -435,7 +497,9 @@ export const QueryLiquidityPoolBatchResponse = {
   toJSON(message: QueryLiquidityPoolBatchResponse): unknown {
     const obj: any = {};
     message.batch !== undefined &&
-      (obj.batch = message.batch ? PoolBatch.toJSON(message.batch) : undefined);
+      (obj.batch = message.batch
+        ? LiquidityPoolBatch.toJSON(message.batch)
+        : undefined);
     return obj;
   },
 
@@ -446,7 +510,7 @@ export const QueryLiquidityPoolBatchResponse = {
       ...baseQueryLiquidityPoolBatchResponse,
     } as QueryLiquidityPoolBatchResponse;
     if (object.batch !== undefined && object.batch !== null) {
-      message.batch = PoolBatch.fromPartial(object.batch);
+      message.batch = LiquidityPoolBatch.fromPartial(object.batch);
     } else {
       message.batch = undefined;
     }
@@ -534,7 +598,7 @@ export const QueryLiquidityPoolsResponse = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.pools) {
-      Pool.encode(v!, writer.uint32(10).fork()).ldelim();
+      QueryLiquidityPoolResponse.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -559,7 +623,9 @@ export const QueryLiquidityPoolsResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.pools.push(Pool.decode(reader, reader.uint32()));
+          message.pools.push(
+            QueryLiquidityPoolResponse.decode(reader, reader.uint32())
+          );
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -579,7 +645,7 @@ export const QueryLiquidityPoolsResponse = {
     message.pools = [];
     if (object.pools !== undefined && object.pools !== null) {
       for (const e of object.pools) {
-        message.pools.push(Pool.fromJSON(e));
+        message.pools.push(QueryLiquidityPoolResponse.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -593,7 +659,9 @@ export const QueryLiquidityPoolsResponse = {
   toJSON(message: QueryLiquidityPoolsResponse): unknown {
     const obj: any = {};
     if (message.pools) {
-      obj.pools = message.pools.map((e) => (e ? Pool.toJSON(e) : undefined));
+      obj.pools = message.pools.map((e) =>
+        e ? QueryLiquidityPoolResponse.toJSON(e) : undefined
+      );
     } else {
       obj.pools = [];
     }
@@ -613,7 +681,185 @@ export const QueryLiquidityPoolsResponse = {
     message.pools = [];
     if (object.pools !== undefined && object.pools !== null) {
       for (const e of object.pools) {
-        message.pools.push(Pool.fromPartial(e));
+        message.pools.push(QueryLiquidityPoolResponse.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryLiquidityPoolsBatchRequest: object = {};
+
+export const QueryLiquidityPoolsBatchRequest = {
+  encode(
+    message: QueryLiquidityPoolsBatchRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryLiquidityPoolsBatchRequest {
+    const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryLiquidityPoolsBatchRequest,
+    } as QueryLiquidityPoolsBatchRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryLiquidityPoolsBatchRequest {
+    const message = {
+      ...baseQueryLiquidityPoolsBatchRequest,
+    } as QueryLiquidityPoolsBatchRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryLiquidityPoolsBatchRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryLiquidityPoolsBatchRequest>
+  ): QueryLiquidityPoolsBatchRequest {
+    const message = {
+      ...baseQueryLiquidityPoolsBatchRequest,
+    } as QueryLiquidityPoolsBatchRequest;
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryLiquidityPoolsBatchResponse: object = {};
+
+export const QueryLiquidityPoolsBatchResponse = {
+  encode(
+    message: QueryLiquidityPoolsBatchResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.poolsBatch) {
+      QueryLiquidityPoolBatchResponse.encode(
+        v!,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryLiquidityPoolsBatchResponse {
+    const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryLiquidityPoolsBatchResponse,
+    } as QueryLiquidityPoolsBatchResponse;
+    message.poolsBatch = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.poolsBatch.push(
+            QueryLiquidityPoolBatchResponse.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryLiquidityPoolsBatchResponse {
+    const message = {
+      ...baseQueryLiquidityPoolsBatchResponse,
+    } as QueryLiquidityPoolsBatchResponse;
+    message.poolsBatch = [];
+    if (object.poolsBatch !== undefined && object.poolsBatch !== null) {
+      for (const e of object.poolsBatch) {
+        message.poolsBatch.push(QueryLiquidityPoolBatchResponse.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryLiquidityPoolsBatchResponse): unknown {
+    const obj: any = {};
+    if (message.poolsBatch) {
+      obj.poolsBatch = message.poolsBatch.map((e) =>
+        e ? QueryLiquidityPoolBatchResponse.toJSON(e) : undefined
+      );
+    } else {
+      obj.poolsBatch = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryLiquidityPoolsBatchResponse>
+  ): QueryLiquidityPoolsBatchResponse {
+    const message = {
+      ...baseQueryLiquidityPoolsBatchResponse,
+    } as QueryLiquidityPoolsBatchResponse;
+    message.poolsBatch = [];
+    if (object.poolsBatch !== undefined && object.poolsBatch !== null) {
+      for (const e of object.poolsBatch) {
+        message.poolsBatch.push(QueryLiquidityPoolBatchResponse.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -914,7 +1160,7 @@ export const QueryPoolBatchSwapMsgsResponse = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.swaps) {
-      SwapMsgState.encode(v!, writer.uint32(10).fork()).ldelim();
+      BatchPoolSwapMsg.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -939,7 +1185,7 @@ export const QueryPoolBatchSwapMsgsResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.swaps.push(SwapMsgState.decode(reader, reader.uint32()));
+          message.swaps.push(BatchPoolSwapMsg.decode(reader, reader.uint32()));
           break;
         case 2:
           message.pagination = PageResponse.decode(reader, reader.uint32());
@@ -959,7 +1205,7 @@ export const QueryPoolBatchSwapMsgsResponse = {
     message.swaps = [];
     if (object.swaps !== undefined && object.swaps !== null) {
       for (const e of object.swaps) {
-        message.swaps.push(SwapMsgState.fromJSON(e));
+        message.swaps.push(BatchPoolSwapMsg.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -974,7 +1220,7 @@ export const QueryPoolBatchSwapMsgsResponse = {
     const obj: any = {};
     if (message.swaps) {
       obj.swaps = message.swaps.map((e) =>
-        e ? SwapMsgState.toJSON(e) : undefined
+        e ? BatchPoolSwapMsg.toJSON(e) : undefined
       );
     } else {
       obj.swaps = [];
@@ -995,7 +1241,7 @@ export const QueryPoolBatchSwapMsgsResponse = {
     message.swaps = [];
     if (object.swaps !== undefined && object.swaps !== null) {
       for (const e of object.swaps) {
-        message.swaps.push(SwapMsgState.fromPartial(e));
+        message.swaps.push(BatchPoolSwapMsg.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1014,8 +1260,8 @@ export const QueryPoolBatchSwapMsgResponse = {
     message: QueryPoolBatchSwapMsgResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.swap !== undefined) {
-      SwapMsgState.encode(message.swap, writer.uint32(10).fork()).ldelim();
+    if (message.swaps !== undefined) {
+      BatchPoolSwapMsg.encode(message.swaps, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1033,7 +1279,7 @@ export const QueryPoolBatchSwapMsgResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.swap = SwapMsgState.decode(reader, reader.uint32());
+          message.swaps = BatchPoolSwapMsg.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -1047,18 +1293,20 @@ export const QueryPoolBatchSwapMsgResponse = {
     const message = {
       ...baseQueryPoolBatchSwapMsgResponse,
     } as QueryPoolBatchSwapMsgResponse;
-    if (object.swap !== undefined && object.swap !== null) {
-      message.swap = SwapMsgState.fromJSON(object.swap);
+    if (object.swaps !== undefined && object.swaps !== null) {
+      message.swaps = BatchPoolSwapMsg.fromJSON(object.swaps);
     } else {
-      message.swap = undefined;
+      message.swaps = undefined;
     }
     return message;
   },
 
   toJSON(message: QueryPoolBatchSwapMsgResponse): unknown {
     const obj: any = {};
-    message.swap !== undefined &&
-      (obj.swap = message.swap ? SwapMsgState.toJSON(message.swap) : undefined);
+    message.swaps !== undefined &&
+      (obj.swaps = message.swaps
+        ? BatchPoolSwapMsg.toJSON(message.swaps)
+        : undefined);
     return obj;
   },
 
@@ -1068,10 +1316,10 @@ export const QueryPoolBatchSwapMsgResponse = {
     const message = {
       ...baseQueryPoolBatchSwapMsgResponse,
     } as QueryPoolBatchSwapMsgResponse;
-    if (object.swap !== undefined && object.swap !== null) {
-      message.swap = SwapMsgState.fromPartial(object.swap);
+    if (object.swaps !== undefined && object.swaps !== null) {
+      message.swaps = BatchPoolSwapMsg.fromPartial(object.swaps);
     } else {
-      message.swap = undefined;
+      message.swaps = undefined;
     }
     return message;
   },
@@ -1266,7 +1514,7 @@ export const QueryPoolBatchDepositMsgsResponse = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.deposits) {
-      DepositMsgState.encode(v!, writer.uint32(10).fork()).ldelim();
+      BatchPoolDepositMsg.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -1292,7 +1540,7 @@ export const QueryPoolBatchDepositMsgsResponse = {
       switch (tag >>> 3) {
         case 1:
           message.deposits.push(
-            DepositMsgState.decode(reader, reader.uint32())
+            BatchPoolDepositMsg.decode(reader, reader.uint32())
           );
           break;
         case 2:
@@ -1313,7 +1561,7 @@ export const QueryPoolBatchDepositMsgsResponse = {
     message.deposits = [];
     if (object.deposits !== undefined && object.deposits !== null) {
       for (const e of object.deposits) {
-        message.deposits.push(DepositMsgState.fromJSON(e));
+        message.deposits.push(BatchPoolDepositMsg.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1328,7 +1576,7 @@ export const QueryPoolBatchDepositMsgsResponse = {
     const obj: any = {};
     if (message.deposits) {
       obj.deposits = message.deposits.map((e) =>
-        e ? DepositMsgState.toJSON(e) : undefined
+        e ? BatchPoolDepositMsg.toJSON(e) : undefined
       );
     } else {
       obj.deposits = [];
@@ -1349,7 +1597,7 @@ export const QueryPoolBatchDepositMsgsResponse = {
     message.deposits = [];
     if (object.deposits !== undefined && object.deposits !== null) {
       for (const e of object.deposits) {
-        message.deposits.push(DepositMsgState.fromPartial(e));
+        message.deposits.push(BatchPoolDepositMsg.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1368,9 +1616,9 @@ export const QueryPoolBatchDepositMsgResponse = {
     message: QueryPoolBatchDepositMsgResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.deposit !== undefined) {
-      DepositMsgState.encode(
-        message.deposit,
+    if (message.deposits !== undefined) {
+      BatchPoolDepositMsg.encode(
+        message.deposits,
         writer.uint32(10).fork()
       ).ldelim();
     }
@@ -1390,7 +1638,10 @@ export const QueryPoolBatchDepositMsgResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.deposit = DepositMsgState.decode(reader, reader.uint32());
+          message.deposits = BatchPoolDepositMsg.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1404,19 +1655,19 @@ export const QueryPoolBatchDepositMsgResponse = {
     const message = {
       ...baseQueryPoolBatchDepositMsgResponse,
     } as QueryPoolBatchDepositMsgResponse;
-    if (object.deposit !== undefined && object.deposit !== null) {
-      message.deposit = DepositMsgState.fromJSON(object.deposit);
+    if (object.deposits !== undefined && object.deposits !== null) {
+      message.deposits = BatchPoolDepositMsg.fromJSON(object.deposits);
     } else {
-      message.deposit = undefined;
+      message.deposits = undefined;
     }
     return message;
   },
 
   toJSON(message: QueryPoolBatchDepositMsgResponse): unknown {
     const obj: any = {};
-    message.deposit !== undefined &&
-      (obj.deposit = message.deposit
-        ? DepositMsgState.toJSON(message.deposit)
+    message.deposits !== undefined &&
+      (obj.deposits = message.deposits
+        ? BatchPoolDepositMsg.toJSON(message.deposits)
         : undefined);
     return obj;
   },
@@ -1427,10 +1678,10 @@ export const QueryPoolBatchDepositMsgResponse = {
     const message = {
       ...baseQueryPoolBatchDepositMsgResponse,
     } as QueryPoolBatchDepositMsgResponse;
-    if (object.deposit !== undefined && object.deposit !== null) {
-      message.deposit = DepositMsgState.fromPartial(object.deposit);
+    if (object.deposits !== undefined && object.deposits !== null) {
+      message.deposits = BatchPoolDepositMsg.fromPartial(object.deposits);
     } else {
-      message.deposit = undefined;
+      message.deposits = undefined;
     }
     return message;
   },
@@ -1625,7 +1876,7 @@ export const QueryPoolBatchWithdrawMsgsResponse = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.withdraws) {
-      WithdrawMsgState.encode(v!, writer.uint32(10).fork()).ldelim();
+      BatchPoolWithdrawMsg.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -1651,7 +1902,7 @@ export const QueryPoolBatchWithdrawMsgsResponse = {
       switch (tag >>> 3) {
         case 1:
           message.withdraws.push(
-            WithdrawMsgState.decode(reader, reader.uint32())
+            BatchPoolWithdrawMsg.decode(reader, reader.uint32())
           );
           break;
         case 2:
@@ -1672,7 +1923,7 @@ export const QueryPoolBatchWithdrawMsgsResponse = {
     message.withdraws = [];
     if (object.withdraws !== undefined && object.withdraws !== null) {
       for (const e of object.withdraws) {
-        message.withdraws.push(WithdrawMsgState.fromJSON(e));
+        message.withdraws.push(BatchPoolWithdrawMsg.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1687,7 +1938,7 @@ export const QueryPoolBatchWithdrawMsgsResponse = {
     const obj: any = {};
     if (message.withdraws) {
       obj.withdraws = message.withdraws.map((e) =>
-        e ? WithdrawMsgState.toJSON(e) : undefined
+        e ? BatchPoolWithdrawMsg.toJSON(e) : undefined
       );
     } else {
       obj.withdraws = [];
@@ -1708,7 +1959,7 @@ export const QueryPoolBatchWithdrawMsgsResponse = {
     message.withdraws = [];
     if (object.withdraws !== undefined && object.withdraws !== null) {
       for (const e of object.withdraws) {
-        message.withdraws.push(WithdrawMsgState.fromPartial(e));
+        message.withdraws.push(BatchPoolWithdrawMsg.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1727,9 +1978,9 @@ export const QueryPoolBatchWithdrawMsgResponse = {
     message: QueryPoolBatchWithdrawMsgResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.withdraw !== undefined) {
-      WithdrawMsgState.encode(
-        message.withdraw,
+    if (message.withdraws !== undefined) {
+      BatchPoolWithdrawMsg.encode(
+        message.withdraws,
         writer.uint32(10).fork()
       ).ldelim();
     }
@@ -1749,7 +2000,10 @@ export const QueryPoolBatchWithdrawMsgResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.withdraw = WithdrawMsgState.decode(reader, reader.uint32());
+          message.withdraws = BatchPoolWithdrawMsg.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -1763,19 +2017,19 @@ export const QueryPoolBatchWithdrawMsgResponse = {
     const message = {
       ...baseQueryPoolBatchWithdrawMsgResponse,
     } as QueryPoolBatchWithdrawMsgResponse;
-    if (object.withdraw !== undefined && object.withdraw !== null) {
-      message.withdraw = WithdrawMsgState.fromJSON(object.withdraw);
+    if (object.withdraws !== undefined && object.withdraws !== null) {
+      message.withdraws = BatchPoolWithdrawMsg.fromJSON(object.withdraws);
     } else {
-      message.withdraw = undefined;
+      message.withdraws = undefined;
     }
     return message;
   },
 
   toJSON(message: QueryPoolBatchWithdrawMsgResponse): unknown {
     const obj: any = {};
-    message.withdraw !== undefined &&
-      (obj.withdraw = message.withdraw
-        ? WithdrawMsgState.toJSON(message.withdraw)
+    message.withdraws !== undefined &&
+      (obj.withdraws = message.withdraws
+        ? BatchPoolWithdrawMsg.toJSON(message.withdraws)
         : undefined);
     return obj;
   },
@@ -1786,10 +2040,10 @@ export const QueryPoolBatchWithdrawMsgResponse = {
     const message = {
       ...baseQueryPoolBatchWithdrawMsgResponse,
     } as QueryPoolBatchWithdrawMsgResponse;
-    if (object.withdraw !== undefined && object.withdraw !== null) {
-      message.withdraw = WithdrawMsgState.fromPartial(object.withdraw);
+    if (object.withdraws !== undefined && object.withdraws !== null) {
+      message.withdraws = BatchPoolWithdrawMsg.fromPartial(object.withdraws);
     } else {
-      message.withdraw = undefined;
+      message.withdraws = undefined;
     }
     return message;
   },
@@ -1797,43 +2051,47 @@ export const QueryPoolBatchWithdrawMsgResponse = {
 
 /** Query defines the gRPC querier service for liquidity module. */
 export interface Query {
-  /** Get existing liquidity pools. */
+  /** Get all liquidity pools currently existed with each liquidity pool with batch and metadata */
   LiquidityPools(
     request: QueryLiquidityPoolsRequest
   ): Promise<QueryLiquidityPoolsResponse>;
-  /** Get specific liquidity pool. */
+  /** Get all liquidity pools batch */
+  LiquidityPoolsBatch(
+    request: QueryLiquidityPoolsBatchRequest
+  ): Promise<QueryLiquidityPoolsBatchResponse>;
+  /** Get a liquidity pool with liquidity pool batch by pool_id */
   LiquidityPool(
     request: QueryLiquidityPoolRequest
   ): Promise<QueryLiquidityPoolResponse>;
-  /** Get the pool's current batch. */
+  /** Get a liquidity pool batch by pool_id */
   LiquidityPoolBatch(
     request: QueryLiquidityPoolBatchRequest
   ): Promise<QueryLiquidityPoolBatchResponse>;
-  /** Get all swap messages in the pool's current batch. */
+  /** Get all pool batch swap messages of the liquidity pool */
   PoolBatchSwapMsgs(
     request: QueryPoolBatchSwapMsgsRequest
   ): Promise<QueryPoolBatchSwapMsgsResponse>;
-  /** Get specific swap message in the pool's current batch. */
+  /** Get the pool batch swap message with msg_index of the liquidity pool */
   PoolBatchSwapMsg(
     request: QueryPoolBatchSwapMsgRequest
   ): Promise<QueryPoolBatchSwapMsgResponse>;
-  /** Get all deposit messages in the pool's current batch. */
+  /** Get all pool batch deposit messages of the liquidity pool */
   PoolBatchDepositMsgs(
     request: QueryPoolBatchDepositMsgsRequest
   ): Promise<QueryPoolBatchDepositMsgsResponse>;
-  /** Get specific deposit message in the pool's current batch. */
+  /** Get the pool batch deposit message with msg_index of the liquidity pool */
   PoolBatchDepositMsg(
     request: QueryPoolBatchDepositMsgRequest
   ): Promise<QueryPoolBatchDepositMsgResponse>;
-  /** Get all withdraw messages in the pool's current batch. */
+  /** Get all pool batch withdraw messages of the liquidity pool */
   PoolBatchWithdrawMsgs(
     request: QueryPoolBatchWithdrawMsgsRequest
   ): Promise<QueryPoolBatchWithdrawMsgsResponse>;
-  /** Get specific withdraw message in the pool's current batch. */
+  /** Get the pool batch withdraw message with msg_index of the liquidity pool */
   PoolBatchWithdrawMsg(
     request: QueryPoolBatchWithdrawMsgRequest
   ): Promise<QueryPoolBatchWithdrawMsgResponse>;
-  /** Get all parameters of the liquidity module. */
+  /** Parameters queries the liquidity parameters. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
 }
 
@@ -1853,6 +2111,20 @@ export class QueryClientImpl implements Query {
     );
     return promise.then((data) =>
       QueryLiquidityPoolsResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  LiquidityPoolsBatch(
+    request: QueryLiquidityPoolsBatchRequest
+  ): Promise<QueryLiquidityPoolsBatchResponse> {
+    const data = QueryLiquidityPoolsBatchRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "tendermint.liquidity.Query",
+      "LiquidityPoolsBatch",
+      data
+    );
+    return promise.then((data) =>
+      QueryLiquidityPoolsBatchResponse.decode(new _m0.Reader(data))
     );
   }
 

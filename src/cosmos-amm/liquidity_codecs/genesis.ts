@@ -1,97 +1,109 @@
 /* eslint-disable */
 import {
-  Pool,
-  PoolMetadata,
-  PoolBatch,
+  LiquidityPool,
+  LiquidityPoolMetadata,
+  LiquidityPoolBatch,
   Params,
-  DepositMsgState,
-  WithdrawMsgState,
-  SwapMsgState,
+  BatchPoolDepositMsg,
+  BatchPoolWithdrawMsg,
+  BatchPoolSwapMsg,
 } from "./liquidity";
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "tendermint.liquidity";
 
-export interface PoolRecord {
-  pool?: Pool;
-  poolMetadata?: PoolMetadata;
-  poolBatch?: PoolBatch;
-  depositMsgStates: DepositMsgState[];
-  withdrawMsgStates: WithdrawMsgState[];
-  swapMsgStates: SwapMsgState[];
+export interface LiquidityPoolRecord {
+  liquidityPool?: LiquidityPool;
+  liquidityPoolMetadata?: LiquidityPoolMetadata;
+  liquidityPoolBatch?: LiquidityPoolBatch;
+  batchPoolDepositMsgs: BatchPoolDepositMsg[];
+  batchPoolWithdrawMsgs: BatchPoolWithdrawMsg[];
+  batchPoolSwapMsgs: BatchPoolSwapMsg[];
 }
 
 /** GenesisState defines the liquidity module's genesis state. */
 export interface GenesisState {
   /** params defines all the parameters of related to liquidity. */
   params?: Params;
-  poolRecords: PoolRecord[];
+  liquidityPoolRecords: LiquidityPoolRecord[];
 }
 
-const basePoolRecord: object = {};
+const baseLiquidityPoolRecord: object = {};
 
-export const PoolRecord = {
+export const LiquidityPoolRecord = {
   encode(
-    message: PoolRecord,
+    message: LiquidityPoolRecord,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.pool !== undefined) {
-      Pool.encode(message.pool, writer.uint32(10).fork()).ldelim();
+    if (message.liquidityPool !== undefined) {
+      LiquidityPool.encode(
+        message.liquidityPool,
+        writer.uint32(10).fork()
+      ).ldelim();
     }
-    if (message.poolMetadata !== undefined) {
-      PoolMetadata.encode(
-        message.poolMetadata,
+    if (message.liquidityPoolMetadata !== undefined) {
+      LiquidityPoolMetadata.encode(
+        message.liquidityPoolMetadata,
         writer.uint32(18).fork()
       ).ldelim();
     }
-    if (message.poolBatch !== undefined) {
-      PoolBatch.encode(message.poolBatch, writer.uint32(26).fork()).ldelim();
+    if (message.liquidityPoolBatch !== undefined) {
+      LiquidityPoolBatch.encode(
+        message.liquidityPoolBatch,
+        writer.uint32(26).fork()
+      ).ldelim();
     }
-    for (const v of message.depositMsgStates) {
-      DepositMsgState.encode(v!, writer.uint32(34).fork()).ldelim();
+    for (const v of message.batchPoolDepositMsgs) {
+      BatchPoolDepositMsg.encode(v!, writer.uint32(34).fork()).ldelim();
     }
-    for (const v of message.withdrawMsgStates) {
-      WithdrawMsgState.encode(v!, writer.uint32(42).fork()).ldelim();
+    for (const v of message.batchPoolWithdrawMsgs) {
+      BatchPoolWithdrawMsg.encode(v!, writer.uint32(42).fork()).ldelim();
     }
-    for (const v of message.swapMsgStates) {
-      SwapMsgState.encode(v!, writer.uint32(50).fork()).ldelim();
+    for (const v of message.batchPoolSwapMsgs) {
+      BatchPoolSwapMsg.encode(v!, writer.uint32(50).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): PoolRecord {
+  decode(input: _m0.Reader | Uint8Array, length?: number): LiquidityPoolRecord {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...basePoolRecord } as PoolRecord;
-    message.depositMsgStates = [];
-    message.withdrawMsgStates = [];
-    message.swapMsgStates = [];
+    const message = { ...baseLiquidityPoolRecord } as LiquidityPoolRecord;
+    message.batchPoolDepositMsgs = [];
+    message.batchPoolWithdrawMsgs = [];
+    message.batchPoolSwapMsgs = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.pool = Pool.decode(reader, reader.uint32());
+          message.liquidityPool = LiquidityPool.decode(reader, reader.uint32());
           break;
         case 2:
-          message.poolMetadata = PoolMetadata.decode(reader, reader.uint32());
+          message.liquidityPoolMetadata = LiquidityPoolMetadata.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 3:
-          message.poolBatch = PoolBatch.decode(reader, reader.uint32());
+          message.liquidityPoolBatch = LiquidityPoolBatch.decode(
+            reader,
+            reader.uint32()
+          );
           break;
         case 4:
-          message.depositMsgStates.push(
-            DepositMsgState.decode(reader, reader.uint32())
+          message.batchPoolDepositMsgs.push(
+            BatchPoolDepositMsg.decode(reader, reader.uint32())
           );
           break;
         case 5:
-          message.withdrawMsgStates.push(
-            WithdrawMsgState.decode(reader, reader.uint32())
+          message.batchPoolWithdrawMsgs.push(
+            BatchPoolWithdrawMsg.decode(reader, reader.uint32())
           );
           break;
         case 6:
-          message.swapMsgStates.push(
-            SwapMsgState.decode(reader, reader.uint32())
+          message.batchPoolSwapMsgs.push(
+            BatchPoolSwapMsg.decode(reader, reader.uint32())
           );
           break;
         default:
@@ -102,125 +114,153 @@ export const PoolRecord = {
     return message;
   },
 
-  fromJSON(object: any): PoolRecord {
-    const message = { ...basePoolRecord } as PoolRecord;
-    message.depositMsgStates = [];
-    message.withdrawMsgStates = [];
-    message.swapMsgStates = [];
-    if (object.pool !== undefined && object.pool !== null) {
-      message.pool = Pool.fromJSON(object.pool);
+  fromJSON(object: any): LiquidityPoolRecord {
+    const message = { ...baseLiquidityPoolRecord } as LiquidityPoolRecord;
+    message.batchPoolDepositMsgs = [];
+    message.batchPoolWithdrawMsgs = [];
+    message.batchPoolSwapMsgs = [];
+    if (object.liquidityPool !== undefined && object.liquidityPool !== null) {
+      message.liquidityPool = LiquidityPool.fromJSON(object.liquidityPool);
     } else {
-      message.pool = undefined;
-    }
-    if (object.poolMetadata !== undefined && object.poolMetadata !== null) {
-      message.poolMetadata = PoolMetadata.fromJSON(object.poolMetadata);
-    } else {
-      message.poolMetadata = undefined;
-    }
-    if (object.poolBatch !== undefined && object.poolBatch !== null) {
-      message.poolBatch = PoolBatch.fromJSON(object.poolBatch);
-    } else {
-      message.poolBatch = undefined;
+      message.liquidityPool = undefined;
     }
     if (
-      object.depositMsgStates !== undefined &&
-      object.depositMsgStates !== null
+      object.liquidityPoolMetadata !== undefined &&
+      object.liquidityPoolMetadata !== null
     ) {
-      for (const e of object.depositMsgStates) {
-        message.depositMsgStates.push(DepositMsgState.fromJSON(e));
+      message.liquidityPoolMetadata = LiquidityPoolMetadata.fromJSON(
+        object.liquidityPoolMetadata
+      );
+    } else {
+      message.liquidityPoolMetadata = undefined;
+    }
+    if (
+      object.liquidityPoolBatch !== undefined &&
+      object.liquidityPoolBatch !== null
+    ) {
+      message.liquidityPoolBatch = LiquidityPoolBatch.fromJSON(
+        object.liquidityPoolBatch
+      );
+    } else {
+      message.liquidityPoolBatch = undefined;
+    }
+    if (
+      object.batchPoolDepositMsgs !== undefined &&
+      object.batchPoolDepositMsgs !== null
+    ) {
+      for (const e of object.batchPoolDepositMsgs) {
+        message.batchPoolDepositMsgs.push(BatchPoolDepositMsg.fromJSON(e));
       }
     }
     if (
-      object.withdrawMsgStates !== undefined &&
-      object.withdrawMsgStates !== null
+      object.batchPoolWithdrawMsgs !== undefined &&
+      object.batchPoolWithdrawMsgs !== null
     ) {
-      for (const e of object.withdrawMsgStates) {
-        message.withdrawMsgStates.push(WithdrawMsgState.fromJSON(e));
+      for (const e of object.batchPoolWithdrawMsgs) {
+        message.batchPoolWithdrawMsgs.push(BatchPoolWithdrawMsg.fromJSON(e));
       }
     }
-    if (object.swapMsgStates !== undefined && object.swapMsgStates !== null) {
-      for (const e of object.swapMsgStates) {
-        message.swapMsgStates.push(SwapMsgState.fromJSON(e));
+    if (
+      object.batchPoolSwapMsgs !== undefined &&
+      object.batchPoolSwapMsgs !== null
+    ) {
+      for (const e of object.batchPoolSwapMsgs) {
+        message.batchPoolSwapMsgs.push(BatchPoolSwapMsg.fromJSON(e));
       }
     }
     return message;
   },
 
-  toJSON(message: PoolRecord): unknown {
+  toJSON(message: LiquidityPoolRecord): unknown {
     const obj: any = {};
-    message.pool !== undefined &&
-      (obj.pool = message.pool ? Pool.toJSON(message.pool) : undefined);
-    message.poolMetadata !== undefined &&
-      (obj.poolMetadata = message.poolMetadata
-        ? PoolMetadata.toJSON(message.poolMetadata)
+    message.liquidityPool !== undefined &&
+      (obj.liquidityPool = message.liquidityPool
+        ? LiquidityPool.toJSON(message.liquidityPool)
         : undefined);
-    message.poolBatch !== undefined &&
-      (obj.poolBatch = message.poolBatch
-        ? PoolBatch.toJSON(message.poolBatch)
+    message.liquidityPoolMetadata !== undefined &&
+      (obj.liquidityPoolMetadata = message.liquidityPoolMetadata
+        ? LiquidityPoolMetadata.toJSON(message.liquidityPoolMetadata)
         : undefined);
-    if (message.depositMsgStates) {
-      obj.depositMsgStates = message.depositMsgStates.map((e) =>
-        e ? DepositMsgState.toJSON(e) : undefined
+    message.liquidityPoolBatch !== undefined &&
+      (obj.liquidityPoolBatch = message.liquidityPoolBatch
+        ? LiquidityPoolBatch.toJSON(message.liquidityPoolBatch)
+        : undefined);
+    if (message.batchPoolDepositMsgs) {
+      obj.batchPoolDepositMsgs = message.batchPoolDepositMsgs.map((e) =>
+        e ? BatchPoolDepositMsg.toJSON(e) : undefined
       );
     } else {
-      obj.depositMsgStates = [];
+      obj.batchPoolDepositMsgs = [];
     }
-    if (message.withdrawMsgStates) {
-      obj.withdrawMsgStates = message.withdrawMsgStates.map((e) =>
-        e ? WithdrawMsgState.toJSON(e) : undefined
+    if (message.batchPoolWithdrawMsgs) {
+      obj.batchPoolWithdrawMsgs = message.batchPoolWithdrawMsgs.map((e) =>
+        e ? BatchPoolWithdrawMsg.toJSON(e) : undefined
       );
     } else {
-      obj.withdrawMsgStates = [];
+      obj.batchPoolWithdrawMsgs = [];
     }
-    if (message.swapMsgStates) {
-      obj.swapMsgStates = message.swapMsgStates.map((e) =>
-        e ? SwapMsgState.toJSON(e) : undefined
+    if (message.batchPoolSwapMsgs) {
+      obj.batchPoolSwapMsgs = message.batchPoolSwapMsgs.map((e) =>
+        e ? BatchPoolSwapMsg.toJSON(e) : undefined
       );
     } else {
-      obj.swapMsgStates = [];
+      obj.batchPoolSwapMsgs = [];
     }
     return obj;
   },
 
-  fromPartial(object: DeepPartial<PoolRecord>): PoolRecord {
-    const message = { ...basePoolRecord } as PoolRecord;
-    message.depositMsgStates = [];
-    message.withdrawMsgStates = [];
-    message.swapMsgStates = [];
-    if (object.pool !== undefined && object.pool !== null) {
-      message.pool = Pool.fromPartial(object.pool);
+  fromPartial(object: DeepPartial<LiquidityPoolRecord>): LiquidityPoolRecord {
+    const message = { ...baseLiquidityPoolRecord } as LiquidityPoolRecord;
+    message.batchPoolDepositMsgs = [];
+    message.batchPoolWithdrawMsgs = [];
+    message.batchPoolSwapMsgs = [];
+    if (object.liquidityPool !== undefined && object.liquidityPool !== null) {
+      message.liquidityPool = LiquidityPool.fromPartial(object.liquidityPool);
     } else {
-      message.pool = undefined;
-    }
-    if (object.poolMetadata !== undefined && object.poolMetadata !== null) {
-      message.poolMetadata = PoolMetadata.fromPartial(object.poolMetadata);
-    } else {
-      message.poolMetadata = undefined;
-    }
-    if (object.poolBatch !== undefined && object.poolBatch !== null) {
-      message.poolBatch = PoolBatch.fromPartial(object.poolBatch);
-    } else {
-      message.poolBatch = undefined;
+      message.liquidityPool = undefined;
     }
     if (
-      object.depositMsgStates !== undefined &&
-      object.depositMsgStates !== null
+      object.liquidityPoolMetadata !== undefined &&
+      object.liquidityPoolMetadata !== null
     ) {
-      for (const e of object.depositMsgStates) {
-        message.depositMsgStates.push(DepositMsgState.fromPartial(e));
+      message.liquidityPoolMetadata = LiquidityPoolMetadata.fromPartial(
+        object.liquidityPoolMetadata
+      );
+    } else {
+      message.liquidityPoolMetadata = undefined;
+    }
+    if (
+      object.liquidityPoolBatch !== undefined &&
+      object.liquidityPoolBatch !== null
+    ) {
+      message.liquidityPoolBatch = LiquidityPoolBatch.fromPartial(
+        object.liquidityPoolBatch
+      );
+    } else {
+      message.liquidityPoolBatch = undefined;
+    }
+    if (
+      object.batchPoolDepositMsgs !== undefined &&
+      object.batchPoolDepositMsgs !== null
+    ) {
+      for (const e of object.batchPoolDepositMsgs) {
+        message.batchPoolDepositMsgs.push(BatchPoolDepositMsg.fromPartial(e));
       }
     }
     if (
-      object.withdrawMsgStates !== undefined &&
-      object.withdrawMsgStates !== null
+      object.batchPoolWithdrawMsgs !== undefined &&
+      object.batchPoolWithdrawMsgs !== null
     ) {
-      for (const e of object.withdrawMsgStates) {
-        message.withdrawMsgStates.push(WithdrawMsgState.fromPartial(e));
+      for (const e of object.batchPoolWithdrawMsgs) {
+        message.batchPoolWithdrawMsgs.push(BatchPoolWithdrawMsg.fromPartial(e));
       }
     }
-    if (object.swapMsgStates !== undefined && object.swapMsgStates !== null) {
-      for (const e of object.swapMsgStates) {
-        message.swapMsgStates.push(SwapMsgState.fromPartial(e));
+    if (
+      object.batchPoolSwapMsgs !== undefined &&
+      object.batchPoolSwapMsgs !== null
+    ) {
+      for (const e of object.batchPoolSwapMsgs) {
+        message.batchPoolSwapMsgs.push(BatchPoolSwapMsg.fromPartial(e));
       }
     }
     return message;
@@ -237,8 +277,8 @@ export const GenesisState = {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
     }
-    for (const v of message.poolRecords) {
-      PoolRecord.encode(v!, writer.uint32(18).fork()).ldelim();
+    for (const v of message.liquidityPoolRecords) {
+      LiquidityPoolRecord.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -247,7 +287,7 @@ export const GenesisState = {
     const reader = input instanceof Uint8Array ? new _m0.Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseGenesisState } as GenesisState;
-    message.poolRecords = [];
+    message.liquidityPoolRecords = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -255,7 +295,9 @@ export const GenesisState = {
           message.params = Params.decode(reader, reader.uint32());
           break;
         case 2:
-          message.poolRecords.push(PoolRecord.decode(reader, reader.uint32()));
+          message.liquidityPoolRecords.push(
+            LiquidityPoolRecord.decode(reader, reader.uint32())
+          );
           break;
         default:
           reader.skipType(tag & 7);
@@ -267,15 +309,18 @@ export const GenesisState = {
 
   fromJSON(object: any): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
-    message.poolRecords = [];
+    message.liquidityPoolRecords = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromJSON(object.params);
     } else {
       message.params = undefined;
     }
-    if (object.poolRecords !== undefined && object.poolRecords !== null) {
-      for (const e of object.poolRecords) {
-        message.poolRecords.push(PoolRecord.fromJSON(e));
+    if (
+      object.liquidityPoolRecords !== undefined &&
+      object.liquidityPoolRecords !== null
+    ) {
+      for (const e of object.liquidityPoolRecords) {
+        message.liquidityPoolRecords.push(LiquidityPoolRecord.fromJSON(e));
       }
     }
     return message;
@@ -285,27 +330,30 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined &&
       (obj.params = message.params ? Params.toJSON(message.params) : undefined);
-    if (message.poolRecords) {
-      obj.poolRecords = message.poolRecords.map((e) =>
-        e ? PoolRecord.toJSON(e) : undefined
+    if (message.liquidityPoolRecords) {
+      obj.liquidityPoolRecords = message.liquidityPoolRecords.map((e) =>
+        e ? LiquidityPoolRecord.toJSON(e) : undefined
       );
     } else {
-      obj.poolRecords = [];
+      obj.liquidityPoolRecords = [];
     }
     return obj;
   },
 
   fromPartial(object: DeepPartial<GenesisState>): GenesisState {
     const message = { ...baseGenesisState } as GenesisState;
-    message.poolRecords = [];
+    message.liquidityPoolRecords = [];
     if (object.params !== undefined && object.params !== null) {
       message.params = Params.fromPartial(object.params);
     } else {
       message.params = undefined;
     }
-    if (object.poolRecords !== undefined && object.poolRecords !== null) {
-      for (const e of object.poolRecords) {
-        message.poolRecords.push(PoolRecord.fromPartial(e));
+    if (
+      object.liquidityPoolRecords !== undefined &&
+      object.liquidityPoolRecords !== null
+    ) {
+      for (const e of object.liquidityPoolRecords) {
+        message.liquidityPoolRecords.push(LiquidityPoolRecord.fromPartial(e));
       }
     }
     return message;
