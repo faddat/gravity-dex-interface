@@ -14,5 +14,4 @@ protoc \
   "$LIQUIDITY_PROTO_DIR/genesis.proto" \
   "$LIQUIDITY_PROTO_DIR/query.proto" \
   "$LIQUIDITY_PROTO_DIR/liquidity.proto" \
-  "$LIQUIDITY_PROTO_DIR/msg.proto" \
   "$LIQUIDITY_PROTO_DIR/tx.proto" \
