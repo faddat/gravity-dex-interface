@@ -62,10 +62,17 @@ export interface PageResponse {
   total: Long;
 }
 
-const basePageRequest: object = { offset: Long.UZERO, limit: Long.UZERO, countTotal: false };
+const basePageRequest: object = {
+  offset: Long.UZERO,
+  limit: Long.UZERO,
+  countTotal: false,
+};
 
 export const PageRequest = {
-  encode(message: PageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: PageRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
@@ -134,9 +141,13 @@ export const PageRequest = {
   toJSON(message: PageRequest): unknown {
     const obj: any = {};
     message.key !== undefined &&
-      (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
-    message.offset !== undefined && (obj.offset = (message.offset || Long.UZERO).toString());
-    message.limit !== undefined && (obj.limit = (message.limit || Long.UZERO).toString());
+      (obj.key = base64FromBytes(
+        message.key !== undefined ? message.key : new Uint8Array()
+      ));
+    message.offset !== undefined &&
+      (obj.offset = (message.offset || Long.UZERO).toString());
+    message.limit !== undefined &&
+      (obj.limit = (message.limit || Long.UZERO).toString());
     message.countTotal !== undefined && (obj.countTotal = message.countTotal);
     return obj;
   },
@@ -170,7 +181,10 @@ export const PageRequest = {
 const basePageResponse: object = { total: Long.UZERO };
 
 export const PageResponse = {
-  encode(message: PageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(
+    message: PageResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
     if (message.nextKey.length !== 0) {
       writer.uint32(10).bytes(message.nextKey);
     }
@@ -217,8 +231,11 @@ export const PageResponse = {
   toJSON(message: PageResponse): unknown {
     const obj: any = {};
     message.nextKey !== undefined &&
-      (obj.nextKey = base64FromBytes(message.nextKey !== undefined ? message.nextKey : new Uint8Array()));
-    message.total !== undefined && (obj.total = (message.total || Long.UZERO).toString());
+      (obj.nextKey = base64FromBytes(
+        message.nextKey !== undefined ? message.nextKey : new Uint8Array()
+      ));
+    message.total !== undefined &&
+      (obj.total = (message.total || Long.UZERO).toString());
     return obj;
   },
 
@@ -249,7 +266,8 @@ var globalThis: any = (() => {
 })();
 
 const atob: (b64: string) => string =
-  globalThis.atob || ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
+  globalThis.atob ||
+  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
 function bytesFromBase64(b64: string): Uint8Array {
   const bin = atob(b64);
   const arr = new Uint8Array(bin.length);
@@ -260,7 +278,8 @@ function bytesFromBase64(b64: string): Uint8Array {
 }
 
 const btoa: (bin: string) => string =
-  globalThis.btoa || ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
+  globalThis.btoa ||
+  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
 function base64FromBytes(arr: Uint8Array): string {
   const bin: string[] = [];
   for (let i = 0; i < arr.byteLength; ++i) {
@@ -269,7 +288,14 @@ function base64FromBytes(arr: Uint8Array): string {
   return btoa(bin.join(""));
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | undefined | Long;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | undefined
+  | Long;
 export type DeepPartial<T> = T extends Builtin
   ? T
   : T extends Array<infer U>

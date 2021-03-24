@@ -1,6 +1,6 @@
 import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { assertIsBroadcastTxSuccess, SigningStargateClient, StargateClient } from "@cosmjs/stargate";
-
+import { MsgApiClientImpl } from "./liquidity_codecs/msg"
 
 export async function testTxGenerator() {
     // set config
@@ -8,7 +8,6 @@ export async function testTxGenerator() {
     await window.keplr.enable(chainId);
     const wallet = window.getOfflineSigner(chainId);
     const [firstAccount] = await wallet.getAccounts();
-
 
     const rpcEndpoint = "https://dev.bharvest.io/rpc/";
     const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, wallet);
