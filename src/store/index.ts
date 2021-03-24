@@ -41,9 +41,9 @@ export const RootReducer = createSlice({
     name: "rootStore",
     initialState: TEST_INIT_DATA,
     reducers: {
-        setStatusPending: (state, action) => {
-            console.log(state)
-            state.userData.walletStatus = 'pending'
+        togglePendingStatus: (state, action) => {
+            let currentStatus = state.userData.walletStatus
+            state.userData.walletStatus = currentStatus === 'pending' ? 'normal' : 'pending'
         },
         setSlippage: (state, action) => {
             state.userData.slippage = action.payload
