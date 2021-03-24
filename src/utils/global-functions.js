@@ -24,9 +24,26 @@ export function getMyTokenBalance(token, indexer) {
     }
 }
 
-export function sortReserveCoinDenoms(x, y) {
+// export function sortReserveCoinDenoms(x, y) {
+//     return [x, y].sort()
+// }
+
+export function sortCoins(x, y) {
     return [x, y].sort()
 }
+
+export function getSelectedPairsPoolData(state, action, counterTarget, poolData) {
+    let coinA = state[`${counterTarget}Coin`]
+    let coinB = action.payload.coin
+    const sortedCoins = [coinA, coinB].sort()
+    const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
+
+    return slectedPairsPoolData === undefined ? false : slectedPairsPoolData
+}
+
+
+
+//~~~~
 
 export function getDepositCoins(denoms, amounts) {
     return { denoms: [denoms[0], denoms[1]], amounts: [amounts[denoms[0]], amounts[denoms[1]]] }

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux";
+import { getSelectedPairsPoolData } from "../../utils/global-functions"
+import { useHistory } from 'react-router-dom'
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
@@ -105,9 +107,11 @@ function SwapCard() {
     React.useEffect(() => {
         //미로그인시 connectWallet 스테이터스 아니면 empty로
     }, [])
-    const myBalance = useSelector((state) => state.store.userData.balance)
-    const slippage = useSelector((state) => state.store.userData.slippage)
+    const { balance: myBalance, slippage } = useSelector((state) => state.store.userData)
+    const poolData = useSelector((state) => state.store.poolsData.pools)
+    // const slippage = useSelector((state) => state.store.userData.slippage)
     const storeDispatch = useDispatch()
+    const history = useHistory();
 
     //reducer for useReducer
     function reducer(state, action) {
@@ -141,6 +145,11 @@ function SwapCard() {
             case TYPES.SET_MAX_AMOUNT:
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
+                const selectedPooldata = getSelectedPairsPoolData(state, action, counterTarget, poolData)
+
+                if (!selectedPooldata) {
+                    history.push('/create')
+                }
 
                 return { ...state, [`${target}Coin`]: action.payload.coin }
             case TYPES.CHANGE_FROM_TO_COIN:
