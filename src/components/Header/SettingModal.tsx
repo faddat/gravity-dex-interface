@@ -100,7 +100,7 @@ div {
 
 `
 
-function ConnectWalletModal({ close, connect }: { close: any, connect: any }) {
+function ConnectWalletModal({ close }: { close: any }) {
     const slippage = useSelector((state) => state.store.userData.slippage)
     const [slippageStatus, setSlippageStatus] = React.useState('normal')
     const dispatch = useDispatch()

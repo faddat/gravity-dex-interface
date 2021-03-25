@@ -1,23 +1,30 @@
+//library
 import * as React from 'react'
 import styled from "styled-components"
 import { lighten } from 'polished'
-
 import { NavLink } from 'react-router-dom'
+
+//icons
 import logo from "../../assets/logo/logo.png"
 import wallet from '../../assets/wallets/dollar_wallet.png'
 import GearButton from "../../components/Buttons/Gear"
+import { GridSpinner } from 'react-spinners-kit'
+
+//modals
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
 import SettingModal from "./SettingModal"
-import { GridSpinner } from 'react-spinners-kit'
+import WalletModal from "./WalletModal"
 
+//for wallet
 import { chainInfo } from "../../cosmos-amm/config"
-import { GaiaApi } from "@chainapsis/cosmosjs/gaia/api"
 
+//helpers
 import { useToggle } from "ahooks";
 import { useDispatch, useSelector } from "react-redux";
 import { toastGenerator, mobileCheck } from "../../utils/global-functions"
 
+// styled-components
 const HeaderFrame = styled.div`
 display:flex;
 justify-content: space-between;
@@ -28,7 +35,6 @@ padding: 1rem;
 ${({ theme }) => theme.mediaWidth.upToExtraSmall`
     font-size: 14px !important;
 `};
- 
 `
 
 const LogoImg = styled.img`
@@ -68,8 +74,8 @@ const StyledNavLink = styled(NavLink).attrs({
   margin: 0 16px;
   font-weight: 500;
   padding: 4px 0;
+
   &.${activeClassName} {
-    
     border-bottom: 3px solid ${({ theme }) => theme.navActiveBorderColor};
     color: ${({ theme }) => theme.text1};
   }
@@ -160,14 +166,18 @@ display: flex;
 align-items: center;
 `
 
+
+//component
 function AppHeader() {
   const [isConnectWalletModalOpen, { toggle: connectWalletModalToggle }] = useToggle();
   const [isSettingModalOpen, { toggle: settingModalToggle }] = useToggle();
+  const [isWalletModalOpen, { toggle: walletModalToggle }] = useToggle();
   const [walletAddress, setWalletAddress] = React.useState('')
   const userBalance = useSelector((state) => state.store.userData.balance)
   const priceData = useSelector((state) => state.store.priceData)
   const walletStatus = useSelector((state) => state.store.userData.walletStatus)
   const dispatch = useDispatch()
+
   React.useEffect(() => {
     window.onload = () => {
       connectWallet(false)
@@ -200,21 +210,6 @@ function AppHeader() {
     const offlineSigner = window.getOfflineSigner(chainInfo.chainId);
     const accounts = await offlineSigner.getAccounts()
     const address = accounts[0].address
-
-    // const cosmosJS = new GaiaApi({
-    //   chainId: chainInfo.chainId,
-    //   rpc: chainInfo.rpc,
-    //   rest: chainInfo.rest,
-    //   walletProvider: window.cosmosJSWalletProvider
-    // });
-
-    // try {
-    //   await cosmosJS.enable();
-    // } catch {
-    //   console.log('enable rejected')
-    // }
-
-    // const keys = await cosmosJS.getKeys();
 
     if (address.length === 0) {
       throw new Error("there is no key");
@@ -272,7 +267,9 @@ function AppHeader() {
           {/* determine pending status with local tx data */}
 
           <div className="total-value">
-            <img src={wallet} className="wallet" alt="wallet" />
+            <img src={wallet} className="wallet" alt="wallet from www.flaticon" onClick={() => {
+              walletModalToggle()
+            }} />
             ${getTotalValue(userBalance)}
           </div>
 
@@ -295,12 +292,18 @@ function AppHeader() {
         <GearButton onClick={() => { settingModalToggle() }} />
       </NavigationFrame>
 
+
+      {/* modals */}
       <BasicModal elementId="modal" isOpen={isConnectWalletModalOpen} toggle={connectWalletModalToggle}>
         <ConnectWalletModal close={connectWalletModalToggle} connect={connectWallet} />
       </BasicModal>
 
       <BasicModal elementId="modal" isOpen={isSettingModalOpen} toggle={settingModalToggle}>
-        <SettingModal close={settingModalToggle} connect={connectWallet}></SettingModal>
+        <SettingModal close={settingModalToggle}></SettingModal>
+      </BasicModal>
+
+      <BasicModal elementId="modal" isOpen={isWalletModalOpen} toggle={walletModalToggle}>
+        <WalletModal close={walletModalToggle} priceData={priceData} totalValue={getTotalValue(userBalance)} />
       </BasicModal>
 
     </HeaderFrame>
