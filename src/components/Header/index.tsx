@@ -4,6 +4,7 @@ import { lighten } from 'polished'
 
 import { NavLink } from 'react-router-dom'
 import logo from "../../assets/logo/logo.png"
+import wallet from '../../assets/wallets/dollar_wallet.png'
 import GearButton from "../../components/Buttons/Gear"
 import BasicModal from "../Modals/BasicModal"
 import ConnectWalletModal from "./ConnectWalletModal"
@@ -110,8 +111,20 @@ border-radius: 12px;
 color: #fff;
 
 .total-value {
+  display:flex;
+  align-items: center;
   font-weight: 500;
   letter-spacing: 0.8px;
+
+  .wallet {
+    width: 32px;
+    margin-right: 10px;
+    transition: transform 0.1s;
+    cursor:pointer;
+    &:hover {
+      transform:scale(1.1);
+    }
+  }
 }
 `
 
@@ -258,7 +271,10 @@ function AppHeader() {
         <WalletWidget>
           {/* determine pending status with local tx data */}
 
-          <div className="total-value">${getTotalValue(userBalance)}</div>
+          <div className="total-value">
+            <img src={wallet} className="wallet" alt="wallet" />
+            ${getTotalValue(userBalance)}
+          </div>
 
           <ConnectedWallet onClick={() => { showStatusDetail() }}>
             {walletStatus !== "pending" ? <div>{walletAddress.substr(0, 10)}...{walletAddress.substr(-5)}</div> : <div style={{ margin: 0, paddingRight: "6px" }}><div style={{ margin: "0 0 0 12px" }}>Pending</div><GridSpinner size={19} /></div>}

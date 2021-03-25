@@ -82,6 +82,7 @@ function getMyCoinBalance(coin, myBalance) {
     }
 }
 
+//for display
 function getButtonNameByStatus(status, fromCoin, toCoin) {
     if (fromCoin === '' || toCoin === '') {
         return 'Select a token'
@@ -102,14 +103,16 @@ function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
     }
 }
 
-
+// component function
 function SwapCard() {
+
     React.useEffect(() => {
         //미로그인시 connectWallet 스테이터스 아니면 empty로
+
     }, [])
+
     const { balance: myBalance, slippage } = useSelector((state) => state.store.userData)
     const poolData = useSelector((state) => state.store.poolsData.pools)
-    // const slippage = useSelector((state) => state.store.userData.slippage)
     const storeDispatch = useDispatch()
     const history = useHistory();
 
@@ -122,9 +125,11 @@ function SwapCard() {
             target = action.payload.target === "From" ? "from" : "to"
             counterTarget = target === 'from' ? 'to' : 'from'
         }
+
         let isOver = false
         let isEmpty = false
         let isCounterPairEmpty = false
+
         switch (action.type) {
 
             case TYPES.AMOUNT_CHANGE:
