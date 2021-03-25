@@ -319,7 +319,7 @@ function Pool() {
                                 </div>
 
                                 <div className="pool-action">
-                                    <button>Deposit</button><button>Withdraw</button>
+                                    <button>Add Liquidity</button><button>Redeem</button>
                                 </div>
                             </div>
 
@@ -362,7 +362,7 @@ function Pool() {
                                 </div>
 
                                 <div className="pool-action">
-                                    <button>Deposit</button>
+                                    <button>Add Liquidity</button>
                                 </div>
                             </div>
                         </div>
@@ -415,7 +415,7 @@ function Pool() {
 
                     <div className="buttons">
                         <button className="button" onClick={() => { history.push('/create') }}>Create a pair</button>
-                        <button className="button" onClick={() => { history.push('/deposit') }}>Deposit Liquidity</button>
+                        <button className="button" onClick={() => { history.push('/add') }}>Add Liquidity</button>
                     </div>
                 </div>
 

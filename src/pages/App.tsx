@@ -7,8 +7,8 @@ import AppHeader from "../components/Header"
 import Swap from "../pages/Swap"
 import Pool from "../pages/Pool"
 import Create from "../pages/Create"
-import Deposit from "../pages/Deposit"
-import Withdraw from "../pages/Withdraw"
+import Add from "../pages/Add"
+import Redeem from "../pages/Redeem"
 import Rank from "../pages/Rank"
 
 //test
@@ -60,8 +60,8 @@ function App() {
         <Route exact strict path={["/", "/swap"]} component={Swap} />
         <Route exact strict path="/pool" component={Pool} />
         <Route exact strict path="/create" component={Create} />
-        <Route exact strict path="/deposit" component={Deposit} />
-        <Route exact strict path="/withdraw" component={Withdraw} />
+        <Route exact strict path="/add" component={Add} />
+        <Route exact strict path="/redeem" component={Redeem} />
         <Route exact strict path="/rank" component={Rank} />
       </Switch>
 
