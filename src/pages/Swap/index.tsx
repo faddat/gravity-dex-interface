@@ -146,18 +146,32 @@ function SwapCard() {
 
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
+                let coinA = state[`${counterTarget}Coin`]
+                let coinB = action.payload.coin
+                if (coinA === '' || coinB === '') {
+                    return { ...state, [`${target}Coin`]: action.payload.coin }
+                }
                 const selectedPooldata = getSelectedPairsPoolData(state, action, counterTarget, poolData)
-                let price;
-                if (!selectedPooldata) {
+
+                if (!selectedPooldata && (state.fromCoin !== '' && state.toCoin !== '')) {
                     history.push('/create')
-                } else {
-                    price = getPoolPrice(state, action, counterTarget, poolData)
                 }
 
-                return { ...state, [`${target}Coin`]: action.payload.coin, price: price }
+                return { ...state, [`${target}Coin`]: action.payload.coin, price: getPoolPrice(state, action, counterTarget, poolData) }
+
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
-                return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+
+                let price: any = '-'
+                if (state.toCoin === '' || state.fromCoin === '') {
+                    return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+                } else {
+                    const sortedCoins = [state.toCoin, state.fromCoin].sort()
+                    const selectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
+                    price = selectedPairsPoolData[state.toCoin] / selectedPairsPoolData[state.fromCoin]
+                }
+
+                return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount, price: price }
             default:
                 console.log("DEFAULT: SWAP REDUCER")
                 return state;

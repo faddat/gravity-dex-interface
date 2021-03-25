@@ -43,12 +43,12 @@ function App() {
     if (window.location.hash === '#/') {
       history.push('/swap')
     }
-    window.onload = () => {
-      //test 
-      // testTxGenerator()
-      // test2()
-      testSign()
-    }
+    // window.onload = () => {
+    //   //test 
+    //   // testTxGenerator()
+    //   // test2()
+    //   testSign()
+    // }
   }, [])
 
   return (

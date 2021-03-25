@@ -42,14 +42,22 @@ export function getSelectedPairsPoolData(state, action, counterTarget, poolData)
     let coinA = state[`${counterTarget}Coin`]
     let coinB = action.payload.coin
     const sortedCoins = [coinA, coinB].sort()
-    const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
+    const selectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
 
-    return slectedPairsPoolData === undefined ? false : slectedPairsPoolData
+    return selectedPairsPoolData === undefined ? false : selectedPairsPoolData
 }
 
 export function getPoolPrice(state, action, counterTarget, poolData) {
-    let coinA = state[`${counterTarget}Coin`]
-    let coinB = action.payload.coin
+    let coinA;
+    let coinB;
+    if (counterTarget === 'from') {
+        coinA = state[`${counterTarget}Coin`]
+        coinB = action.payload.coin
+    } else {
+        coinA = action.payload.coin
+        coinB = state[`${counterTarget}Coin`]
+    }
+
     const sortedCoins = [coinA, coinB].sort()
     const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
 
