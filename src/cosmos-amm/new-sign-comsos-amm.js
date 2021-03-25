@@ -88,22 +88,42 @@ export async function testSign() {
     const wallet = window.getOfflineSigner(chainId);
 
     const [firstAccount] = await wallet.getAccounts();
-
     const rpcEndpoint = "https://dev.bharvest.io/rpc/";
     const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, wallet, { registry: myRegistry });
+
+    // let number = '2.343495760438650155'
+    // let bytes = new Uint8Array(new Float32Array([number]).buffer);
+
+    var s = '2.343495760438650155';
+    var result = [];
+
+    for (var i = 0; i < s.length; i += 2) {
+        result.push(parseInt(s.substring(i, i + 2), 16));
+    }
+    result = Uint8Array.from(result)
+    console.log(result);
+
+
     const message = {
         typeUrl: "/tendermint.liquidity.MsgSwap",
-
         value: {
             "swapRequesterAddress": "cosmos1ltz6n5d2jrvvnfjwly5w6wjwy0x38vg5x89u6u",
             "poolId": new Long(8),
-            "swapYype": 1,
+            "swapType": 1,
             "offerCoin": { "denom": "uluna", "amount": "10000000" },
             "demandCoinDenom": "uatom",
-            "orderPrice": new Uint8Array(2.343495760438650155),
+            "orderPrice": new Uint8Array([49, 48]),
             "offerCoinFee": { "denom": "uluna", "amount": "15000" }
         }
     }
+
+
+    // function stringToArray(bufferString) {
+    //     let uint8Array = new TextEncoder("utf-8").encode(bufferString);
+    //     return uint8Array;
+    // }
+
+
 
     const fee = {
         amount: [
@@ -114,6 +134,6 @@ export async function testSign() {
         ],
         gas: "10000",
     };
-    const response = await client.signAndBroadcast(firstAccount.address, [message], fee, 'test');
 
+    const response = await client.signAndBroadcast(firstAccount.address, [message], fee, 'test');
 }
