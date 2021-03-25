@@ -87,7 +87,7 @@ border-top-left-radius: 12px;
 function ConnectWalletModal({ close, priceData, totalValue }: { close: any, priceData: {}, totalValue: any }) {
     const myBalance = useSelector((state) => state.store.userData.balance)
     const dispatch = useDispatch()
-    console.log(priceData)
+
     function generateCoinList(balance, priceData) {
         let result = []
 
