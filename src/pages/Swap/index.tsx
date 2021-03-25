@@ -9,6 +9,7 @@ import ChangeArrow from "../../assets/svgs/ChangeArrow"
 import BaseCard from "../../components/Cards/BaseCard"
 import TokenInputController from "../../components/TokenInputController/index"
 import ActionButton from "../../components/Buttons/ActionButton"
+import { create } from 'domain';
 
 //Styled-components
 const SwapWrapper = styled.div`
@@ -90,6 +91,8 @@ function getButtonNameByStatus(status, fromCoin, toCoin) {
         return 'Insufficient balance'
     } else if (status === 'empty') {
         return 'Enter an amount'
+    } else if (status === 'create') {
+        return 'Create a new pool'
     } else {
         return 'SWAP'
     }
@@ -172,18 +175,33 @@ function SwapCard() {
                     return { ...state, [`${target}Coin`]: action.payload.coin }
                 }
 
+                if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
+                    isOver = true
+                }
+
+                if (action.payload.amount == 0) {
+                    isEmpty = true
+                }
+
+                if (state[`${counterTarget}Amount`] === '' || state[`${counterTarget}Amount`] == 0) {
+                    isCounterPairEmpty = true
+                }
+
                 const selectedPooldata = getSelectedPairsPoolData(state, action, counterTarget, poolData)
 
                 if (coinA !== '' && coinB !== '') {
                     if (!selectedPooldata) {
-                        history.push('/create')
+                        return { ...state, status: "create", [`${target}Coin`]: action.payload.coin }
                     }
                 }
 
-                return { ...state, [`${target}Coin`]: action.payload.coin, price: getPoolPrice(state, action, counterTarget, poolData) }
+                return { ...state, [`${target}Coin`]: action.payload.coin, price: getPoolPrice(state, action, counterTarget, poolData), status: isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal' }
 
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
+                if (state.status === 'create') {
+                    return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+                }
 
                 let price: any = '-'
                 if (state.toCoin === '' || state.fromCoin === '') {
@@ -216,6 +234,10 @@ function SwapCard() {
         setTimeout(() => {
             storeDispatch({ type: 'rootStore/togglePendingStatus' })
         }, 3000)
+    }
+
+    function create(from, to) {
+        history.push(`/create?from=${from}&to=${to}`)
     }
 
     return (
@@ -272,7 +294,13 @@ function SwapCard() {
 
 
                     {/* Swap Button */}
-                    <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
+                    <ActionButton onClick={() => {
+                        if (state.status !== 'create') {
+                            swap()
+                        } else {
+                            create(state.fromCoin, state.toCoin)
+                        }
+                    }} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
                         {getButtonNameByStatus(state.status, state.fromCoin, state.toCoin)}
                     </ActionButton>
                 </SwapWrapper>
