@@ -148,13 +148,17 @@ function SwapCard() {
             case TYPES.SELECT_COIN:
                 let coinA = state[`${counterTarget}Coin`]
                 let coinB = action.payload.coin
+
                 if (coinA === '' || coinB === '') {
                     return { ...state, [`${target}Coin`]: action.payload.coin }
                 }
+
                 const selectedPooldata = getSelectedPairsPoolData(state, action, counterTarget, poolData)
 
-                if (!selectedPooldata && (state.fromCoin !== '' && state.toCoin !== '')) {
-                    history.push('/create')
+                if (coinA !== '' && coinB !== '') {
+                    if (!selectedPooldata) {
+                        history.push('/create')
+                    }
                 }
 
                 return { ...state, [`${target}Coin`]: action.payload.coin, price: getPoolPrice(state, action, counterTarget, poolData) }
