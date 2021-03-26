@@ -48,6 +48,17 @@ const SwapWrapper = styled.div`
        }
     }
 
+    .info-box {
+        box-sizing: border-box;
+        margin: 20px 0;
+        min-width: 0px;
+        padding: 1.25rem;
+        background-color:rgb(234 243 253);
+        color: rgb(0 124 255);
+        border-radius: 12px;
+        width: fit-content;
+    }
+
    .divider {
         display:flex;
         align-items:center;
@@ -66,7 +77,7 @@ const SwapWrapper = styled.div`
         border: 1px solid rgb(247, 248, 250);
 
         margin-top: 16px;
-        
+
         .title {
             padding: 16px;
             font-weight: 500;
@@ -117,7 +128,7 @@ function getMyCoinBalance(coin, myBalance) {
 
 function getButtonNameByStatus(status, fromCoin, toCoin) {
     if (fromCoin === '' || toCoin === '') {
-        return 'Select a token'
+        return 'Select a coin'
     } else if (status === 'over') {
         return 'Insufficient balance'
     } else if (status === 'empty') {
@@ -217,6 +228,15 @@ function SwapCard() {
                         <div className="back" onClick={() => { history.push('/pool') }}>←</div>
                         <div className="title"> Create a Pair</div>
                         <div style={{ width: "23px" }}></div>
+                    </div>
+
+                    {/* Info */}
+                    <div className="info-box">
+                        <div style={{ fontWeight: "bold", marginBottom: "10px" }}>You are the first liquidity provider.</div>
+                        <div style={{ marginBottom: "10px" }}>
+                            The ratio of tokens you add will set the price of this pool.
+                        </div>
+                        Once you are happy with the rate click the supply button.
                     </div>
 
                     {/* From */}

@@ -86,7 +86,7 @@ function getMyCoinBalance(coin, myBalance) {
 //for display
 function getButtonNameByStatus(status, fromCoin, toCoin) {
     if (fromCoin === '' || toCoin === '') {
-        return 'Select a token'
+        return 'Select a coin'
     } else if (status === 'over') {
         return 'Insufficient balance'
     } else if (status === 'empty') {
