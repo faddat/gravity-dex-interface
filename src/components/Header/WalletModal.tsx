@@ -101,7 +101,7 @@ function ConnectWalletModal({ close, priceData, totalValue }: { close: any, pric
                     <div className="coin-info">
                         <img className="coin-img" src={`/assets/coins/${pair}.png`} alt="coin pair" />{pair.toUpperCase()}
                     </div>
-                    <div className="coin-balance">{balance[pair] || 0} <span>(${pairValue})</span></div>
+                    <div className="coin-balance">{balance[pair] || 0} <span style={{ color: '#8a8a8a' }}>(${pairValue})</span></div>
                 </div>
 
             )
