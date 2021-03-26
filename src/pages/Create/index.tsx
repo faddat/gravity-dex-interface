@@ -57,26 +57,43 @@ const SwapWrapper = styled.div`
 
         .plus {
             font-size: 24px;
+            font-weight: 300;
         }
    }
 
-   .swap-detail {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+   .pool-creation-detail {
+        border-radius: 20px;
+        border: 1px solid rgb(247, 248, 250);
 
-        padding: 6px 12px;
-
-        font-size: 14px;
-        font-weight: 500;
-        color: rgb(86, 90, 105);
-
-        .left {
-            
+        margin-top: 16px;
+        
+        .title {
+            padding: 16px;
+            font-weight: 500;
+            font-size: 14px;
         }
 
-        .right {
+        .details {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid rgb(247, 248, 250);
+            border-radius: 20px;
 
+            .detail {
+                text-align:center;
+                flex: 1;
+                .number {
+                    font-weight: 500;
+                }
+
+                .text {
+                    font-weight: 500;
+                    font-size: 14px;
+                    color: rgb(86, 90, 105);
+                    padding-top: 4px;
+                }
+            }
         }
    }
 `
@@ -230,16 +247,23 @@ function SwapCard() {
                     />
 
                     {/* Swap detail */}
-                    <div className="swap-detail">
-                        <div className="left">Price</div>
-                        <div className="right">1</div>
+                    <div className="pool-creation-detail">
+                        <div className="title">Initial prices and pool share</div>
+                        <div className="details">
+                            <div className="detail">
+                                <div className="number">100</div>
+                                <div className="text">A per B</div>
+                            </div>
+                            <div className="detail">
+                                <div className="number">0.01</div>
+                                <div className="text">B per A</div>
+                            </div>
+                            <div className="detail">
+                                <div className="number">100%</div>
+                                <div className="text">Share of Pool</div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="swap-detail">
-                        <div className="left">Slippage Tolerance</div>
-                        <div className="right">{slippage}%</div>
-                    </div>
-
 
                     {/* Swap Button */}
                     <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
