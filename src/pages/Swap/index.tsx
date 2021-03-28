@@ -133,13 +133,14 @@ function SwapCard() {
     //reducer for useReducer
     function reducer(state, action) {
         const { targetPair, counterTargetPair } = getPairs(action)
-
-        const selectedPairAmount = action.payload?.amount
+        const selectedPairAmount = action.payload?.amount || state[`${targetPair}Amount`]
         const counterPairAmount = state[`${counterTargetPair}Amount`]
         const selectedPairMyBalance = myBalance[state[`${targetPair}Coin`]]
         const counterPairMyBalance = myBalance[state[`${counterTargetPair}Coin`]]
 
-        let isOver, isEmpty, isCounterPairEmpty = false
+        let isOver = false
+        let isEmpty = false
+        let isCounterPairEmpty = false
 
         function setAmountCheckVariables() {
             if (selectedPairAmount > selectedPairMyBalance || counterPairAmount > counterPairMyBalance) {
@@ -173,13 +174,14 @@ function SwapCard() {
                 const isBothCoin = coinA !== '' && coinB !== ''
 
                 if (!isBothCoin) {
+
                     return { ...state, [`${targetPair}Coin`]: action.payload.coin }
 
                 } else {
                     const selectedPooldata = getSelectedPairsPoolData(state, action, counterTargetPair, poolData)
                     state.status = "normal"
                     setAmountCheckVariables()
-
+                    console.log('isOver, isEmpty, isCounterPairEmpty', isOver, isEmpty, isCounterPairEmpty)
                     if (!selectedPooldata) {
                         return { ...state, status: "create", [`${targetPair}Coin`]: action.payload.coin, price: '-' }
                     } else {
@@ -203,7 +205,6 @@ function SwapCard() {
                     const price = selectedPairsPoolData[state.toCoin] / selectedPairsPoolData[state.fromCoin]
                     return { ...fromToChangeObject, price }
                 }
-
 
             default:
                 console.log("DEFAULT: SWAP REDUCER")
