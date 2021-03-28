@@ -9,7 +9,7 @@ import ChangeArrow from "../../assets/svgs/ChangeArrow"
 import BaseCard from "../../components/Cards/BaseCard"
 import TokenInputController from "../../components/TokenInputController/index"
 import ActionButton from "../../components/Buttons/ActionButton"
-import { create } from 'domain';
+
 
 //Styled-components
 const SwapWrapper = styled.div`
@@ -83,6 +83,17 @@ function getMyCoinBalance(coin, myBalance) {
     }
 }
 
+function getPairs(action) {
+    let targetPair = null
+    let counterTargetPair = null
+
+    if (action.payload?.target) {
+        targetPair = action.payload.target === "From" ? "from" : "to"
+        counterTargetPair = targetPair === 'from' ? 'to' : 'from'
+    }
+    return { targetPair, counterTargetPair }
+}
+
 //for display
 function getButtonNameByStatus(status, fromCoin, toCoin) {
     if (fromCoin === '' || toCoin === '') {
@@ -121,99 +132,79 @@ function SwapCard() {
 
     //reducer for useReducer
     function reducer(state, action) {
-        let target = null
-        let counterTarget = null
+        const { targetPair, counterTargetPair } = getPairs(action)
 
-        if (action.payload?.target) {
-            target = action.payload.target === "From" ? "from" : "to"
-            counterTarget = target === 'from' ? 'to' : 'from'
+        const selectedPairAmount = action.payload?.amount
+        const counterPairAmount = state[`${counterTargetPair}Amount`]
+        const selectedPairMyBalance = myBalance[state[`${targetPair}Coin`]]
+        const counterPairMyBalance = myBalance[state[`${counterTargetPair}Coin`]]
+
+        let isOver, isEmpty, isCounterPairEmpty = false
+
+        function setAmountCheckVariables() {
+            if (selectedPairAmount > selectedPairMyBalance || counterPairAmount > counterPairMyBalance) {
+                isOver = true
+            }
+            if (selectedPairAmount == 0) {
+                isEmpty = true
+            }
+            if (counterPairAmount === '' || counterPairAmount == 0) {
+                isCounterPairEmpty = true
+            }
         }
 
-        let isOver = false
-        let isEmpty = false
-        let isCounterPairEmpty = false
+        function getStatus(state) {
+            return state.status === 'create' ? 'create' : (isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal')
+        }
 
         switch (action.type) {
 
             case TYPES.AMOUNT_CHANGE:
+                setAmountCheckVariables()
+                return { ...state, [`${targetPair}Amount`]: selectedPairAmount, status: getStatus(state) }
 
-
-                if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
-                    isOver = true
-                }
-
-                if (action.payload.amount == 0) {
-                    isEmpty = true
-                }
-
-                if (state[`${counterTarget}Amount`] === '' || state[`${counterTarget}Amount`] == 0) {
-                    isCounterPairEmpty = true
-                }
-
-                return { ...state, [`${target}Amount`]: action.payload.amount, status: state.status === 'create' ? 'create' : (isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal') }
             case TYPES.SET_MAX_AMOUNT:
-                console.log(state[`${counterTarget}Amount`])
-
-                if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
-                    isOver = true
-                }
-
-                if (action.payload.amount == 0) {
-                    isEmpty = true
-                }
-
-                if (state[`${counterTarget}Amount`] === '' || state[`${counterTarget}Amount`] == 0) {
-                    isCounterPairEmpty = true
-                }
-
-                return { ...state, [`${target}Amount`]: action.payload.amount, status: state.status === 'create' ? 'create' : (isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal') }
+                setAmountCheckVariables()
+                return { ...state, [`${targetPair}Amount`]: selectedPairAmount, status: getStatus(state) }
 
             case TYPES.SELECT_COIN:
-                let coinA = state[`${counterTarget}Coin`]
-                let coinB = action.payload.coin
+                const coinA = state[`${counterTargetPair}Coin`]
+                const coinB = action.payload.coin
+                const isBothCoin = coinA !== '' && coinB !== ''
 
-                if (coinA === '' || coinB === '') {
-                    return { ...state, [`${target}Coin`]: action.payload.coin }
-                }
+                if (!isBothCoin) {
+                    return { ...state, [`${targetPair}Coin`]: action.payload.coin }
 
-                if (action.payload.amount > myBalance[state[`${target}Coin`]] || state[`${counterTarget}Amount`] > myBalance[state[`${counterTarget}Coin`]]) {
-                    isOver = true
-                }
+                } else {
+                    const selectedPooldata = getSelectedPairsPoolData(state, action, counterTargetPair, poolData)
+                    state.status = "normal"
+                    setAmountCheckVariables()
 
-                if (action.payload.amount == 0) {
-                    isEmpty = true
-                }
-
-                if (state[`${counterTarget}Amount`] === '' || state[`${counterTarget}Amount`] == 0) {
-                    isCounterPairEmpty = true
-                }
-
-                const selectedPooldata = getSelectedPairsPoolData(state, action, counterTarget, poolData)
-
-                if (coinA !== '' && coinB !== '') {
                     if (!selectedPooldata) {
-                        return { ...state, status: "create", [`${target}Coin`]: action.payload.coin }
+                        return { ...state, status: "create", [`${targetPair}Coin`]: action.payload.coin, price: '-' }
+                    } else {
+                        return { ...state, [`${targetPair}Coin`]: action.payload.coin, price: getPoolPrice(state, action, counterTargetPair, poolData), status: getStatus(state) }
                     }
                 }
 
-                return { ...state, [`${target}Coin`]: action.payload.coin, price: getPoolPrice(state, action, counterTarget, poolData), status: isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal' }
-
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
+                const fromToChangeObject = { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+
                 if (state.status === 'create') {
-                    return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+                    return { ...fromToChangeObject, price: '-' }
                 }
 
-                let price: any = '-'
                 if (state.toCoin === '' || state.fromCoin === '') {
-                    return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount }
+                    return fromToChangeObject
                 } else {
                     const sortedCoins = [state.toCoin, state.fromCoin].sort()
                     const selectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
-                    price = selectedPairsPoolData[state.toCoin] / selectedPairsPoolData[state.fromCoin]
+                    const price = selectedPairsPoolData[state.toCoin] / selectedPairsPoolData[state.fromCoin]
+                    return { ...fromToChangeObject, price }
                 }
 
-                return { ...state, fromCoin: state.toCoin, toCoin: state.fromCoin, fromAmount: state.toAmount, toAmount: state.fromAmount, price: price }
+
             default:
                 console.log("DEFAULT: SWAP REDUCER")
                 return state;
