@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux";
-import { getSelectedPairsPoolData, getPoolPrice, cutNumber } from "../../utils/global-functions"
+import { getSelectedPairsPoolData, getPoolPrice, cutNumber, getMyCoinBalance } from "../../utils/global-functions"
 import { useHistory } from 'react-router-dom'
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
@@ -66,34 +66,6 @@ const SwapWrapper = styled.div`
    }
 `
 
-//reducer action types
-const TYPES = {
-    AMOUNT_CHANGE: 'AMOUNT_CHANGE',
-    SELECT_COIN: 'SELECT_COIN',
-    SET_MAX_AMOUNT: 'SET_MAX_AMOUNT',
-    CHANGE_FROM_TO_COIN: 'CHANGE_FROM_TO_COIN'
-}
-
-//helpers
-function getMyCoinBalance(coin, myBalance) {
-    if (myBalance[coin.toLowerCase()] !== undefined) {
-        return Number(myBalance[coin.toLowerCase()])
-    } else {
-        return 0
-    }
-}
-
-function getPairs(action) {
-    let targetPair = null
-    let counterTargetPair = null
-
-    if (action.payload?.target) {
-        targetPair = action.payload.target === "From" ? "from" : "to"
-        counterTargetPair = targetPair === 'from' ? 'to' : 'from'
-    }
-    return { targetPair, counterTargetPair }
-}
-
 //for display
 function getButtonNameByStatus(status, fromCoin, toCoin) {
     if (fromCoin === '' || toCoin === '') {
@@ -115,6 +87,14 @@ function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
     } else {
         return 'normal'
     }
+}
+
+//reducer action types
+const TYPES = {
+    AMOUNT_CHANGE: 'AMOUNT_CHANGE',
+    SELECT_COIN: 'SELECT_COIN',
+    SET_MAX_AMOUNT: 'SET_MAX_AMOUNT',
+    CHANGE_FROM_TO_COIN: 'CHANGE_FROM_TO_COIN'
 }
 
 // component function
@@ -142,22 +122,6 @@ function SwapCard() {
         let isEmpty = false
         let isCounterPairEmpty = false
 
-        function setAmountCheckVariables() {
-            if (selectedPairAmount > selectedPairMyBalance || counterPairAmount > counterPairMyBalance) {
-                isOver = true
-            }
-            if (selectedPairAmount == 0) {
-                isEmpty = true
-            }
-            if (counterPairAmount === '' || counterPairAmount == 0) {
-                isCounterPairEmpty = true
-            }
-        }
-
-        function getStatus(state) {
-            return state.status === 'create' ? 'create' : (isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal')
-        }
-
         switch (action.type) {
 
             case TYPES.AMOUNT_CHANGE:
@@ -174,14 +138,12 @@ function SwapCard() {
                 const isBothCoin = coinA !== '' && coinB !== ''
 
                 if (!isBothCoin) {
-
                     return { ...state, [`${targetPair}Coin`]: action.payload.coin }
-
                 } else {
                     const selectedPooldata = getSelectedPairsPoolData(state, action, counterTargetPair, poolData)
                     state.status = "normal"
                     setAmountCheckVariables()
-                    console.log('isOver, isEmpty, isCounterPairEmpty', isOver, isEmpty, isCounterPairEmpty)
+
                     if (!selectedPooldata) {
                         return { ...state, status: "create", [`${targetPair}Coin`]: action.payload.coin, price: '-' }
                     } else {
@@ -209,6 +171,34 @@ function SwapCard() {
             default:
                 console.log("DEFAULT: SWAP REDUCER")
                 return state;
+        }
+
+        //helpers
+        function getPairs(action) {
+            let targetPair = null
+            let counterTargetPair = null
+
+            if (action.payload?.target) {
+                targetPair = action.payload.target === "From" ? "from" : "to"
+                counterTargetPair = targetPair === 'from' ? 'to' : 'from'
+            }
+            return { targetPair, counterTargetPair }
+        }
+
+        function setAmountCheckVariables() {
+            if (selectedPairAmount > selectedPairMyBalance || counterPairAmount > counterPairMyBalance) {
+                isOver = true
+            }
+            if (selectedPairAmount == 0) {
+                isEmpty = true
+            }
+            if (counterPairAmount === '' || counterPairAmount == 0) {
+                isCounterPairEmpty = true
+            }
+        }
+
+        function getStatus(state) {
+            return state.status === 'create' ? 'create' : (isOver ? 'over' : (isEmpty || isCounterPairEmpty) ? 'empty' : 'normal')
         }
     }
 

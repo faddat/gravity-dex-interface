@@ -30,6 +30,14 @@ export function cutNumber(number, digitsAfterDot) {
     return str.slice(0, str.indexOf('.') + digitsAfterDot + 1);
 }
 
+export function getMyCoinBalance(coin, myBalance) {
+    if (myBalance[coin.toLowerCase()] !== undefined) {
+        return Number(myBalance[coin.toLowerCase()])
+    } else {
+        return 0
+    }
+}
+
 // export function sortReserveCoinDenoms(x, y) {
 //     return [x, y].sort()
 // }
