@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from 'react-router-dom'
 
 import ChangeArrow from "../../assets/svgs/ChangeArrow"
 
@@ -9,6 +10,22 @@ import TokenInputController from "../../components/TokenInputController/index"
 import ActionButton from "../../components/Buttons/ActionButton"
 
 //Styled-components
+const Wrapper = styled.div`
+    position: absolute;
+    top:0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    background-color:#fff;
+
+    min-height: 100vh;
+    background-position: 0px -30vh;
+    background-repeat: no-repeat;
+    background-image: radial-gradient(50% 50% at 50% 50%,rgb(3 34 255 / 20%) 0%,rgb(19 74 195 / 0) 100%);
+`
+
+
 const SwapWrapper = styled.div`
     .header {
         display: flex;
@@ -16,10 +33,30 @@ const SwapWrapper = styled.div`
         justify-content: space-between;
         margin-bottom: 16px;
 
-        .title {
-            padding-left: 4px;
-            font-weight: 500;
+       .back {
+           font-size: 24px;
+           cursor: pointer;
+
+           &:hover {
+                opacity: 0.6;
+            }
         }
+
+       .title {
+           font-size: 20px;
+           font-weight: 500;
+       }
+    }
+
+    .info-box {
+        box-sizing: border-box;
+        margin: 20px 0;
+        min-width: 0px;
+        padding: 1.25rem;
+        background-color:rgb(234 243 253);
+        color: rgb(0 124 255);
+        border-radius: 12px;
+        width: fit-content;
     }
 
    .divider {
@@ -29,36 +66,45 @@ const SwapWrapper = styled.div`
         padding: 16px 0;
         transition: opacity 0.2s;
 
-        .arrow {
-            cursor: pointer;
-
-            svg {
-                stroke: #4397ff;
-            }
-
-            &:hover {
-                opacity: 0.6;
-            }
+        .plus {
+            font-size: 24px;
+            font-weight: 300;
         }
    }
 
-   .swap-detail {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+   .pool-creation-detail {
+        border-radius: 20px;
+        border: 1px solid rgb(247, 248, 250);
 
-        padding: 6px 12px;
+        margin-top: 16px;
 
-        font-size: 14px;
-        font-weight: 500;
-        color: rgb(86, 90, 105);
-
-        .left {
-            
+        .title {
+            padding: 16px;
+            font-weight: 500;
+            font-size: 14px;
         }
 
-        .right {
+        .details {
+            display: flex;
+            justify-content: space-between;
+            padding: 16px;
+            border: 1px solid rgb(247, 248, 250);
+            border-radius: 20px;
 
+            .detail {
+                text-align:center;
+                flex: 1;
+                .number {
+                    font-weight: 500;
+                }
+
+                .text {
+                    font-weight: 500;
+                    font-size: 14px;
+                    color: rgb(86, 90, 105);
+                    padding-top: 4px;
+                }
+            }
         }
    }
 `
@@ -101,12 +147,15 @@ function getButtonCssClassNameByStatus(status, fromCoin, toCoin) {
 }
 
 
-function WithdrawCard() {
+function SwapCard() {
     React.useEffect(() => {
         //미로그인시 connectWallet 스테이터스 아니면 empty로
     }, [])
     const myBalance = useSelector((state) => state.store.userData.balance)
     const slippage = useSelector((state) => state.store.userData.slippage)
+    const poolData = useSelector((state) => state.store.poolsData.pools)
+
+    const history = useHistory();
     //reducer for useReducer
     function reducer(state, action) {
         let target = null
@@ -139,6 +188,15 @@ function WithdrawCard() {
             case TYPES.SET_MAX_AMOUNT:
                 return { ...state, [`${target}Amount`]: action.payload.amount, status: 'normal' }
             case TYPES.SELECT_COIN:
+                let coinA = state[`${counterTarget}Coin`]
+                let coinB = action.payload.coin
+                const sortedCoins = [coinA, coinB].sort()
+                const slectedPairsPoolData = poolData[`${sortedCoins[0]}/${sortedCoins[1]}`]
+
+                if (!slectedPairsPoolData) {
+                    history.push(`/deposit?X=${coinA}&Y=${coinB}`)
+                }
+
                 return { ...state, [`${target}Coin`]: action.payload.coin }
             case TYPES.CHANGE_FROM_TO_COIN:
                 // toCoin 수량 계산 및 액션버튼 검증로직
@@ -162,15 +220,23 @@ function WithdrawCard() {
     }
 
     return (
-        <>
+        <Wrapper>
             <BaseCard>
                 <SwapWrapper>
                     {/* Header */}
                     <div className="header">
-                        <div className="title">
-                            Swap
+                        <div className="back" onClick={() => { history.push('/pool') }}>←</div>
+                        <div className="title"> Create a pool</div>
+                        <div style={{ width: "23px" }}></div>
                     </div>
-                        <div />
+
+                    {/* Info */}
+                    <div className="info-box">
+                        <div style={{ fontWeight: "bold", marginBottom: "10px" }}>You are the first liquidity provider.</div>
+                        <div style={{ marginBottom: "10px" }}>
+                            The ratio of tokens you add will set the price of this pool.
+                        </div>
+                        Once you are happy with the rate click the supply button.
                     </div>
 
                     {/* From */}
@@ -183,12 +249,10 @@ function WithdrawCard() {
                         dispatchTypes={{ amount: TYPES.AMOUNT_CHANGE, coin: TYPES.SELECT_COIN, max: TYPES.SET_MAX_AMOUNT }}
                     />
 
-                    {/* From <> To change arrow */}
+                    {/* plus icon */}
                     <div className="divider">
-                        <div className="arrow" onClick={() => {
-                            dispatch({ type: TYPES.CHANGE_FROM_TO_COIN })
-                        }}>
-                            <ChangeArrow />
+                        <div className="plus">
+                            +
                         </div>
                     </div>
 
@@ -203,16 +267,23 @@ function WithdrawCard() {
                     />
 
                     {/* Swap detail */}
-                    <div className="swap-detail">
-                        <div className="left">Price</div>
-                        <div className="right">1</div>
+                    <div className="pool-creation-detail">
+                        <div className="title">Initial prices and pool share</div>
+                        <div className="details">
+                            <div className="detail">
+                                <div className="number">100</div>
+                                <div className="text">A per B</div>
+                            </div>
+                            <div className="detail">
+                                <div className="number">0.01</div>
+                                <div className="text">B per A</div>
+                            </div>
+                            <div className="detail">
+                                <div className="number">100%</div>
+                                <div className="text">Share of Pool</div>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="swap-detail">
-                        <div className="left">Slippage Tolerance</div>
-                        <div className="right">{slippage}%</div>
-                    </div>
-
 
                     {/* Swap Button */}
                     <ActionButton onClick={swap} status={getButtonCssClassNameByStatus(state.status, state.fromCoin, state.toCoin)} css={{ marginTop: "16px" }}>
@@ -220,9 +291,8 @@ function WithdrawCard() {
                     </ActionButton>
                 </SwapWrapper>
             </BaseCard>
-
-        </>
+        </Wrapper>
     )
 }
 
-export default WithdrawCard
+export default SwapCard

@@ -357,6 +357,14 @@ function Pool() {
                                     <div className="detail-amount">{parseFloat(cutNumber(pairPoolData[coinY], 4))}  <img className="coin-img" src={`/assets/coins/${coinY}.png`} alt="pairY" /></div>
                                 </div>
                                 <div className="detail">
+                                    <div>External {uppercasePoolNames.split('/')[0]} Price:</div>
+                                    <div className="detail-amount">$20.12</div>
+                                </div>
+                                <div className="detail">
+                                    <div>External {uppercasePoolNames.split('/')[1]} Price:</div>
+                                    <div className="detail-amount">$0.412</div>
+                                </div>
+                                <div className="detail">
                                     <div>APY:</div>
                                     <div className="apy">4%</div>
                                 </div>
@@ -414,7 +422,7 @@ function Pool() {
                     </div>
 
                     <div className="buttons">
-                        <button className="button" onClick={() => { history.push('/create') }}>Create a pair</button>
+                        <button className="button" onClick={() => { history.push('/create') }}>Create a pool</button>
                         <button className="button" onClick={() => { history.push('/add') }}>Add Liquidity</button>
                     </div>
                 </div>

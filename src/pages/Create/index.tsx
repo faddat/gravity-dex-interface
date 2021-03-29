@@ -226,7 +226,7 @@ function SwapCard() {
                     {/* Header */}
                     <div className="header">
                         <div className="back" onClick={() => { history.push('/pool') }}>←</div>
-                        <div className="title"> Create a Pair</div>
+                        <div className="title"> Create a pool</div>
                         <div style={{ width: "23px" }}></div>
                     </div>
 
